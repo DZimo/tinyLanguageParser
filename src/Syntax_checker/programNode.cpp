@@ -1,36 +1,48 @@
-//
-// Created by Admin on 8/13/2023.
-//
-
 #include "programNode.h"
 #include "../AST_checker/astNode.cpp"
 #include <vector>
 
-
-class programNode : public astNode {
+class ProgramNode : public astNode {
 public:
     std::vector<std::unique_ptr<astNode>> statements;
     std::vector<std::unique_ptr<astNode>> functions;
 
-    programNode(std::vector<std::unique_ptr<astNode>> stmts)
-    : statements(std::move(stmts)) {}
+    explicit ProgramNode(std::vector<std::unique_ptr<astNode>> stmts)
+            : statements(std::move(stmts)) {}
 
-    std::string toJSON() const override {
-        std::string result = "[";
+protected:
+    std::string getType() const override { return "ProgramNode"; }
+
+    void appendToJSON(std::ostringstream& os) const override {
+        os << "\"statements\": [";
         for (size_t i = 0; i < statements.size(); ++i) {
-            result += statements[i]->toJSON();
-            if (i < statements.size() - 1) {
-                result += ", ";
-            }
+            os << statements[i]->toJSON();
+            if (i < statements.size() - 1) os << ", ";
         }
-        result += "]";
-        return result;
+        os << "], ";
+
+        os << "\"functions\": [";
+        for (size_t i = 0; i < functions.size(); ++i) {
+            os << functions[i]->toJSON();
+            if (i < functions.size() - 1) os << ", ";
+        }
+        os << "]";
     }
 
-    void print(std::ostream& os, int depth = 0) const override {
-        return;
+    std::string getDescription() const override {
+        return "Program";
     }
 
+    void printChildren(std::ostream& os, int depth) const override {
+        for (const auto& statement : statements) {
+            statement->print(os, depth + 2);
+        }
+        for (const auto& function : functions) {
+            function->print(os, depth + 2);
+        }
+    }
+
+public:
     void addFunction(std::unique_ptr<astNode> func) {
         functions.push_back(std::move(func));
     }

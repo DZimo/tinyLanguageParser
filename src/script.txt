@@ -1,11 +1,14 @@
+main ( int b, int c ) {
 int a;
 int b;
+float d;
+bool s;
+}
+f ( bool h ) {
 int c;
-int main() {
-a = b+1;
-a = a+b;
-c = h;
-if( a > b ) {
-b = b-1;
 }
+c( char s )
+{
+
 }
+a = c + d;

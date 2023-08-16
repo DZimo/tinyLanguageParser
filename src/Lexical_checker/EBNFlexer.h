@@ -1,7 +1,3 @@
-//
-// Created by Admin on 8/16/2023.
-//
-
 #ifndef TINYLANGUAGEPARSER_EBNFLEXER_H
 #define TINYLANGUAGEPARSER_EBNFLEXER_H
 #include "tokenizer.h";

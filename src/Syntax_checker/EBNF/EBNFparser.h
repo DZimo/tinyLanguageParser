@@ -5,9 +5,9 @@
 #ifndef TINYLANGUAGEPARSER_EBNFPARSER_H
 #define TINYLANGUAGEPARSER_EBNFPARSER_H
 
-#include "../Lexical_checker/EBNFlexer.h"
+#include "../../Lexical_checker/EBNFlexer.h"
+#include "../../AST_checker/astNode.h"
 #include <vector>
-#include "../AST_checker/assignementNode.cpp"
 
 class EBNFParser {
 private:

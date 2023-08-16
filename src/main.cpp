@@ -1,7 +1,7 @@
 
 #include "main.h"
-#include "Syntax_checker/EBNFparser.h"
-#include "Syntax_checker/parser.cpp"
+#include "Syntax_checker/EBNF/EBNFparser.h"
+#include "Syntax_checker/Script/parser.cpp"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -48,8 +48,8 @@ int main() {
     lexer.getSymbolTable().print();
     return 0;*/
 
-    std::string script = "main () { int a; int b; float d; bool s;} f () { int c;} c() {}  a = c + d;";
-
+    //std::string script = "main ( int b, int c ) { int a; int b; float d; bool s;} f () { int c;} c() {}  a = c + d;";
+    std::string script = readFile("src/script.txt");
     // Using the provided parser
     lexer lex(script);
     parser parse(lex);

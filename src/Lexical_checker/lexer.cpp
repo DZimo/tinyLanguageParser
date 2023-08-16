@@ -1,7 +1,3 @@
-//
-// Created by Admin on 8/10/2023.
-//
-
 #include "lexer.h"
 #include "../SymbolTable_checker/symbolTable.cpp"
 
@@ -64,7 +60,6 @@ private:
                 symbolTableInstant.insert(value, pendingType);
             }
         }
-
         return tokenizer(type, value, line_number, char_position);
     }
     tokenizer getNumber() {

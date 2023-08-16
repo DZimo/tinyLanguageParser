@@ -4,7 +4,7 @@
 
 #ifndef TINYLANGUAGEPARSER_PARSER_H
 #define TINYLANGUAGEPARSER_PARSER_H
-#include "../Lexical_checker/tokenizer.h"
+#include "../../Lexical_checker/tokenizer.h"
 #include <iostream>
 #include <unordered_map>
 

@@ -4,7 +4,7 @@
 
 #ifndef TINYLANGUAGEPARSER_EBNFCHECKER_H
 #define TINYLANGUAGEPARSER_EBNFCHECKER_H
-#include "../AST_checker/astNode.h"
+#include "src/AST_checker/astNode.h"
 /*
 class EBNFchecker {
     class EBNFChecker {

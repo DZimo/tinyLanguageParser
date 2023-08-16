@@ -5,8 +5,8 @@
 #include <memory>
 #include "parser.h"
 
-#include "../Lexical_checker/lexer.cpp"
-#include "programNode.cpp"
+#include "../../Lexical_checker/lexer.cpp"
+#include "../programNode.cpp"
 
 
 
@@ -77,7 +77,7 @@ public:
             // If an assignment operation follows an identifier, handle assignment
             if (current_token_inst.type == TokenType::ASSIGNMENT) {
                 eat(TokenType::ASSIGNMENT);
-                return std::make_unique<assignementNode>(std::move(node), expr());
+                return std::make_unique<AssignmentNode>(std::move(node), expr());
             }
 
             return node;
@@ -130,7 +130,7 @@ public:
             eat(TokenType::SEMICOLON);
 
             // Assuming the assignment node can represent an initialization.
-            return std::make_unique<assignementNode>(std::make_unique<IdentifierNode>(varName), std::move(initializer));
+            return std::make_unique<AssignmentNode>(std::make_unique<IdentifierNode>(varName), std::move(initializer));
         }
 
         eat(TokenType::SEMICOLON);
@@ -147,18 +147,41 @@ public:
             case TokenType::BOOL:
                 return declaration();
 
-
-
             case TokenType::IDENTIFIER: {
-                auto funcName = current_token_inst.value;
+                auto varOrFuncName = current_token_inst.value;
                 eat(TokenType::IDENTIFIER);
-
                 if (current_token_inst.type == TokenType::L_PAREN) {
                     eat(TokenType::L_PAREN);
+                    // Here, you would parse the parameters into 'parameters' vector.
+                    std::vector<std::pair<std::string, std::string>> parameters;
                     if (current_token_inst.type != TokenType::R_PAREN) {
-                        // Handle parameters if your language supports it.
-                        // Otherwise, throw an error if anything other than a R_PAREN is found.
-                        throw std::runtime_error("Expected ) after function name");
+                        do{  // This loop will handle multiple parameters
+                            // Expecting a type (like INT, CHAR, etc.)
+                            auto currentType = type();
+                            std::string paramType = currentType;
+                            //eat(current_token_inst.type);
+
+                            // Expecting an identifier for the parameter name
+                            if (current_token_inst.type != TokenType::IDENTIFIER) {
+                                throw std::runtime_error("Expected parameter name");
+                            }
+                            std::string paramName = current_token_inst.value;
+                            eat(TokenType::IDENTIFIER);
+
+                            // Add to parameters list
+                            parameters.emplace_back(paramType, paramName);
+
+                            // If next token is a comma, then eat it and continue the loop for next parameter
+                            if (current_token_inst.type == TokenType::COMMA) {
+                                eat(TokenType::COMMA);
+                            } else if (current_token_inst.type == TokenType::R_PAREN) {
+                                // If it's a right parenthesis, then parameter list has ended
+                                break;
+                            } else {
+                                // Anything other than a comma or right parenthesis is an error
+                                throw std::runtime_error("Expected , or ) after parameter declaration");
+                            }
+                        } while (current_token_inst.type != TokenType::R_PAREN);
                     }
                     eat(TokenType::R_PAREN);
 
@@ -166,23 +189,26 @@ public:
                         throw std::runtime_error("Expected { after function definition");
                     }
 
-                    auto funcBody = blockStatement(); // Parse the function body
+                    auto funcBody = blockStatement();
                     if (BlockNode* blockNode = dynamic_cast<BlockNode*>(funcBody.get())) {
-                        return std::make_unique<FunctionDeclarationNode>(funcName,
-                                                                         std::vector<std::pair<std::string, std::string>>(), // You need to add the parameter parsing
+                        return std::make_unique<FunctionDeclarationNode>(varOrFuncName,
+                                                                         std::move(parameters),
                                                                          std::move(blockNode->statements));
-                    }
-                    else {
+                    } else {
                         throw std::runtime_error("Expected a BlockNode for the function body.");
-                    }              }
+                    }
+                }
                 else if (current_token_inst.type == TokenType::ASSIGNMENT) {
+                    // Handle variable assignment
                     eat(TokenType::ASSIGNMENT);
                     auto rightExpr = expr();
-                    return std::make_unique<assignementNode>(std::make_unique<IdentifierNode>(funcName), std::move(rightExpr));
-                } else {
+                    return std::make_unique<AssignmentNode>(std::make_unique<IdentifierNode>(varOrFuncName), std::move(rightExpr));
+                }
+                else {
                     throw std::runtime_error("Unexpected token after IDENTIFIER");
                 }
             }
+
             case TokenType::IF:
                 return ifStatement();
 
@@ -193,16 +219,15 @@ public:
                 return blockStatement();
 
             case TokenType::RETURN:
-                //return returnStatement();
+                return returnStatement();
 
             case TokenType::SEMICOLON:
                 // Empty statement.
                 eat(TokenType::SEMICOLON);
+                return nullptr;
 
             case TokenType::EOF_TOK:
-                // Handle end of file token, which means the parsing process should terminate.
-                // Depending on your design, you might want to just return a special AST node or throw an exception.
-                return nullptr; // or you could throw an exception or handle it in a way that makes sense for your parser.
+                return nullptr;
 
             default:
                 throw std::runtime_error("Unexpected token type");
@@ -220,6 +245,23 @@ public:
         eat(TokenType::R_BRACE);
 
         return std::make_unique<BlockNode>(std::move(statements));
+    }
+
+    std::unique_ptr<astNode> returnStatement() {
+        eat(TokenType::RETURN);
+
+        // Parse the expression after the 'return' keyword
+        auto returnValue = expr();
+
+        if (current_token_inst.type != TokenType::SEMICOLON) {
+            throw std::runtime_error("Expected ; after return statement");
+        }
+        eat(TokenType::SEMICOLON);
+
+        // Assuming you have a ReturnNode defined in your AST like this:
+        // class ReturnNode : public astNode { ... }
+        // The ReturnNode constructor might take the returned expression as an argument.
+        return std::make_unique<ReturnNode>(std::move(returnValue));
     }
 
     std::unique_ptr<astNode> ifStatement() {
@@ -250,40 +292,6 @@ public:
         return std::make_unique<WhileNode>(std::move(condition), std::move(loopBody));
     }
 
-    std::string serializeAST(const std::vector<std::unique_ptr<astNode>>& astNodes) {
-        std::string result = "[";
-        for (size_t i = 0; i < astNodes.size(); ++i) {
-            result += astNodes[i]->toJSON();
-            if (i != astNodes.size() - 1) {
-                result += ", ";
-            }
-        }
-        result += "]";
-        return result;
-    }
-
-    std::unique_ptr<astNode> tiny_program() {
-        auto mainFuncNode = main_function();
-
-        // Create a program node with an empty vector of statements
-        std::unique_ptr<programNode> program = std::make_unique<programNode>(std::vector<std::unique_ptr<astNode>>{});
-
-        // Add the main function to the functions vector
-        program->addFunction(std::move(mainFuncNode));
-
-        // If there are more functions after the main function, parse them
-        while (current_token_inst.type != TokenType::EOF_TOK &&
-               (current_token_inst.type == TokenType::INT ||
-                current_token_inst.type == TokenType::FLOAT ||
-                current_token_inst.type == TokenType::CHAR ||
-                current_token_inst.type == TokenType::BOOL)) {
-            auto funcNode = function();
-            program->addFunction(std::move(funcNode));
-        }
-
-        return program;
-    }
-
     std::unique_ptr<astNode> main_function() {
         eat(TokenType::INT);
         eat(TokenType::MAIN);
@@ -309,26 +317,57 @@ public:
         return std::make_unique<MainFunctionNode>(std::move(decls), std::move(stmts));
     }
 
-    std::unique_ptr<astNode> function() {
-        auto returnType = type();
+    std::unique_ptr<astNode> functionCall() {
         auto funcName = current_token_inst.value;
         eat(TokenType::IDENTIFIER);
-
         eat(TokenType::L_PAREN);
-        std::vector<std::pair<std::string, std::string>> parameters;
-        while (current_token_inst.type != TokenType::R_PAREN) {
-            auto paramType = type();
-            auto paramName = current_token_inst.value;
-            parameters.push_back({paramType, paramName});
-            eat(TokenType::IDENTIFIER);
 
+        std::vector<std::unique_ptr<astNode>> args;
+        while (current_token_inst.type != TokenType::R_PAREN) {
+            args.push_back(expr());
             if (current_token_inst.type == TokenType::COMMA) {
                 eat(TokenType::COMMA);
             }
         }
         eat(TokenType::R_PAREN);
 
-        eat(TokenType::L_BRACE);
+        return std::make_unique<FunctionCallNode>(funcName, std::move(args));
+    }
+
+    std::unique_ptr<astNode> function() {
+        // 1. Parse the return type of the function
+        auto returnType = type();
+
+        // 2. Parse the function name
+        auto funcName = current_token_inst.value;
+        eat(TokenType::IDENTIFIER);
+
+        // 3. Parse the parameter list
+        eat(TokenType::L_PAREN);
+        std::vector<std::pair<std::string, std::string>> parameters;
+
+        // Check if there are parameters in the list
+        while (current_token_inst.type != TokenType::R_PAREN) {
+            // Parse the type of the parameter
+            auto paramType = type();
+            // Parse the name of the parameter
+            auto paramName = current_token_inst.value;
+            parameters.push_back({paramType, paramName});
+            eat(TokenType::IDENTIFIER);
+
+            // If there's a comma, then we expect another parameter
+            if (current_token_inst.type == TokenType::COMMA) {
+                eat(TokenType::COMMA);
+            } else if (current_token_inst.type != TokenType::R_PAREN) {
+                // If it's not a comma and not a closing parenthesis, it's an error
+                throw std::runtime_error("Expected , or ) in parameter list");
+            }
+        }
+        eat(TokenType::R_PAREN);
+
+        // 4. Parse the function body
+
+        // Handle declarations inside the function
         std::vector<std::unique_ptr<astNode>> decls;
         while (current_token_inst.type == TokenType::INT ||
                current_token_inst.type == TokenType::FLOAT ||
@@ -337,6 +376,8 @@ public:
             decls.push_back(declaration());
         }
 
+        // Handle statements inside the function
+        eat(TokenType::L_BRACE);
         std::vector<std::unique_ptr<astNode>> stmts;
         while (current_token_inst.type != TokenType::R_BRACE) {
             stmts.push_back(statement());
@@ -344,6 +385,28 @@ public:
         eat(TokenType::R_BRACE);
 
         return std::make_unique<FunctionNode>(returnType, funcName, std::move(parameters), std::move(decls), std::move(stmts));
+    }
+
+    std::unique_ptr<astNode> tiny_program() {
+        auto mainFuncNode = main_function();
+
+        // Create a program node with an empty vector of statements
+        std::unique_ptr<ProgramNode> program = std::make_unique<ProgramNode>(std::vector<std::unique_ptr<astNode>>{});
+
+        // Add the main function to the functions vector
+        program->addFunction(std::move(mainFuncNode));
+
+        // If there are more functions after the main function, parse them
+        while (current_token_inst.type != TokenType::EOF_TOK &&
+               (current_token_inst.type == TokenType::INT ||
+                current_token_inst.type == TokenType::FLOAT ||
+                current_token_inst.type == TokenType::CHAR ||
+                current_token_inst.type == TokenType::BOOL)) {
+            auto funcNode = function();
+            program->addFunction(std::move(funcNode));
+        }
+
+        return program;
     }
 
     std::string type() {
@@ -361,7 +424,19 @@ public:
                 eat(TokenType::BOOL);
                 return "bool";
             default:
-                throw std::runtime_error("Expected a type");
+                throw std::runtime_error("Invalid type!");
         }
+    }
+
+    std::string serializeAST(const std::vector<std::unique_ptr<astNode>>& astNodes) {
+        std::string result = "[";
+        for (size_t i = 0; i < astNodes.size(); ++i) {
+            result += astNodes[i]->toJSON();
+            if (i != astNodes.size() - 1) {
+                result += ", ";
+            }
+        }
+        result += "]";
+        return result;
     }
 };
