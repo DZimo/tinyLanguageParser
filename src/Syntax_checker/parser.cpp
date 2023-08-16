@@ -1,11 +1,10 @@
-//
+
 // Created by Admin on 8/11/2023.
 //
 
 #include <memory>
 #include "parser.h"
 
-#include "../AST_checker/assignementNode.cpp"
 #include "../Lexical_checker/lexer.cpp"
 #include "programNode.cpp"
 
@@ -14,8 +13,9 @@
 class parser {
 private:
     lexer lexer_inst;
+    std::unique_ptr<astNode> sequence();
+protected:
     tokenizer current_token_inst;
-
 public:
     explicit parser(const lexer& lex)
             : lexer_inst(lex),
@@ -130,7 +130,7 @@ public:
             eat(TokenType::SEMICOLON);
 
             // Assuming the assignment node can represent an initialization.
-            return std::make_unique<assignementNode>(std::make_unique<identifierNode>(varName), std::move(initializer));
+            return std::make_unique<assignementNode>(std::make_unique<IdentifierNode>(varName), std::move(initializer));
         }
 
         eat(TokenType::SEMICOLON);
@@ -178,7 +178,7 @@ public:
                 else if (current_token_inst.type == TokenType::ASSIGNMENT) {
                     eat(TokenType::ASSIGNMENT);
                     auto rightExpr = expr();
-                    return std::make_unique<assignementNode>(std::make_unique<identifierNode>(funcName), std::move(rightExpr));
+                    return std::make_unique<assignementNode>(std::make_unique<IdentifierNode>(funcName), std::move(rightExpr));
                 } else {
                     throw std::runtime_error("Unexpected token after IDENTIFIER");
                 }
@@ -260,5 +260,108 @@ public:
         }
         result += "]";
         return result;
+    }
+
+    std::unique_ptr<astNode> tiny_program() {
+        auto mainFuncNode = main_function();
+
+        // Create a program node with an empty vector of statements
+        std::unique_ptr<programNode> program = std::make_unique<programNode>(std::vector<std::unique_ptr<astNode>>{});
+
+        // Add the main function to the functions vector
+        program->addFunction(std::move(mainFuncNode));
+
+        // If there are more functions after the main function, parse them
+        while (current_token_inst.type != TokenType::EOF_TOK &&
+               (current_token_inst.type == TokenType::INT ||
+                current_token_inst.type == TokenType::FLOAT ||
+                current_token_inst.type == TokenType::CHAR ||
+                current_token_inst.type == TokenType::BOOL)) {
+            auto funcNode = function();
+            program->addFunction(std::move(funcNode));
+        }
+
+        return program;
+    }
+
+    std::unique_ptr<astNode> main_function() {
+        eat(TokenType::INT);
+        eat(TokenType::MAIN);
+        eat(TokenType::L_PAREN);
+        eat(TokenType::R_PAREN);
+        eat(TokenType::L_BRACE);
+
+        std::vector<std::unique_ptr<astNode>> decls;
+        while (current_token_inst.type == TokenType::INT ||
+               current_token_inst.type == TokenType::FLOAT ||
+               current_token_inst.type == TokenType::CHAR ||
+               current_token_inst.type == TokenType::BOOL) {
+            decls.push_back(declaration());
+        }
+
+        std::vector<std::unique_ptr<astNode>> stmts;
+        while (current_token_inst.type != TokenType::R_BRACE) {
+            stmts.push_back(statement());
+        }
+
+        eat(TokenType::R_BRACE);
+
+        return std::make_unique<MainFunctionNode>(std::move(decls), std::move(stmts));
+    }
+
+    std::unique_ptr<astNode> function() {
+        auto returnType = type();
+        auto funcName = current_token_inst.value;
+        eat(TokenType::IDENTIFIER);
+
+        eat(TokenType::L_PAREN);
+        std::vector<std::pair<std::string, std::string>> parameters;
+        while (current_token_inst.type != TokenType::R_PAREN) {
+            auto paramType = type();
+            auto paramName = current_token_inst.value;
+            parameters.push_back({paramType, paramName});
+            eat(TokenType::IDENTIFIER);
+
+            if (current_token_inst.type == TokenType::COMMA) {
+                eat(TokenType::COMMA);
+            }
+        }
+        eat(TokenType::R_PAREN);
+
+        eat(TokenType::L_BRACE);
+        std::vector<std::unique_ptr<astNode>> decls;
+        while (current_token_inst.type == TokenType::INT ||
+               current_token_inst.type == TokenType::FLOAT ||
+               current_token_inst.type == TokenType::CHAR ||
+               current_token_inst.type == TokenType::BOOL) {
+            decls.push_back(declaration());
+        }
+
+        std::vector<std::unique_ptr<astNode>> stmts;
+        while (current_token_inst.type != TokenType::R_BRACE) {
+            stmts.push_back(statement());
+        }
+        eat(TokenType::R_BRACE);
+
+        return std::make_unique<FunctionNode>(returnType, funcName, std::move(parameters), std::move(decls), std::move(stmts));
+    }
+
+    std::string type() {
+        switch (current_token_inst.type) {
+            case TokenType::INT:
+                eat(TokenType::INT);
+                return "int";
+            case TokenType::FLOAT:
+                eat(TokenType::FLOAT);
+                return "float";
+            case TokenType::CHAR:
+                eat(TokenType::CHAR);
+                return "char";
+            case TokenType::BOOL:
+                eat(TokenType::BOOL);
+                return "bool";
+            default:
+                throw std::runtime_error("Expected a type");
+        }
     }
 };

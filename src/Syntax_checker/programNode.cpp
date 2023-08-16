@@ -10,6 +10,7 @@
 class programNode : public astNode {
 public:
     std::vector<std::unique_ptr<astNode>> statements;
+    std::vector<std::unique_ptr<astNode>> functions;
 
     programNode(std::vector<std::unique_ptr<astNode>> stmts)
     : statements(std::move(stmts)) {}
@@ -28,5 +29,9 @@ public:
 
     void print(std::ostream& os, int depth = 0) const override {
         return;
+    }
+
+    void addFunction(std::unique_ptr<astNode> func) {
+        functions.push_back(std::move(func));
     }
 };

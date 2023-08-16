@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <vector>
+#include <sstream>
 #include "../Lexical_checker/tokenizer.h"
 
 class astNode {
@@ -19,6 +20,7 @@ public:
 };
 
 class DeclarationNode : public astNode {
+private:
     std::string dataType;
     std::string name;
 
@@ -29,23 +31,30 @@ public:
         for (int i = 0; i < depth; ++i) os << "--";
         os << "Declaration: " << dataType << " " << name << std::endl;
     }
+    std::string getDataType() const { return dataType; }
+    std::string getName() const { return name; }
     std::string toJSON() const override {
         return "{ \"type\": \"Declaration\", \"name\": \"" + name + "\", \"dataType\": \"" + dataType + "\" }";
     }
 };
 
-class identifierNode : public astNode {
-    std::string name;
-
+class IdentifierNode : public astNode {
 public:
-    identifierNode(const std::string &name) : name(name) {}
+    std::string value;
 
-    void print(std::ostream& os, int depth = 0) const override {
-        for (int i = 0; i < depth; ++i) os << "--";
-        os << "Identifier: " << name << std::endl;
-    }
+    IdentifierNode(const std::string& val) : value(val) {}
+
     std::string toJSON() const override {
-        return "{ \"type\": \"Identifier\", \"name\": \"" + name + "\" }";
+        return "{\"type\":\"IdentifierNode\", \"value\":\"" + value + "\"}";
+    }
+    void printIndent(std::ostream& os, int depth) const {
+        for (int i = 0; i < depth; ++i) {
+            os << "  "; // Each depth level adds two spaces. Adjust this to your preference.
+        }
+    }
+    void print(std::ostream& os, int depth = 0) const override {
+        printIndent(os, depth);
+        os << "Identifier: " << value << std::endl;
     }
 };
 
@@ -289,6 +298,244 @@ public:
         json += "] }";
         return json;
     }
+};
+
+class MainFunctionNode : public astNode {
+public:
+    std::vector<std::unique_ptr<astNode>> declarations;
+    std::vector<std::unique_ptr<astNode>> statements;
+
+    MainFunctionNode(std::vector<std::unique_ptr<astNode>> decls,
+                     std::vector<std::unique_ptr<astNode>> stmts)
+            : declarations(std::move(decls)), statements(std::move(stmts)) {}
+
+    std::string toJSON() const override {
+        std::string result = "{";
+        result += "\"type\":\"MainFunctionNode\", ";
+
+        // Serialize declarations
+        result += "\"declarations\":[";
+        for (size_t i = 0; i < declarations.size(); ++i) {
+            result += declarations[i]->toJSON();
+            if (i < declarations.size() - 1) result += ",";
+        }
+        result += "], ";
+
+        // Serialize statements
+        result += "\"statements\":[";
+        for (size_t i = 0; i < statements.size(); ++i) {
+            result += statements[i]->toJSON();
+            if (i < statements.size() - 1) result += ",";
+        }
+        result += "]";
+
+        result += "}";
+        return result;
+    }
+
+    void print(std::ostream& os, int depth = 0) const override {
+        os << std::string(depth, ' ') << "MainFunction: \n";
+        os << std::string(depth + 2, ' ') << "Declarations: " << '\n';
+        for (const auto& decl : declarations) {
+            decl->print(os, depth + 4);
+        }
+        os << std::string(depth + 2, ' ') << "Statements: " << '\n';
+        for (const auto& stmt : statements) {
+            stmt->print(os, depth + 4);
+        }
+    }
+};
+
+class FunctionNode : public astNode {
+public:
+    std::string returnType;
+    std::string name;
+    std::vector<std::pair<std::string, std::string>> parameters;
+    std::vector<std::unique_ptr<astNode>> declarations;
+    std::vector<std::unique_ptr<astNode>> statements;
+
+    FunctionNode(const std::string& returnType,
+                 const std::string& name,
+                 std::vector<std::pair<std::string, std::string>> params,
+                 std::vector<std::unique_ptr<astNode>> decls,
+                 std::vector<std::unique_ptr<astNode>> stmts)
+            : returnType(returnType), name(name), parameters(std::move(params)),
+              declarations(std::move(decls)), statements(std::move(stmts)) {}
+
+    std::string toJSON() const override {
+        std::string result = "{";
+        result += "\"type\":\"FunctionNode\", ";
+        result += "\"returnType\":\"" + returnType + "\", ";
+        result += "\"name\":\"" + name + "\", ";
+
+        // Serialize parameters
+        result += "\"parameters\":[";
+        for (size_t i = 0; i < parameters.size(); ++i) {
+            result += "{\"type\":\"" + parameters[i].first + "\",";
+            result += "\"name\":\"" + parameters[i].second + "\"}";
+            if (i < parameters.size() - 1) result += ",";
+        }
+        result += "], ";
+
+        // Serialize declarations
+        result += "\"declarations\":[";
+        for (size_t i = 0; i < declarations.size(); ++i) {
+            result += declarations[i]->toJSON();
+            if (i < declarations.size() - 1) result += ",";
+        }
+        result += "], ";
+
+        // Serialize statements
+        result += "\"statements\":[";
+        for (size_t i = 0; i < statements.size(); ++i) {
+            result += statements[i]->toJSON();
+            if (i < statements.size() - 1) result += ",";
+        }
+        result += "]";
+
+        result += "}";
+        return result;
+    }
+
+    void print(std::ostream& os, int depth = 0) const override {
+        os << std::string(depth, ' ') << "Function: " << name << " returns " << returnType << '\n';
+        for (const auto& param : parameters) {
+            os << std::string(depth + 2, ' ') << "Param: " << param.first << " " << param.second << '\n';
+        }
+        os << std::string(depth + 2, ' ') << "Declarations: " << '\n';
+        for (const auto& decl : declarations) {
+            decl->print(os, depth + 4);
+        }
+        os << std::string(depth + 2, ' ') << "Statements: " << '\n';
+        for (const auto& stmt : statements) {
+            stmt->print(os, depth + 4);
+        }
+    }
+};
+
+class ConcatNode : public astNode {
+public:
+    std::unique_ptr<astNode> left;
+    std::unique_ptr<astNode> right;
+
+    ConcatNode(std::unique_ptr<astNode> l, std::unique_ptr<astNode> r)
+            : left(std::move(l)), right(std::move(r)) {}
+
+    std::string toJSON() const override {
+        std::ostringstream oss;
+        oss << "{ \"type\": \"ConcatNode\", \"left\": " << left->toJSON() << ", \"right\": " << right->toJSON() << " }";
+        return oss.str();
+    }
+
+    void print(std::ostream& os, int depth = 0) const override {
+        os << std::string(depth, ' ') << "Concat:\n";
+        left->print(os, depth + 2);
+        right->print(os, depth + 2);
+    }
+};
+
+class AlternativeNode : public astNode {
+public:
+    std::unique_ptr<astNode> left;
+    std::unique_ptr<astNode> right;
+
+    AlternativeNode(std::unique_ptr<astNode> lhs, std::unique_ptr<astNode> rhs)
+            : left(std::move(lhs)), right(std::move(rhs)) {}
+
+    std::string toJSON() const override {
+        std::ostringstream json;
+        json << "{";
+        json << "\"type\": \"AlternativeNode\",";
+        json << "\"left\": " << left->toJSON() << ",";
+        json << "\"right\": " << right->toJSON();
+        json << "}";
+        return json.str();
+    }
+
+    void print(std::ostream& os, int depth = 0) const override {
+        os << std::string(depth * 2, ' ') << "AlternativeNode:\n";
+        os << std::string((depth + 1) * 2, ' ') << "Left:\n";
+        left->print(os, depth + 2);
+        os << std::string((depth + 1) * 2, ' ') << "Right:\n";
+        right->print(os, depth + 2);
+    }
+};
+
+class CharacterNode : public astNode {
+public:
+    char value;
+
+    explicit CharacterNode(char val) : value(val) {}
+
+    std::string toJSON() const override {
+        std::ostringstream json;
+        json << "{";
+        json << "\"type\": \"CharacterNode\",";
+        json << "\"value\": \"" << value << "\"";
+        json << "}";
+        return json.str();
+    }
+
+    void print(std::ostream& os, int depth = 0) const override {
+        os << std::string(depth * 2, ' ') << "CharacterNode: " << value << "\n";
+    }
+};
+
+class assignementNode : public astNode {
+private:
+    std::unique_ptr<astNode> variable; // changed type to astNode for flexibility
+    std::unique_ptr<astNode> expression;
+
+public:
+    assignementNode(std::unique_ptr<astNode> var, std::unique_ptr<astNode> expr)
+            : variable(std::move(var)), expression(std::move(expr)) {}
+
+    // Getter methods for accessing the variable and expression.
+    const astNode& getVariable() const {
+        return *variable;
+    }
+
+    const astNode& getExpression() const {
+        return *expression;
+    }
+
+    void print(std::ostream& os, int depth = 0) const override {
+        for (int i = 0; i < depth; ++i) os << "--";
+        os << "Assignment:" << std::endl;
+
+        variable->print(os, depth + 1);  // Print the variable
+        expression->print(os, depth + 1);     // Print the expression
+    }
+
+    std::string toJSON() const override {
+        return "{ \"type\": \"Assignment\", \"left\": " + variable->toJSON() + ", \"right\": " + expression->toJSON() + " }";
+    }
+};
+
+class RuleNode : public astNode {
+public:
+    std::string ruleName;
+    std::unique_ptr<astNode> body;
+
+    RuleNode(const std::string& name, std::unique_ptr<astNode> ruleBody)
+            : ruleName(name), body(std::move(ruleBody)) {}
+
+    std::string toJSON() const override {
+        return "{\"type\":\"RuleNode\", \"name\":\"" + ruleName + "\", \"body\":" + body->toJSON() + "}";
+    }
+
+    void printIndent(std::ostream& os, int depth) const {
+        for (int i = 0; i < depth; ++i) {
+            os << "  "; // Each depth level adds two spaces. You can adjust this to your preference.
+        }
+    }
+    void print(std::ostream& os, int depth = 0) const override {
+        printIndent(os, depth);
+        os << "Rule: " << ruleName << std::endl;
+        body->print(os, depth + 1);
+    }
+
+
 };
 
 #endif //TINYLANGUAGEPARSER_ASTNODE_H

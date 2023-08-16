@@ -22,7 +22,27 @@ enum class TokenType {
     IF, ELSE, WHILE, RETURN,          // Keywords
     EOF_TOK,INCREMENT,                       // End of file/token stream
     LOGICAL_AND, LOGICAL_OR,
-    UNKNOWN
+    UNKNOWN,    MAIN,
+};
+
+enum class EBNFtokenType {
+    RULE_START,     // <
+    RULE_END,       // >
+    ASSIGNMENT,     // ::=
+    LITERAL_STRING, // "int", "main", "if", and so on...
+    OR_OP,          // |
+    L_BRACE,        // {
+    R_BRACE,        // }
+    L_SQUARE,       // [
+    R_SQUARE,       // ]
+    L_PAREN,        // (
+    R_PAREN,        // )
+    SEMICOLON,      // ;
+    COMMA,          // ,
+    IDENTIFIER,     // Matches [a-zA-Z_][a-zA-Z0-9_]*
+    NUMBER,         // Matches both int_value and float_value
+    CHAR_VALUE,     // Matches 'char'
+    EOF_TOK         // End of file/token stream for EBNF
 };
 
 std::string tokenTypeToString(TokenType type) {

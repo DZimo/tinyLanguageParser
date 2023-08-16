@@ -1,0 +1,41 @@
+<tiny_program> ::= <main_function> | <main_function> { <function> }
+
+<main_function> ::= "int" "main" "(" ")" "{" <declarations> <statements> "}"
+
+<function> ::= <type> <identifier> "(" <parameter_list> ")" "{" <declarations> <statements> "}"
+
+<type> ::= "int" | "float" | "char" | "bool"
+
+<declarations> ::= { <declaration> }
+<declaration> ::= <type> <identifier> "=" <expression> ";"
+
+<parameter_list> ::= [ <type> <identifier> { "," <type> <identifier> } ]
+
+<statements> ::= { <statement> }
+
+<statement> ::= <assignment> | <if_statement> | <while_loop>
+
+<assignment> ::= <identifier> "=" <expression> ";"
+
+<if_statement> ::= "if" "(" <condition> ")" "{" <statements> "}" ["else" "{" <statements> "}"]
+
+<while_loop> ::= "while" "(" <condition> ")" "{" <statements> "}"
+
+<condition> ::= <expression> <logical_op> <expression>
+<logical_op> ::= "&&" | "||" | "!" | "==" | "!=" | "<" | ">" | "<=" | ">="
+
+<expression> ::= <term> { <add_op> <term> }
+<term> ::= <factor> { <mul_op> <factor> }
+<factor> ::= <identifier> | <number> | <char_value> | "(" <expression> ")"
+
+<add_op> ::= "+" | "-"
+<mul_op> ::= "*" | "/" | "%"
+
+<identifier> ::= [a-zA-Z_][a-zA-Z0-9_]*
+<number> ::= <int_value> | <float_value>
+<int_value> ::= [0-9]{1,5}  (* Up to 5 digits to roughly stay within 16 bits *)
+<float_value> ::= [0-9]{1,10} "." [0-9]{1,10}  (* Up to 10 digits before and after the dot to roughly stay within 32 bits *)
+<char_value> ::= "'" <char> "'"
+<char> ::= [a-zA-Z0-9]  (* This represents an 8-bit character *)
+
+<array> ::= <identifier> "[" <expression> "]
