@@ -10,7 +10,12 @@ multiple variables, if, else, while, and others.. which can be found in astNode 
 JSON format convertor is based simply on those node and each node has it's own toJSON function that does the work
 From JSON to image i have used a library that takes the JSON then converts it simply to PNG format which can make it very useful and informative
 
-
+# TESTS
+I wanted to handle tests differently without including any library or framework for testing only for the sack of portability and ease of use
+i made 2 classes one for valid and the other for invalid syntax as described in project, each class contains multiple functions that
+have different scripts with one main function that call those tests, in a simple way i test with this script if the parseAST throws an error
+or no, if yes then print what it expected to do, example : if a give an invalid script in the function then when it catch then the test passed
+because it was expected to catch, i also print the exception.
 
 # tinyLanguageParser
 A parser for a fictional language called Tiny that is similar to C
@@ -25,4 +30,10 @@ Overflow Analysis:
 If an addition or subtraction exceds the max int or min int, also same for buffers then we output overflow error with the details of the line and variables.
 Output:
 if all analysis pass then we output valid program.
-# 
+
+# VERSIONS
+C++ 17
+CMAKE 3.25
+G++ 13.2
+
+# MOHAMED-NAZIM BELABED 110858
