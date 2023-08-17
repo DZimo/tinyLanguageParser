@@ -60,6 +60,40 @@ public:
             : dataType(dataType), name(name) {}
 };
 
+class CompoundNode : public astNode {
+public:
+    std::vector<std::unique_ptr<astNode>> nodes;
+
+protected:
+    std::string getType() const override {
+        return "Compound";
+    }
+
+    void appendToJSON(std::ostringstream& os) const override {
+        os << "\"type\": \"" << getType() << "\", ";
+        os << "\"nodes\": [";
+        for (size_t i = 0; i < nodes.size(); ++i) {
+            os << nodes[i]->toJSON();
+            if (i != nodes.size() - 1) {
+                os << ", ";
+            }
+        }
+        os << "]";
+    }
+
+    std::string getDescription() const override {
+        std::string description = "Compound Node with children: ";
+        for (const auto& node : nodes) {
+           // description += "\n-> " + node->getDescription();
+        }
+        return description;
+    }
+
+public:
+    CompoundNode(std::vector<std::unique_ptr<astNode>> nodes)
+            : nodes(std::move(nodes)) {}
+};
+
 class IdentifierNode : public astNode {
 public:
     std::string value;

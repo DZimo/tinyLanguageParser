@@ -1,0 +1,14 @@
+//
+// Created by Admin on 8/17/2023.
+//
+
+#ifndef TINYLANGUAGEPARSER_VALIDTESTS_H
+#define TINYLANGUAGEPARSER_VALIDTESTS_H
+
+
+class validTests {
+
+};
+
+
+#endif //TINYLANGUAGEPARSER_VALIDTESTS_H

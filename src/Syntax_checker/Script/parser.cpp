@@ -227,28 +227,51 @@ public:
                         throw std::runtime_error("Expected a BlockNode for the function body.");
                     }
                 }
-                else if (current_token_inst.type == TokenType::ASSIGNMENT) {
-                    // Handle variable assignment
+                else if(current_token_inst.type != TokenType::L_PAREN)
+                {
+                    std::vector<std::unique_ptr<astNode>> variableNodes;
+                    bool continueDeclaration = true;
+                    while (continueDeclaration) {
+                        if (current_token_inst.type == TokenType::ASSIGNMENT) {
+                            // Handle variable assignment
+                            eat(TokenType::ASSIGNMENT);
+                            auto rightExpr = expr();
+                            variableNodes.push_back(std::make_unique<AssignmentNode>(std::make_unique<IdentifierNode>(varOrFuncName), std::move(rightExpr)));
+                        }
+                        else {
+                            // It's just a variable declaration without an assignment
+                            variableNodes.push_back(std::make_unique<DeclarationNode>(lastDataType, varOrFuncName));
+                        }
 
-                    eat(TokenType::ASSIGNMENT);
-                    auto rightExpr = expr();
-                    return std::make_unique<AssignmentNode>(std::make_unique<IdentifierNode>(varOrFuncName), std::move(rightExpr));
-                }
-                else if (current_token_inst.type == TokenType::SEMICOLON) {
-                    // It's a simple variable declaration
-                    eat(TokenType::SEMICOLON);
-                    // Assuming you have a variable `lastDataType` that stores the last parsed data type.
-                    // It can be set in the declaration() function after you consume a type.
-                    return std::make_unique<DeclarationNode>(lastDataType, varOrFuncName);
-                }
-                else if (current_token_inst.type == TokenType::COMMA) {
+                        if (current_token_inst.type == TokenType::COMMA) {
+                            // Handle another variable declaration or assignment after comma
+                            eat(TokenType::COMMA);
+                            if (current_token_inst.type != TokenType::IDENTIFIER) {
+                                throw std::runtime_error("Expected another variable name after comma");
+                            }
+                            varOrFuncName = current_token_inst.value;
+                            eat(TokenType::IDENTIFIER);
+                        }
+                        else if (current_token_inst.type == TokenType::SEMICOLON) {
+                            // End of the declaration or assignment statement
+                            eat(TokenType::SEMICOLON);
+                            continueDeclaration = false;
+                        }
+                        else {
+                            throw std::runtime_error("Expected comma, assignment, or semicolon");
+                        }
+                    }
 
+                    // If you only have a single node, return it directly, otherwise return a compound node
+                    if (variableNodes.size() == 1) {
+                        return std::move(variableNodes[0]);
+                    }
+                    return std::make_unique<CompoundNode>(std::move(variableNodes));
                 }
                 else {
                     throw std::runtime_error("Unexpected token after IDENTIFIER");
                 }
             }
-
             case TokenType::IF:
                 return ifStatement();
 
@@ -271,6 +294,7 @@ public:
 
             default:
                 throw std::runtime_error("This token is not defined in Grammar");
+
         }
     }
 

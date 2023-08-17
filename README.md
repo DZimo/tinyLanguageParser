@@ -1,3 +1,17 @@
+# HOW TO RUN ?
+Simply put your desired script in "src/script.txt" then compile the code g++ -o src/main after that execute it ./main 
+you will get either in run prompt or log.txt: if it is a valid or invalid program then the constructed AST in both JSON format and Image
+
+# HOW IT WORKS ?
+I wrote a Lexer and Parser from scratch depending on the provided EBNF grammar for this Tiny Programming Language
+for the Lexer class...
+For the AST i defined multiple Nodes which may be updated for more precise construction of AST, declaration of function, single,
+multiple variables, if, else, while, and others.. which can be found in astNode class
+JSON format convertor is based simply on those node and each node has it's own toJSON function that does the work
+From JSON to image i have used a library that takes the JSON then converts it simply to PNG format which can make it very useful and informative
+
+
+
 # tinyLanguageParser
 A parser for a fictional language called Tiny that is similar to C
 Lexical Analysis:
@@ -11,3 +25,4 @@ Overflow Analysis:
 If an addition or subtraction exceds the max int or min int, also same for buffers then we output overflow error with the details of the line and variables.
 Output:
 if all analysis pass then we output valid program.
+# 
