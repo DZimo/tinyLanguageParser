@@ -14,6 +14,7 @@ class parser {
 private:
     lexer lexer_inst;
     std::unique_ptr<astNode> sequence();
+    std::string lastDataType;
 protected:
     tokenizer current_token_inst;
 public:
@@ -25,20 +26,32 @@ public:
         if (current_token_inst.type == token_type) {
             current_token_inst = lexer_inst.getNextToken();
         } else {
-            throw std::runtime_error("Token type mismatch!");
+            throw std::runtime_error("Expected " + tokenTypeToString(token_type));
         }
     }
 
     std::unique_ptr<astNode> expr() {
+        auto node = additiveExpr();
+
+        while (current_token_inst.type == TokenType::LESS_THAN || current_token_inst.type == TokenType::LESS_EQUAL ||
+               current_token_inst.type == TokenType::GREATER_THAN || current_token_inst.type == TokenType::GREATER_EQUAL ||
+               current_token_inst.type == TokenType::EQUAL || current_token_inst.type == TokenType::NOT_EQUAL) {
+
+            auto token = current_token_inst;
+            eat(token.type);  // Consume the operator
+
+            node = std::make_unique<BinaryOpNode>(std::move(node), token.type, additiveExpr());
+        }
+
+        return node;
+    }
+
+    std::unique_ptr<astNode> additiveExpr() {
         auto node = term();
 
         while (current_token_inst.type == TokenType::ADD_OP || current_token_inst.type == TokenType::SUB_OP) {
             auto token = current_token_inst;
-            if (token.type == TokenType::ADD_OP) {
-                eat(TokenType::ADD_OP);
-            } else if (token.type == TokenType::SUB_OP) {
-                eat(TokenType::SUB_OP);
-            }
+            eat(token.type);
 
             node = std::make_unique<BinaryOpNode>(std::move(node), token.type, term());
         }
@@ -97,9 +110,8 @@ public:
         // Keep parsing until we hit the end of file token.
         while (current_token_inst.type != TokenType::EOF_TOK) {
             auto node = statement();
-
             // Only push back non-null nodes.
-            if (node != nullptr) {
+            if (node) {
                 nodes.push_back(std::move(node));
             }
 
@@ -119,12 +131,29 @@ public:
 
     std::unique_ptr<astNode> declaration() {
         auto type = current_token_inst.type;
+        lastDataType = tokenTypeToString(current_token_inst.type); // Store the data type
+
         eat(current_token_inst.type);  // Eat the type token.
 
         auto varName = current_token_inst.value;
-        eat(TokenType::IDENTIFIER);
+        if(current_token_inst.type != TokenType::IDENTIFIER)
+        {
+            throw std::runtime_error("Expected identifier after type");
+        }
+        return statement();
+        /*
+        if (current_token_inst.type == TokenType::L_PAREN) {
+            // Go back a step and re-parse the type and function name in the function() method.
+            // This is a simple way to handle this, but there may be more efficient approaches.
+            //current_token_inst.type = type;
+            //current_token_inst.value = varName;
 
-        if (current_token_inst.type == TokenType::ASSIGNMENT) {
+            // Handle function declaration/definition.
+            //return function();
+            return std::make_unique<DeclarationNode>(tokenTypeToString(type), varName);
+
+        }
+        else if (current_token_inst.type == TokenType::ASSIGNMENT) {
             eat(TokenType::ASSIGNMENT);
             auto initializer = expr();
             eat(TokenType::SEMICOLON);
@@ -132,11 +161,11 @@ public:
             // Assuming the assignment node can represent an initialization.
             return std::make_unique<AssignmentNode>(std::make_unique<IdentifierNode>(varName), std::move(initializer));
         }
-
-        eat(TokenType::SEMICOLON);
-
-        // Here, we use your original DeclarationNode for simple declarations without initialization.
-        return std::make_unique<DeclarationNode>(tokenTypeToString(type), varName);
+        else {
+            eat(TokenType::SEMICOLON);
+            // Use your original DeclarationNode for simple declarations without initialization.
+            return std::make_unique<DeclarationNode>(tokenTypeToString(type), varName);
+        }*/
     }
 
     std::unique_ptr<astNode> statement() {
@@ -200,9 +229,20 @@ public:
                 }
                 else if (current_token_inst.type == TokenType::ASSIGNMENT) {
                     // Handle variable assignment
+
                     eat(TokenType::ASSIGNMENT);
                     auto rightExpr = expr();
                     return std::make_unique<AssignmentNode>(std::make_unique<IdentifierNode>(varOrFuncName), std::move(rightExpr));
+                }
+                else if (current_token_inst.type == TokenType::SEMICOLON) {
+                    // It's a simple variable declaration
+                    eat(TokenType::SEMICOLON);
+                    // Assuming you have a variable `lastDataType` that stores the last parsed data type.
+                    // It can be set in the declaration() function after you consume a type.
+                    return std::make_unique<DeclarationNode>(lastDataType, varOrFuncName);
+                }
+                else if (current_token_inst.type == TokenType::COMMA) {
+
                 }
                 else {
                     throw std::runtime_error("Unexpected token after IDENTIFIER");
@@ -211,6 +251,9 @@ public:
 
             case TokenType::IF:
                 return ifStatement();
+
+            case TokenType::ELSE:
+                return elseStatement();
 
             case TokenType::WHILE:
                 return whileStatement();
@@ -224,13 +267,10 @@ public:
             case TokenType::SEMICOLON:
                 // Empty statement.
                 eat(TokenType::SEMICOLON);
-                return nullptr;
-
-            case TokenType::EOF_TOK:
-                return nullptr;
+                return {};
 
             default:
-                throw std::runtime_error("Unexpected token type");
+                throw std::runtime_error("This token is not defined in Grammar");
         }
     }
 
@@ -239,7 +279,10 @@ public:
         std::vector<std::unique_ptr<astNode>> statements;
 
         while (current_token_inst.type != TokenType::R_BRACE && current_token_inst.type != TokenType::EOF_TOK) {
-            statements.push_back(statement());
+            auto stmt = statement();
+            if (stmt) {  // Check if stmt is non-null
+                statements.push_back(std::move(stmt));
+            }
         }
 
         eat(TokenType::R_BRACE);
@@ -269,16 +312,18 @@ public:
         eat(TokenType::L_PAREN);
         auto condition = expr();
         eat(TokenType::R_PAREN);
-
         auto trueBranch = statement();
-
-        std::unique_ptr<astNode> falseBranch = nullptr;
-        if (current_token_inst.type == TokenType::ELSE) {
-            eat(TokenType::ELSE);
-            falseBranch = statement();
+        if (current_token_inst.type != TokenType::ELSE) {
+            throw std::runtime_error("Expected else branch !");
         }
-
+        eat(TokenType::ELSE);
+        std::unique_ptr<astNode> falseBranch = statement();
         return std::make_unique<IfNode>(std::move(condition), std::move(trueBranch), std::move(falseBranch));
+    }
+
+    std::unique_ptr<astNode> elseStatement() {
+        eat(TokenType::ELSE);
+        return statement();
     }
 
     std::unique_ptr<astNode> whileStatement() {
@@ -286,7 +331,6 @@ public:
         eat(TokenType::L_PAREN);
         auto condition = expr();
         eat(TokenType::R_PAREN);
-
         auto loopBody = statement();
 
         return std::make_unique<WhileNode>(std::move(condition), std::move(loopBody));
@@ -431,9 +475,11 @@ public:
     std::string serializeAST(const std::vector<std::unique_ptr<astNode>>& astNodes) {
         std::string result = "[";
         for (size_t i = 0; i < astNodes.size(); ++i) {
-            result += astNodes[i]->toJSON();
-            if (i != astNodes.size() - 1) {
-                result += ", ";
+            if (astNodes[i]) {  // Check if node is not nullptr
+                result += astNodes[i]->toJSON();
+                if (i != astNodes.size() - 1) {
+                    result += ", ";
+                }
             }
         }
         result += "]";

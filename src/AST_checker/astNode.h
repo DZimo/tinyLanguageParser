@@ -17,11 +17,14 @@ public:
     virtual ~astNode() = default;
 
     std::string toJSON() const {
-        std::ostringstream json;
-        json << "{ \"type\": \"" << getType() << "\", ";
-        appendToJSON(json);
-        json << " }";
-        return json.str();
+            if(this != NULL)
+            {
+                std::ostringstream json;
+                json << "{ \"type\": \"" << getType() << "\", ";
+                appendToJSON(json);
+                json << " }";
+                return json.str();
+            }
     }
 
     void print(std::ostream& os, int depth = 0) const {

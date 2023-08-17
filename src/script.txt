@@ -1,14 +1,14 @@
-main ( int b, int c ) {
-int a;
-int b;
-float d;
-bool s;
+int main () {
+bool x;
+float z;
+ z = 0;
+ y = 0;
+x = true;
+if(x) {
+y = y + z;
 }
-f ( bool h ) {
-int c;
+else{
+y = y - z;
 }
-c( char s )
-{
 
 }
-a = c + d;

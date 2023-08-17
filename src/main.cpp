@@ -86,7 +86,7 @@ int main() {
     providedOut.close();
 
     // Quick debug: print the first few characters of both JSON strings
-    std::cout << "Provided parser output (first 100 chars): " << providedParserJson.substr(0, 100) << "\n";
+    std::cout << "Provided parser output (first 100 chars): " << providedParserJson;
     std::cout << "Generated parser output (first 100 chars): " << generatedParserJson.substr(0, 100) << "\n";
 
     // Compare the two JSON outputs
