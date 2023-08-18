@@ -1,10 +1,13 @@
-int main () {
-int i;
- char c;
-i = 20;
-while (i > 0)
-{
-c = a;
+int sum(int a, int b) {
+int c;
+a = 10;
+b = 20;
+c = a + b;
+return c;
 }
- return 0;
+int main () {
+int a, b, c;
+a = 10;
+b = 20;
+return 0;
 }

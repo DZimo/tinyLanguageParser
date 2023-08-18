@@ -10,6 +10,11 @@ multiple variables, if, else, while, and others.. which can be found in astNode 
 JSON format convertor is based simply on those node and each node has it's own toJSON function that does the work
 From JSON to image i have used a library that takes the JSON then converts it simply to PNG format which can make it very useful and informative
 
+# CHAR 
+I assumed that characters works with '' instead of this ‘’ , example : 
+c = ‘a’; ---> Invalid
+c = 'a'; ---> Valid
+
 # TESTS
 I wanted to handle tests differently without including any library or framework for testing only for the sack of portability and ease of use
 i made 2 classes one for valid and the other for invalid syntax as described in project, each class contains multiple functions that

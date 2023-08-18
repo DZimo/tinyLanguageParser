@@ -79,7 +79,11 @@ private:
         return tokenizer(TokenType::NUMBER, value, line_number, char_position);  // Can differentiate between INT_NUMBER and FLOAT_NUMBER if needed
     }
     tokenizer getChar() {
-        advance();  // Consume the opening quote
+        advance();
+        if (current_char == EOF) {
+            throw std::runtime_error("Invalid Program: Unexpected end of file");
+        }
+
         char value = current_char;
         advance();
 
@@ -87,8 +91,7 @@ private:
             advance();
             return tokenizer(TokenType::CHAR_VALUE, std::string(1, value), line_number, char_position);
         } else {
-            // Handle character constant error or multiple characters between quotes
-            return tokenizer(TokenType::EOF_TOK, "Invalid char constant", line_number, char_position);
+            throw std::runtime_error("Invalid Program: Invalid char constant");
         }
     }
 
@@ -219,6 +222,9 @@ public:
                         advance();
                         return tokenizer(TokenType::COMMA, ",", line_number, char_position);
 
+                    case '\'':
+                        return getChar();
+
                     case ';':
                         advance();
                         pendingType = TokenType::UNKNOWN;  // Clear the pending type upon encountering a semicolon
@@ -234,6 +240,30 @@ public:
         return tokenizer(TokenType::EOF_TOK, "", line_number, char_position);  // Return an EOF token if we've reached the end of the source
     }
 
+    tokenizer peekNextToken() {
+        int save_pos = pos;
+        int save_line_number = line_number;
+        int save_char_position = char_position;
+
+        tokenizer nextToken = getNextToken();
+
+        // Restore the lexer state
+        pos = save_pos;
+        line_number = save_line_number;
+        char_position = save_char_position;
+
+        return nextToken;
+    }
+
+    void retreat() {
+        pos--;
+        if (pos < 0) {
+            current_char = EOF;  // Indicates start of source
+        } else {
+            current_char = source[pos];
+            char_position--;
+        }
+    }
     const symbolTable getSymbolTable() const {
         return symbolTableInstant;
     }

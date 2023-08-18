@@ -83,7 +83,11 @@ public:
         if (token.type == TokenType::NUMBER) {
             eat(TokenType::NUMBER);
             return std::make_unique<NumberNode>(token.value);
-        } else if (token.type == TokenType::IDENTIFIER) {
+        } else if (token.type == TokenType::CHAR_VALUE) {
+            eat(TokenType::CHAR_VALUE);
+            return std::make_unique<CharacterNode>(token.value[0]);
+        }
+        else if (token.type == TokenType::IDENTIFIER) {
             auto node = std::make_unique<VariableNode>(token.value);
             eat(TokenType::IDENTIFIER);
 
@@ -139,6 +143,10 @@ public:
         {
             throw std::runtime_error("Invalid Program : Expected identifier after type");
         }
+        if (lexer_inst.getNextToken().type == TokenType::ASSIGNMENT) {
+            throw std::runtime_error("Invalid Program : Direct assignment during declaration is not allowed");
+        }
+        lexer_inst.retreat();
         return statement();
         /*
         if (current_token_inst.type == TokenType::L_PAREN) {
