@@ -18,7 +18,7 @@ private:
         if (current_token_instance.type == token_type) {
             current_token_instance = lexer_instance.getNextToken();
         } else {
-            throw std::runtime_error("Token type mismatch!");
+            throw std::runtime_error("Invalid Program : Token type mismatch!");
         }
     }
 public:
@@ -26,7 +26,7 @@ public:
 
     std::string identifier() {
         if(current_token_instance.type != EBNFtokenType::IDENTIFIER) {
-            throw std::runtime_error("Expected identifier");
+            throw std::runtime_error("Invalid Program : Expected identifier");
         }
         std::string idValue = current_token_instance.value;
         eat(EBNFtokenType::IDENTIFIER);
@@ -71,12 +71,12 @@ public:
     std::unique_ptr<astNode> rule() {
         auto id = identifier(); // This should return a std::string.
         if(current_token_instance.type != EBNFtokenType::ASSIGNMENT) {
-            throw std::runtime_error("Expected '=' after identifier in rule definition");
+            throw std::runtime_error("Invalid Program : Expected '=' after identifier in rule definition");
         }
         eat(EBNFtokenType::ASSIGNMENT);
         auto expr = expression(); // This should return a std::unique_ptr<astNode>.
         if(current_token_instance.type != EBNFtokenType::SEMICOLON) {
-            throw std::runtime_error("Expected ';' at the end of rule definition");
+            throw std::runtime_error("Invalid Program : Expected ';' at the end of rule definition");
         }
         eat(EBNFtokenType::SEMICOLON);
         return std::make_unique<RuleNode>(id, std::move(expr));

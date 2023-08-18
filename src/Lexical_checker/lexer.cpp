@@ -52,6 +52,8 @@ private:
         else if (value == "if") type = TokenType::IF;
         else if (value == "else") type = TokenType::ELSE;
         else if (value == "while") type = TokenType::WHILE;
+        else if (value == "return") type = TokenType::RETURN;
+
         else type = TokenType::IDENTIFIER;
         if (type != TokenType::IDENTIFIER) {
             pendingType = type;

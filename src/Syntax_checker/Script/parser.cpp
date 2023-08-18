@@ -26,7 +26,7 @@ public:
         if (current_token_inst.type == token_type) {
             current_token_inst = lexer_inst.getNextToken();
         } else {
-            throw std::runtime_error("Expected " + tokenTypeToString(token_type));
+            throw std::runtime_error("Invalid Program : Expected " + tokenTypeToString(token_type));
         }
     }
 
@@ -100,7 +100,7 @@ public:
             eat(TokenType::R_PAREN);
             return node;
         } else {
-            throw std::runtime_error("Invalid token in factor!");
+            throw std::runtime_error("Invalid Program : Invalid token in factor!");
         }
     }
 
@@ -117,7 +117,7 @@ public:
 
             // Now expect a semicolon or end of file after a non-null statement.
             if (node != nullptr && current_token_inst.type != TokenType::SEMICOLON && current_token_inst.type != TokenType::EOF_TOK) {
-                throw std::runtime_error("Expected end of statement!");
+                throw std::runtime_error("Invalid Program : Expected end of statement!");
             }
 
             // If it was a semicolon, move to the next token.
@@ -125,7 +125,6 @@ public:
                 eat(TokenType::SEMICOLON);
             }
         }
-
         return nodes;
     }
 
@@ -138,7 +137,7 @@ public:
         auto varName = current_token_inst.value;
         if(current_token_inst.type != TokenType::IDENTIFIER)
         {
-            throw std::runtime_error("Expected identifier after type");
+            throw std::runtime_error("Invalid Program : Expected identifier after type");
         }
         return statement();
         /*
@@ -192,7 +191,7 @@ public:
 
                             // Expecting an identifier for the parameter name
                             if (current_token_inst.type != TokenType::IDENTIFIER) {
-                                throw std::runtime_error("Expected parameter name");
+                                throw std::runtime_error("Invalid Program : Expected parameter name");
                             }
                             std::string paramName = current_token_inst.value;
                             eat(TokenType::IDENTIFIER);
@@ -208,14 +207,14 @@ public:
                                 break;
                             } else {
                                 // Anything other than a comma or right parenthesis is an error
-                                throw std::runtime_error("Expected , or ) after parameter declaration");
+                                throw std::runtime_error("Invalid Program : Expected , or ) after parameter declaration");
                             }
                         } while (current_token_inst.type != TokenType::R_PAREN);
                     }
                     eat(TokenType::R_PAREN);
 
                     if (current_token_inst.type != TokenType::L_BRACE) {
-                        throw std::runtime_error("Expected { after function definition");
+                        throw std::runtime_error("Invalid Program : Expected { after function definition");
                     }
 
                     auto funcBody = blockStatement();
@@ -224,7 +223,7 @@ public:
                                                                          std::move(parameters),
                                                                          std::move(blockNode->statements));
                     } else {
-                        throw std::runtime_error("Expected a BlockNode for the function body.");
+                        throw std::runtime_error("Invalid Program : Expected a BlockNode for the function body.");
                     }
                 }
                 else if(current_token_inst.type != TokenType::L_PAREN)
@@ -247,7 +246,7 @@ public:
                             // Handle another variable declaration or assignment after comma
                             eat(TokenType::COMMA);
                             if (current_token_inst.type != TokenType::IDENTIFIER) {
-                                throw std::runtime_error("Expected another variable name after comma");
+                                throw std::runtime_error("Invalid Program : Expected another variable name after comma");
                             }
                             varOrFuncName = current_token_inst.value;
                             eat(TokenType::IDENTIFIER);
@@ -258,7 +257,7 @@ public:
                             continueDeclaration = false;
                         }
                         else {
-                            throw std::runtime_error("Expected comma, assignment, or semicolon");
+                            throw std::runtime_error("Invalid Program : Expected comma, assignment, or semicolon");
                         }
                     }
 
@@ -269,7 +268,7 @@ public:
                     return std::make_unique<CompoundNode>(std::move(variableNodes));
                 }
                 else {
-                    throw std::runtime_error("Unexpected token after IDENTIFIER");
+                    throw std::runtime_error("Invalid Program : Unexpected token after IDENTIFIER");
                 }
             }
             case TokenType::IF:
@@ -293,7 +292,7 @@ public:
                 return {};
 
             default:
-                throw std::runtime_error("This token is not defined in Grammar");
+                throw std::runtime_error("Invalid Program : This token is not defined in Grammar");
 
         }
     }
@@ -316,18 +315,11 @@ public:
 
     std::unique_ptr<astNode> returnStatement() {
         eat(TokenType::RETURN);
-
-        // Parse the expression after the 'return' keyword
         auto returnValue = expr();
-
         if (current_token_inst.type != TokenType::SEMICOLON) {
-            throw std::runtime_error("Expected ; after return statement");
+            throw std::runtime_error("Invalid Program : Expected ; after return statement");
         }
         eat(TokenType::SEMICOLON);
-
-        // Assuming you have a ReturnNode defined in your AST like this:
-        // class ReturnNode : public astNode { ... }
-        // The ReturnNode constructor might take the returned expression as an argument.
         return std::make_unique<ReturnNode>(std::move(returnValue));
     }
 
@@ -338,7 +330,7 @@ public:
         eat(TokenType::R_PAREN);
         auto trueBranch = statement();
         if (current_token_inst.type != TokenType::ELSE) {
-            throw std::runtime_error("Expected else branch !");
+            throw std::runtime_error("Invalid Program : Expected else branch !");
         }
         eat(TokenType::ELSE);
         std::unique_ptr<astNode> falseBranch = statement();
@@ -428,7 +420,7 @@ public:
                 eat(TokenType::COMMA);
             } else if (current_token_inst.type != TokenType::R_PAREN) {
                 // If it's not a comma and not a closing parenthesis, it's an error
-                throw std::runtime_error("Expected , or ) in parameter list");
+                throw std::runtime_error("Invalid Program : Expected , or ) in parameter list");
             }
         }
         eat(TokenType::R_PAREN);
@@ -492,7 +484,7 @@ public:
                 eat(TokenType::BOOL);
                 return "bool";
             default:
-                throw std::runtime_error("Invalid type!");
+                throw std::runtime_error("Invalid Program : Invalid type!");
         }
     }
 

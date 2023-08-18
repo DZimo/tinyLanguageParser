@@ -33,7 +33,7 @@ public:
         if (exists(name)) {
             return table[name];
         }
-        throw std::runtime_error("Symbol not found in the table!");
+        throw std::runtime_error("Invalid Program : Symbol not found in the table!");
     }
 
     void print() const {
