@@ -45,7 +45,7 @@ int main() {
         auto astNodes = parse.parseAST();
         generatedParserJson = parse.serializeAST(astNodes);
     } catch(const std::runtime_error& e) {
-        std::cerr << "Error with provided parser: " << e.what() << std::endl;
+        std::cerr << "Parsing failed - " << e.what() << std::endl;
     }
     std::string ebnfContent = readFile("EBNF_grammar_Tiny.txt");
     std::string providedParserJson;

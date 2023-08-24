@@ -88,16 +88,14 @@ public:
             return std::make_unique<CharacterNode>(token.value[0]);
         }
         else if (token.type == TokenType::IDENTIFIER) {
-            auto node = std::make_unique<VariableNode>(token.value);
+            auto potentialVarName = token.value;
             eat(TokenType::IDENTIFIER);
 
-            // If an assignment operation follows an identifier, handle assignment
-            if (current_token_inst.type == TokenType::ASSIGNMENT) {
-                eat(TokenType::ASSIGNMENT);
-                return std::make_unique<AssignmentNode>(std::move(node), expr());
+            if (current_token_inst.type == TokenType::L_PAREN) {
+                return functionCall(potentialVarName);
+            } else {
+                return std::make_unique<VariableNode>(potentialVarName);
             }
-
-            return node;
         } else if (token.type == TokenType::L_PAREN) {
             eat(TokenType::L_PAREN);
             auto node = expr();
@@ -187,35 +185,43 @@ public:
                 auto varOrFuncName = current_token_inst.value;
                 eat(TokenType::IDENTIFIER);
                 if (current_token_inst.type == TokenType::L_PAREN) {
+                    // Here we check if it is a function call or declaration
                     eat(TokenType::L_PAREN);
-                    // Here, you would parse the parameters into 'parameters' vector.
                     std::vector<std::pair<std::string, std::string>> parameters;
                     if (current_token_inst.type != TokenType::R_PAREN) {
                         do{  // This loop will handle multiple parameters
                             // Expecting a type (like INT, CHAR, etc.)
-                            auto currentType = type();
-                            std::string paramType = currentType;
-                            //eat(current_token_inst.type);
+                            if (current_token_inst.type == TokenType::INT ||
+                                current_token_inst.type == TokenType::CHAR ||
+                                current_token_inst.type == TokenType::FLOAT ||
+                                current_token_inst.type == TokenType::BOOL) {
+                                auto currentType = type();
+                                std::string paramType = currentType;
+                                //eat(current_token_inst.type);
 
-                            // Expecting an identifier for the parameter name
-                            if (current_token_inst.type != TokenType::IDENTIFIER) {
-                                throw std::runtime_error("Invalid Program : Expected parameter name");
+                                // Expecting an identifier for the parameter name
+                                if (current_token_inst.type != TokenType::IDENTIFIER) {
+                                    throw std::runtime_error("Invalid Program : Expected parameter name");
+                                }
+                                std::string paramName = current_token_inst.value;
+                                eat(TokenType::IDENTIFIER);
+
+                                // Add to parameters list
+                                parameters.emplace_back(paramType, paramName);
+
+                                // If next token is a comma, then eat it and continue the loop for next parameter
+                                if (current_token_inst.type == TokenType::COMMA) {
+                                    eat(TokenType::COMMA);
+                                } else if (current_token_inst.type == TokenType::R_PAREN) {
+                                    // If it's a right parenthesis, then parameter list has ended
+                                    break;
+                                } else {
+                                    // Anything other than a comma or right parenthesis is an error
+                                    throw std::runtime_error("Invalid Program : Expected , or ) after parameter declaration");
+                                }
                             }
-                            std::string paramName = current_token_inst.value;
-                            eat(TokenType::IDENTIFIER);
-
-                            // Add to parameters list
-                            parameters.emplace_back(paramType, paramName);
-
-                            // If next token is a comma, then eat it and continue the loop for next parameter
-                            if (current_token_inst.type == TokenType::COMMA) {
-                                eat(TokenType::COMMA);
-                            } else if (current_token_inst.type == TokenType::R_PAREN) {
-                                // If it's a right parenthesis, then parameter list has ended
-                                break;
-                            } else {
-                                // Anything other than a comma or right parenthesis is an error
-                                throw std::runtime_error("Invalid Program : Expected , or ) after parameter declaration");
+                            else {
+                                return functionCall(varOrFuncName);
                             }
                         } while (current_token_inst.type != TokenType::R_PAREN);
                     }
@@ -240,9 +246,11 @@ public:
                     bool continueDeclaration = true;
                     while (continueDeclaration) {
                         if (current_token_inst.type == TokenType::ASSIGNMENT) {
-                            // Handle variable assignment
                             eat(TokenType::ASSIGNMENT);
+
+                            // Handle the right-hand side. It can be an expression, a function call, another variable, or a literal.
                             auto rightExpr = expr();
+
                             variableNodes.push_back(std::make_unique<AssignmentNode>(std::make_unique<IdentifierNode>(varOrFuncName), std::move(rightExpr)));
                         }
                         else {
@@ -251,7 +259,7 @@ public:
                         }
 
                         if (current_token_inst.type == TokenType::COMMA) {
-                            // Handle another variable declaration or assignment after comma
+                            // Either normal assignment or function assignment
                             eat(TokenType::COMMA);
                             if (current_token_inst.type != TokenType::IDENTIFIER) {
                                 throw std::runtime_error("Invalid Program : Expected another variable name after comma");
@@ -385,21 +393,20 @@ public:
         return std::make_unique<MainFunctionNode>(std::move(decls), std::move(stmts));
     }
 
-    std::unique_ptr<astNode> functionCall() {
-        auto funcName = current_token_inst.value;
-        eat(TokenType::IDENTIFIER);
+    std::unique_ptr<astNode> functionCall(const std::string& funcName) {
         eat(TokenType::L_PAREN);
-
-        std::vector<std::unique_ptr<astNode>> args;
+        std::vector<std::unique_ptr<astNode>> arguments;
         while (current_token_inst.type != TokenType::R_PAREN) {
-            args.push_back(expr());
+            arguments.push_back(expr());
             if (current_token_inst.type == TokenType::COMMA) {
                 eat(TokenType::COMMA);
+            } else if (current_token_inst.type != TokenType::R_PAREN) {
+                throw std::runtime_error("Invalid Program : Expected comma or right parenthesis in function call");
             }
         }
         eat(TokenType::R_PAREN);
 
-        return std::make_unique<FunctionCallNode>(funcName, std::move(args));
+        return std::make_unique<FunctionCallNode>(funcName, std::move(arguments));
     }
 
     std::unique_ptr<astNode> function() {
