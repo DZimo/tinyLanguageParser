@@ -5,8 +5,11 @@
 #include "symbolTable.h"
 #include "string.h"
 #include "../Lexical_checker/tokenizer.cpp"
+#include "../AST_checker/astNode.h"
 #include <iostream>
 #include <unordered_map>
+#include <stack>
+#include <vector>
 
 class symbol {
 public:
@@ -20,6 +23,8 @@ public:
 class symbolTable {
 private:
     std::unordered_map<std::string, symbol> table;
+    std::vector<std::unordered_map<std::string, astNode*>> scopes;
+
 public:
     void insert(const std::string& name, TokenType type) {
         table.insert(std::make_pair(name, symbol(name, type)));
@@ -42,5 +47,36 @@ public:
                       << ", Type: " << tokenTypeToString(entry.second.type)
                       << std::endl;
         }
+    }
+
+    void pushScope() {
+        scopes.emplace_back();
+    }
+
+    void popScope() {
+        if (!scopes.empty()) {
+            scopes.pop_back();
+        }
+    }
+
+    bool insertSymbol(const std::string &name, astNode* node) {
+        if (scopes.empty()) return false;
+        auto &currentScope = scopes.back();
+        // Avoid duplicate insertions in the same scope
+        if (currentScope.find(name) != currentScope.end()) {
+            return false;
+        }
+        currentScope[name] = node;
+        return true;
+    }
+
+    astNode* lookupSymbol(const std::string &name) {
+        // Traverse scopes from innermost to outermost
+        for (auto it = scopes.rbegin(); it != scopes.rend(); ++it) {
+            if (it->find(name) != it->end()) {
+                return (*it)[name];
+            }
+        }
+        return nullptr; // Symbol not found
     }
 };

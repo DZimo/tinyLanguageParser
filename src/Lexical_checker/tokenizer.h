@@ -18,6 +18,7 @@ enum class TokenType {
     ASSIGNMENT,                   // Assignment operator
     L_PAREN, R_PAREN,             // Parentheses
     L_BRACE, R_BRACE,             // Curly braces
+    L_BRACKET, R_BRACKET,         // Brackets
     COMMA, SEMICOLON,             // Punctuation
     IF, ELSE, WHILE, RETURN,          // Keywords
     EOF_TOK,INCREMENT,                       // End of file/token stream
@@ -79,6 +80,9 @@ std::string tokenTypeToString(TokenType type) {
         case TokenType::ELSE: return "ELSE";
         case TokenType::WHILE: return "WHILE";
         case TokenType::EOF_TOK: return "EOF_TOK";
+        case TokenType::R_BRACKET: return "R_BRACKET";
+        case TokenType::L_BRACKET: return "L_BRACKET";
+
         default: return "UNKNOWN";
     }
 }

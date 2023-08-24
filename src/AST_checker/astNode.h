@@ -60,6 +60,26 @@ public:
             : dataType(dataType), name(name) {}
 };
 
+class ArrayDeclarationNode : public astNode {
+private:
+    std::string dataType;
+    std::string name;
+    int size;
+
+protected:
+    std::string getType() const override { return "ArrayDeclaration"; }
+    void appendToJSON(std::ostringstream& os) const override {
+        os << "\"name\": \"" << name << "\", \"dataType\": \"" << dataType << "\", \"size\": " << size;
+    }
+    std::string getDescription() const override {
+        return "ArrayDeclaration: " + dataType + " " + name + "[" + std::to_string(size) + "]";
+    }
+
+public:
+    ArrayDeclarationNode(const std::string &dataType, const std::string &name, int size)
+            : dataType(dataType), name(name), size(size) {}
+};
+
 class CompoundNode : public astNode {
 public:
     std::vector<std::unique_ptr<astNode>> nodes;

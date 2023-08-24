@@ -15,6 +15,8 @@ private:
     lexer lexer_inst;
     std::unique_ptr<astNode> sequence();
     std::string lastDataType;
+    symbolTable symbolTable;
+
 protected:
     tokenizer current_token_inst;
 public:
@@ -91,6 +93,10 @@ public:
             auto potentialVarName = token.value;
             eat(TokenType::IDENTIFIER);
 
+            // Check if this variable exists in this scope
+            if(!symbolTable.lookupSymbol(potentialVarName)) {
+                throw std::runtime_error("Invalid Program : Use of undeclared variable " + potentialVarName);
+            }
             if (current_token_inst.type == TokenType::L_PAREN) {
                 return functionCall(potentialVarName);
             } else {
@@ -244,18 +250,46 @@ public:
                 {
                     std::vector<std::unique_ptr<astNode>> variableNodes;
                     bool continueDeclaration = true;
+                    symbolTable.pushScope();
                     while (continueDeclaration) {
+                        // Check if it's an array declaration
+                        int arraySize = -1;  // Default, meaning not an array
+                        if(current_token_inst.type == TokenType::L_BRACKET) {
+                            eat(TokenType::L_BRACKET);
+
+                            if(current_token_inst.type != TokenType::NUMBER) {
+                                throw std::runtime_error("Invalid Program : Array size should be a number");
+                            }
+                            arraySize = std::stoi(current_token_inst.value);
+                            eat(TokenType::NUMBER);
+
+                            if(current_token_inst.type != TokenType::R_BRACKET) {
+                                throw std::runtime_error("Invalid Program : Expected closing bracket");
+                            }
+                            eat(TokenType::R_BRACKET);
+                        }
                         if (current_token_inst.type == TokenType::ASSIGNMENT) {
                             eat(TokenType::ASSIGNMENT);
 
                             // Handle the right-hand side. It can be an expression, a function call, another variable, or a literal.
                             auto rightExpr = expr();
 
+                            if(arraySize != -1) {
+                                throw std::runtime_error("Invalid Program : Array initialization this way is not supported");
+                            }
+
                             variableNodes.push_back(std::make_unique<AssignmentNode>(std::make_unique<IdentifierNode>(varOrFuncName), std::move(rightExpr)));
                         }
                         else {
                             // It's just a variable declaration without an assignment
-                            variableNodes.push_back(std::make_unique<DeclarationNode>(lastDataType, varOrFuncName));
+                            if(arraySize != -1) {
+                                variableNodes.push_back(std::make_unique<ArrayDeclarationNode>(lastDataType, varOrFuncName, arraySize));
+                                symbolTable.insertSymbol(varOrFuncName, variableNodes.back().get());  // Assuming ArrayDeclarationNode derives from astNode
+
+                            } else {
+                                variableNodes.push_back(std::make_unique<DeclarationNode>(lastDataType, varOrFuncName));
+                                symbolTable.insertSymbol(varOrFuncName, variableNodes.back().get());
+                            }
                         }
 
                         if (current_token_inst.type == TokenType::COMMA) {
@@ -277,6 +311,9 @@ public:
                         }
                     }
 
+                    if (current_token_inst.type == TokenType::R_BRACE) { // Assuming R_CURLY represents the end of a block
+                        symbolTable.popScope();
+                    }
                     // If you only have a single node, return it directly, otherwise return a compound node
                     if (variableNodes.size() == 1) {
                         return std::move(variableNodes[0]);

@@ -218,6 +218,14 @@ public:
                         advance();
                         return tokenizer(TokenType::R_BRACE, "}", line_number, char_position);
 
+                    case ']':
+                        advance();
+                        return tokenizer(TokenType::R_BRACKET, "}", line_number, char_position);
+
+                    case '[':
+                        advance();
+                        return tokenizer(TokenType::L_BRACKET, "}", line_number, char_position);
+
                     case ',':
                         advance();
                         return tokenizer(TokenType::COMMA, ",", line_number, char_position);
