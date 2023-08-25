@@ -2,6 +2,7 @@
 #include "main.h"
 #include "Syntax_checker/EBNF/EBNFparser.h"
 #include "Syntax_checker/Script/parser.cpp"
+#include "logger.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -38,6 +39,7 @@ std::string serializeWithGeneratedSerializer(const std::vector<std::unique_ptr<a
 int main() {
     //std::string script = "main ( int b, int c ) { int a; int b; float d; bool s;} f () { int c;} c() {}  a = c + d;";
     std::string script = readFile("src/script.txt");
+    logger::initialize();
     lexer lex(script);
     parser parse(lex);
     std::string generatedParserJson;
@@ -46,13 +48,15 @@ int main() {
         generatedParserJson = parse.serializeAST(astNodes);
     } catch(const std::runtime_error& e) {
         std::cerr << "Parsing failed - " << e.what() << std::endl;
+        logger::log(e.what());
+
     }
     std::string ebnfContent = readFile("EBNF_grammar_Tiny.txt");
     std::string providedParserJson;
     std::ofstream generatedOut("generatedAST.json");
     generatedOut << generatedParserJson;
     generatedOut.close();
-    std::cout << "Provided parser output (first 100 chars): " << generatedParserJson;
-
+    std::cout << "AST: " << generatedParserJson;
+    logger::close();
     return 0;
 }
