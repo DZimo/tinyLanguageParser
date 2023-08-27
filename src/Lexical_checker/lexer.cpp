@@ -52,6 +52,7 @@ private:
         else if (value == "else") type =  TokenType::ELSE;
         else if (value == "while") type =  TokenType::WHILE;
         else if (value == "return") type =  TokenType::RETURN;
+        else if (value == "true" || value == "false") type = TokenType::BOOL_VALUE; // Check for true or false
 
         else type =  TokenType::IDENTIFIER;
         if (type !=  TokenType::IDENTIFIER) {

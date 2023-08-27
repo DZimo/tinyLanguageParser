@@ -79,6 +79,10 @@ public:
         } else if (token.type == TokenType::CHAR_VALUE) {
             eat(TokenType::CHAR_VALUE);
             return std::make_unique<CharacterNode>(token.value[0]);
+        }else if (token.type == TokenType::BOOL_VALUE) {
+            eat(TokenType::BOOL_VALUE);
+            bool boolValue = (token.value == "true") ? true : false;
+            return std::make_unique<BooleanNode>(boolValue);
         }
         else if (token.type == TokenType::IDENTIFIER) {
             auto potentialVarName = token.value;

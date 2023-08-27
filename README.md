@@ -1,6 +1,6 @@
 # HOW TO RUN ?
-Simply put your desired script in "src/script.txt" then compile the code g++ -o src/main after that execute it ./main 
-you will get either in run prompt or log.txt: if it is a valid or invalid program then the constructed AST in both JSON format and Image
+Simply put your desired script in "src/script.txt" then compile the code g++ -o src/main after that execute it with ./main 
+you will get the results either in run prompt or log.txt if it is a valid or invalid program then the constructed AST in both JSON format and BMP format for image representation
 
 # HOW IT WORKS ?
 I wrote a Lexer and Parser from scratch depending on the provided EBNF grammar for this Tiny Programming Language
@@ -8,7 +8,7 @@ for the Lexer class...
 For the AST i defined multiple Nodes which may be updated for more precise construction of AST, declaration of function, single,
 multiple variables, if, else, while, and others.. which can be found in astNode class
 JSON format convertor is based simply on those node and each node has it's own toJSON function that does the work
-From JSON to image i have used a library that takes the JSON then converts it simply to PNG format which can make it very useful and informative
+From JSON to BMP image i have implemented a class imageConvertor that takes the JSON then converts it simply to BMP format which can make it very useful and informative
 
 # CHAR 
 I assumed that characters works with '' instead of this ‘’ , example : 

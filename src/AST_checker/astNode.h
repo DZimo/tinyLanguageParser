@@ -637,4 +637,29 @@ public:
             : ruleName(name), body(std::move(ruleBody)) {}
 };
 
+class BooleanNode : public astNode {
+private:
+    bool value;
+
+public:
+    // Constructor
+    BooleanNode(bool val) : value(val) {}
+
+protected:
+    std::string getType() const override {
+        return "Boolean";
+    }
+
+    void appendToJSON(std::ostringstream& os) const override {
+        os << "\"value\": " << (value ? "true" : "false");
+    }
+
+    std::string getDescription() const override {
+        return "Boolean Literal";
+    }
+
+    // Since a BooleanNode won't have children nodes, you can override the printChildren method to do nothing.
+    void printChildren(std::ostream& os, int depth) const override {}
+};
+
 #endif //TINYLANGUAGEPARSER_ASTNODE_H

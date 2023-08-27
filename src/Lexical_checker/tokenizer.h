@@ -12,6 +12,7 @@ enum class TokenType {
     IDENTIFIER,                   // Variables and function names
     NUMBER,                       // Numerical constants (this can be further split into INT_NUMBER and FLOAT_NUMBER if needed)
     CHAR_VALUE,                   // Character constants
+    BOOL_VALUE,
     ADD_OP, SUB_OP, MUL_OP, DIV_OP, MOD_OP, // Arithmetic operators
     AND_OP, OR_OP, NOT_OP,        // Logical operators
     EQUAL, NOT_EQUAL, LESS_THAN, GREATER_THAN, LESS_EQUAL, GREATER_EQUAL, // Relational operators
@@ -82,6 +83,8 @@ std::string tokenTypeToString(TokenType type) {
         case TokenType::EOF_TOK: return "EOF_TOK";
         case TokenType::R_BRACKET: return "R_BRACKET";
         case TokenType::L_BRACKET: return "L_BRACKET";
+        case TokenType::BOOL_VALUE: return "BOOL_VALUE";
+
 
         default: return "UNKNOWN";
     }
