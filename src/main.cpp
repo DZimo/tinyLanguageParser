@@ -1,12 +1,8 @@
 
 #include "main.h"
-#include "Syntax_checker/EBNF/EBNFparser.h"
+#include "headersGeneralizer.h"
 #include "Syntax_checker/Script/parser.cpp"
-#include "logger.h"
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <sstream>
+#include "Lexical_checker/lexer.h"
 
 std::string readFile(const std::string& filename) {
     std::ifstream file(filename);
@@ -46,9 +42,11 @@ int main() {
     try {
         auto astNodes = parse.parseAST();
         generatedParserJson = parse.serializeAST(astNodes);
+        auto bmpData = imageGenerator::astToBMP(astNodes);
+        imageGenerator::saveBMP("test.bmp",bmpData);
     } catch(const std::runtime_error& e) {
         std::cerr << "Parsing failed - " << e.what() << std::endl;
-        logger::log(e.what());
+        logger::error(e.what());
 
     }
     std::string ebnfContent = readFile("EBNF_grammar_Tiny.txt");
@@ -57,6 +55,9 @@ int main() {
     generatedOut << generatedParserJson;
     generatedOut.close();
     std::cout << "AST: " << generatedParserJson;
+
+
+    return 0;
     logger::close();
     return 0;
 }

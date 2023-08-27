@@ -1,5 +1,6 @@
-#ifndef TINYLANGUAGEPARSER_EBNFLEXER_H
+/*#ifndef TINYLANGUAGEPARSER_EBNFLEXER_H
 #define TINYLANGUAGEPARSER_EBNFLEXER_H
+#pragma once
 #include "tokenizer.h";
 
 class EBNFtokenizer {
@@ -138,3 +139,4 @@ public:
 
 
 #endif //TINYLANGUAGEPARSER_EBNFLEXER_H
+*/

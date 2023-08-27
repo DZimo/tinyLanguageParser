@@ -1,13 +1,11 @@
-//
-// Created by Admin on 8/16/2023.
-//
-
+/*
 #ifndef TINYLANGUAGEPARSER_EBNFPARSER_H
 #define TINYLANGUAGEPARSER_EBNFPARSER_H
 
 #include "../../Lexical_checker/EBNFlexer.h"
 #include "../../AST_checker/astNode.h"
 #include <vector>
+#pragma once
 
 class EBNFParser {
 private:
@@ -99,3 +97,4 @@ std::vector<std::unique_ptr<astNode>> parseWithGeneratedParser(const std::string
 
 
 #endif //TINYLANGUAGEPARSER_EBNFPARSER_H
+*/

@@ -1,15 +1,5 @@
-//
-// Created by Admin on 8/11/2023.
-//
 
 #include "symbolTable.h"
-#include "string.h"
-#include "../Lexical_checker/tokenizer.cpp"
-#include "../AST_checker/astNode.h"
-#include <iostream>
-#include <unordered_map>
-#include <stack>
-#include <vector>
 
 class symbol {
 public:

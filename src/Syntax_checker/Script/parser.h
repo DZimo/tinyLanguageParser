@@ -1,12 +1,13 @@
-//
-// Created by Admin on 8/11/2023.
-//
 
 #ifndef TINYLANGUAGEPARSER_PARSER_H
 #define TINYLANGUAGEPARSER_PARSER_H
-#include "../../Lexical_checker/tokenizer.h"
-#include <iostream>
-#include <unordered_map>
+
+#include "../../Syntax_checker/Script/parser.h"
+#include "../../Image_convertor/imageGenerator.cpp"
+#include "../../Lexical_checker/lexer.cpp"
+#include "../../AST_checker/astNode.h"
+#include "../../Syntax_checker/programNode.cpp"
+
 
 
 

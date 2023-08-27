@@ -1,5 +1,4 @@
 #include "lexer.h"
-#include "../SymbolTable_checker/symbolTable.cpp"
 
 symbolTable symbolTableInstant;
 TokenType pendingType = TokenType::UNKNOWN;
@@ -45,19 +44,19 @@ private:
         // Check if the identifier is a type or just an identifier
 
         TokenType type;
-        if (value == "int") type = TokenType::INT;
-        else if (value == "float") type = TokenType::FLOAT;
-        else if (value == "char") type = TokenType::CHAR;
-        else if (value == "bool") type = TokenType::BOOL;
-        else if (value == "if") type = TokenType::IF;
-        else if (value == "else") type = TokenType::ELSE;
-        else if (value == "while") type = TokenType::WHILE;
-        else if (value == "return") type = TokenType::RETURN;
+        if (value == "int") type =  TokenType::INT;
+        else if (value == "float") type =  TokenType::FLOAT;
+        else if (value == "char") type =  TokenType::CHAR;
+        else if (value == "bool") type =  TokenType::BOOL;
+        else if (value == "if") type =  TokenType::IF;
+        else if (value == "else") type =  TokenType::ELSE;
+        else if (value == "while") type =  TokenType::WHILE;
+        else if (value == "return") type =  TokenType::RETURN;
 
-        else type = TokenType::IDENTIFIER;
-        if (type != TokenType::IDENTIFIER) {
+        else type =  TokenType::IDENTIFIER;
+        if (type !=  TokenType::IDENTIFIER) {
             pendingType = type;
-        } else if (pendingType != TokenType::UNKNOWN) {
+        } else if (pendingType !=  TokenType::UNKNOWN) {
             if (!symbolTableInstant.exists(value)) {
                 symbolTableInstant.insert(value, pendingType);
             }
@@ -76,7 +75,7 @@ private:
         }
 
         std::string value = source.substr(start_pos, pos - start_pos);
-        return tokenizer(TokenType::NUMBER, value, line_number, char_position);  // Can differentiate between INT_NUMBER and FLOAT_NUMBER if needed
+        return tokenizer( TokenType::NUMBER, value, line_number, char_position);  // Can differentiate between INT_NUMBER and FLOAT_NUMBER if needed
     }
     tokenizer getChar() {
         advance();
@@ -89,7 +88,7 @@ private:
 
         if (current_char == '\'') {
             advance();
-            return tokenizer(TokenType::CHAR_VALUE, std::string(1, value), line_number, char_position);
+            return tokenizer( TokenType::CHAR_VALUE, std::string(1, value), line_number, char_position);
         } else {
             throw std::runtime_error("Invalid Program: Invalid char constant");
         }
@@ -112,10 +111,10 @@ public:
                 tokenizer token = getIdentifier();
 
                 // If the token type indicates that it's a regular identifier, then check if it's in the symbol table.
-                if (token.getType() == TokenType::IDENTIFIER) {
+                if (token.getType() ==  TokenType::IDENTIFIER) {
                     // Add to symbol table if not already present
                     if (!symbolTableInstant.exists(token.getValue())) {
-                        symbolTableInstant.insert(token.getValue(), TokenType::IDENTIFIER);
+                        symbolTableInstant.insert(token.getValue(),  TokenType::IDENTIFIER);
                     }
                 }
 
@@ -131,7 +130,7 @@ public:
                         advance();
                         if (current_char == '+') {
                             advance();
-                            return tokenizer(TokenType::INCREMENT, "++", line_number, char_position - 1); // Added token type INCREMENT
+                            return tokenizer( TokenType::INCREMENT, "++", line_number, char_position - 1); // Added token type INCREMENT
                         }
                         return tokenizer(TokenType::ADD_OP, "+", line_number, char_position);
 

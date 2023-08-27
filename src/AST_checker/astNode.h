@@ -1,15 +1,10 @@
-//
-// Created by Admin on 8/13/2023.
-//
 
 #ifndef TINYLANGUAGEPARSER_ASTNODE_H
 #define TINYLANGUAGEPARSER_ASTNODE_H
 
-
-#include <memory>
-#include <vector>
-#include <sstream>
+#include "../headersGeneralizer.h"
 #include "../Lexical_checker/tokenizer.h"
+
 
 class astNode {
 
@@ -25,6 +20,7 @@ public:
                 json << " }";
                 return json.str();
             }
+        return "";
     }
 
     void print(std::ostream& os, int depth = 0) const {

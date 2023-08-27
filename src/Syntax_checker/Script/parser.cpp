@@ -1,14 +1,5 @@
 
-// Created by Admin on 8/11/2023.
-//
-
-#include <memory>
 #include "parser.h"
-
-#include "../../Lexical_checker/lexer.cpp"
-#include "../programNode.cpp"
-
-
 
 class parser {
 private:

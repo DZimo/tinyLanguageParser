@@ -1,14 +1,9 @@
-//
-// Created by Admin on 8/10/2023.
-//
 
 #ifndef TINYLANGUAGEPARSER_LEXER_H
 #define TINYLANGUAGEPARSER_LEXER_H
-#include <string>
-#include <iostream>
-#include <vector>
 
-
-
+#include "../headersGeneralizer.h"
+#include "../SymbolTable_checker/symbolTable.cpp"
+#include "tokenizer.cpp"
 
 #endif //TINYLANGUAGEPARSER_LEXER_H
