@@ -11,8 +11,8 @@ public:
     };
 
     // Now the function accepts a vector of unique pointers to astNode
-    static std::vector<std::vector<Color>> astToBMP(const std::vector<std::unique_ptr<astNode>>& ast);
-    static void saveBMP(const std::string& filename, const std::vector<std::vector<Color>>& data);
+    std::vector<std::vector<Color>> astToBMP(const std::vector<std::unique_ptr<astNode>>& ast);
+    void saveBMP(const std::string& filename, const std::vector<std::vector<Color>>& data);
 };
 
 #endif //TINYLANGUAGEPARSER_IMAGEGENERATOR_H

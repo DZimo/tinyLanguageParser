@@ -38,16 +38,19 @@ int main() {
     logger::initialize();
     lexer lex(script);
     parser parse(lex);
+    imageGenerator generator;
+
     std::string generatedParserJson;
     try {
+        // PARSE
         auto astNodes = parse.parseAST();
         generatedParserJson = parse.serializeAST(astNodes);
-        auto bmpData = imageGenerator::astToBMP(astNodes);
-        imageGenerator::saveBMP("test.bmp",bmpData);
+        // GENERATE IMAGE
+        auto bmpData = generator.astToBMP(astNodes);
+        generator.saveBMP("test.bmp",bmpData);
     } catch(const std::runtime_error& e) {
         std::cerr << "Parsing failed - " << e.what() << std::endl;
         logger::error(e.what());
-
     }
     std::string ebnfContent = readFile("EBNF_grammar_Tiny.txt");
     std::string providedParserJson;

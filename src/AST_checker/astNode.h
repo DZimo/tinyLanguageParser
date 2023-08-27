@@ -29,12 +29,22 @@ public:
         printChildren(os, depth + 1);
     }
 
-protected:
+    int getMaxDepthRecursive() const {
+        int maxChildDepth = getChildrenDepth();
+        return 1 + maxChildDepth;  // 1 for the current node + maximum depth of children
+    }
+
+public:
     // Override these in derived classes
     virtual std::string getType() const = 0;
     virtual void appendToJSON(std::ostringstream& os) const = 0;
     virtual std::string getDescription() const = 0;
     virtual void printChildren(std::ostream& os, int depth) const {}
+    virtual const std::vector<std::unique_ptr<astNode>>& getChildren() const {
+        static const std::vector<std::unique_ptr<astNode>> emptyChildren = {};
+        return emptyChildren;  // By default, return a reference to an empty vector
+    }
+    virtual int getChildrenDepth() const { return 0; }  // Default implementation returns 0. This needs to be overridden in derived classes.
 };
 
 class DeclarationNode : public astNode {
@@ -49,6 +59,9 @@ protected:
     }
     std::string getDescription() const override {
         return "Declaration: " + dataType + " " + name;
+    }
+    int getChildrenDepth() const override {
+        return 0;  // DeclarationNode does not have children, so it returns 0.
     }
 
 public:
@@ -70,7 +83,9 @@ protected:
     std::string getDescription() const override {
         return "ArrayDeclaration: " + dataType + " " + name + "[" + std::to_string(size) + "]";
     }
-
+    int getChildrenDepth() const override {
+        return 0;  // ArrayDeclarationNode does not have children, so it returns 0.
+    }
 public:
     ArrayDeclarationNode(const std::string &dataType, const std::string &name, int size)
             : dataType(dataType), name(name), size(size) {}
@@ -84,7 +99,9 @@ protected:
     std::string getType() const override {
         return "Compound";
     }
-
+    const std::vector<std::unique_ptr<astNode>>& getChildren() const override {
+        return nodes;  // Return a reference to the nodes for CompoundNode
+    }
     void appendToJSON(std::ostringstream& os) const override {
         os << "\"type\": \"" << getType() << "\", ";
         os << "\"nodes\": [";
@@ -105,6 +122,14 @@ protected:
         return description;
     }
 
+    int getChildrenDepth() const override {
+        int maxDepth = 0;
+        for (const auto& child : nodes) {
+            maxDepth = std::max(maxDepth, child->getMaxDepthRecursive());
+        }
+        return maxDepth;
+    }
+
 public:
     CompoundNode(std::vector<std::unique_ptr<astNode>> nodes)
             : nodes(std::move(nodes)) {}
@@ -122,7 +147,9 @@ protected:
     std::string getDescription() const override {
         return "Identifier: " + value;
     }
-
+    int getChildrenDepth() const override {
+        return 0;  // IdentifierNode does not have children, so it returns 0.
+    }
 public:
     IdentifierNode(const std::string& val) : value(val) {}
 };
@@ -146,7 +173,11 @@ protected:
         left->print(os, depth);
         right->print(os, depth);
     }
-
+    int getChildrenDepth() const override {
+        int leftDepth = left ? left->getMaxDepthRecursive() : 0;
+        int rightDepth = right ? right->getMaxDepthRecursive() : 0;
+        return std::max(leftDepth, rightDepth);
+    }
 public:
     BinaryOpNode(std::unique_ptr<astNode> left, TokenType op, std::unique_ptr<astNode> right)
             : left(std::move(left)), op(op), right(std::move(right)) {}
@@ -163,6 +194,9 @@ protected:
     }
     std::string getDescription() const override {
         return "Number: " + value;
+    }
+    int getChildrenDepth() const override {
+        return 0;  // NumberNode does not have children, so it returns 0.
     }
 
 public:
