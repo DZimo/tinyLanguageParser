@@ -7,6 +7,7 @@ private:
     std::unique_ptr<astNode> sequence();
     std::string lastDataType;
     symbolTable symbolTable;
+    bool insideFunctionScope = false;
 
 protected:
     tokenizer current_token_inst;
@@ -132,6 +133,7 @@ public:
     }
 
     std::unique_ptr<astNode> declaration() {
+        // Check to disallow global variables declaration
         auto type = current_token_inst.type;
         lastDataType = tokenTypeToString(current_token_inst.type); // Store the data type
 
@@ -243,6 +245,10 @@ public:
                 }
                 else if(current_token_inst.type != TokenType::L_PAREN)
                 {
+                    if(!insideFunctionScope)
+                    {
+                        throw std::runtime_error("Invalid Program : Global variables not allowed");
+                    }
                     std::vector<std::unique_ptr<astNode>> variableNodes;
                     bool continueDeclaration = true;
                     symbolTable.pushScope();
@@ -346,6 +352,8 @@ public:
     }
 
     std::unique_ptr<astNode> blockStatement() {
+        // Allow local variables
+        insideFunctionScope=true;
         eat(TokenType::L_BRACE);
         std::vector<std::unique_ptr<astNode>> statements;
 
@@ -355,9 +363,9 @@ public:
                 statements.push_back(std::move(stmt));
             }
         }
-
         eat(TokenType::R_BRACE);
-
+        // Disallow local variables
+        insideFunctionScope= false;
         return std::make_unique<BlockNode>(std::move(statements));
     }
 
@@ -406,7 +414,7 @@ public:
         eat(TokenType::L_PAREN);
         eat(TokenType::R_PAREN);
         eat(TokenType::L_BRACE);
-
+        insideFunctionScope = true;
         std::vector<std::unique_ptr<astNode>> decls;
         while (current_token_inst.type == TokenType::INT ||
                current_token_inst.type == TokenType::FLOAT ||

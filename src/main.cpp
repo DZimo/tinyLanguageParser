@@ -58,9 +58,6 @@ int main() {
     generatedOut << generatedParserJson;
     generatedOut.close();
     std::cout << "AST: " << generatedParserJson;
-
-
-    return 0;
     logger::close();
     return 0;
 }
