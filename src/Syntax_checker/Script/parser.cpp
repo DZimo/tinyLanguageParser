@@ -190,6 +190,7 @@ public:
                 if (current_token_inst.type == TokenType::L_PAREN) {
                     // Here we check if it is a function call or declaration
                     eat(TokenType::L_PAREN);
+                    symbolTable.pushScope();
                     std::vector<std::pair<std::string, std::string>> parameters;
                     if (current_token_inst.type != TokenType::R_PAREN) {
                         do{  // This loop will handle multiple parameters
@@ -211,7 +212,8 @@ public:
 
                                 // Add to parameters list
                                 parameters.emplace_back(paramType, paramName);
-
+                                auto declarationNode = std::make_unique<DeclarationNode>(lastDataType,paramName);
+                                symbolTable.insertSymbol(paramName, declarationNode.get());
                                 // If next token is a comma, then eat it and continue the loop for next parameter
                                 if (current_token_inst.type == TokenType::COMMA) {
                                     eat(TokenType::COMMA);
@@ -235,10 +237,11 @@ public:
                     }
 
                     auto funcBody = blockStatement();
+                    symbolTable.popScope();
                     if (BlockNode* blockNode = dynamic_cast<BlockNode*>(funcBody.get())) {
-                        return std::make_unique<FunctionDeclarationNode>(varOrFuncName,
-                                                                         std::move(parameters),
-                                                                         std::move(blockNode->statements));
+                        auto functionNode = std::make_unique<FunctionDeclarationNode>(varOrFuncName, std::move(parameters), std::move(blockNode->statements));
+                        symbolTable.insertSymbol(varOrFuncName, functionNode.get());
+                        return functionNode;
                     } else {
                         throw std::runtime_error("Invalid Program : Expected a BlockNode for the function body.");
                     }

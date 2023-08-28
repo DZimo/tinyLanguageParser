@@ -1,9 +1,15 @@
-int sum(int a, int b) {
-int d;
-return d;
+int sum(int a, int b, int h) {
+int c;
+a = 10;
+b = 20;
+c = a + b;
+return c;
 }
 int main () {
 int a, b, c;
-a = b;
+a = 10;
+b = 20;
+c = sum(a, b);
+h = 2;
 return 0;
 }
