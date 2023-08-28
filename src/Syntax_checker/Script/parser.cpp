@@ -366,6 +366,7 @@ public:
         eat(TokenType::R_BRACE);
         // Disallow local variables
         insideFunctionScope= false;
+        symbolTable.popScope();
         return std::make_unique<BlockNode>(std::move(statements));
     }
 

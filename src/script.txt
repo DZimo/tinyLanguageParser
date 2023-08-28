@@ -4,6 +4,6 @@ return d;
 }
 int main () {
 int a, b, c;
-a = d;
+a = b;
 return 0;
 }
