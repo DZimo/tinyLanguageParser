@@ -14,8 +14,25 @@ class symbolTable {
 private:
     std::unordered_map<std::string, symbol> table;
     std::vector<std::unordered_map<std::string, astNode*>> scopes;
+    bool isLocked = false;
 
 public:
+
+    void pushLockedScope() {
+        if (isLocked) {
+            throw std::runtime_error("A locked scope is already in place. Can't push another locked scope.");
+        }
+        scopes.emplace_back();
+        isLocked = true;  // Lock this scope
+    }
+
+    void insertGlobalSymbol(const std::string &name, astNode* node) {
+        if (scopes.empty()) {
+            throw std::runtime_error("No global scope found.");
+        }
+        scopes[0][name] = node;  // Always insert into the global scope (the first scope)
+    }
+
     void insert(const std::string& name, TokenType type) {
         table.insert(std::make_pair(name, symbol(name, type)));
     }

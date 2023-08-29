@@ -110,7 +110,7 @@ public:
 
     std::vector<std::unique_ptr<astNode>> parseAST() {
         std::vector<std::unique_ptr<astNode>> nodes;
-
+        symbolTable.pushScope();
         // Keep parsing until we hit the end of file token.
         while (current_token_inst.type != TokenType::EOF_TOK) {
             auto node = statement();
@@ -231,16 +231,15 @@ public:
                         } while (current_token_inst.type != TokenType::R_PAREN);
                     }
                     eat(TokenType::R_PAREN);
-
                     if (current_token_inst.type != TokenType::L_BRACE) {
                         throw std::runtime_error("Invalid Program : Expected { after function definition");
                     }
 
                     auto funcBody = blockStatement();
-                    symbolTable.popScope();
                     if (BlockNode* blockNode = dynamic_cast<BlockNode*>(funcBody.get())) {
                         auto functionNode = std::make_unique<FunctionDeclarationNode>(varOrFuncName, std::move(parameters), std::move(blockNode->statements));
-                        symbolTable.insertSymbol(varOrFuncName, functionNode.get());
+                        //symbolTable.insertGlobalSymbol(varOrFuncName, functionNode.get());
+                        symbolTable.insertSymbol(varOrFuncName,functionNode.get());
                         return functionNode;
                     } else {
                         throw std::runtime_error("Invalid Program : Expected a BlockNode for the function body.");
@@ -254,7 +253,6 @@ public:
                     }
                     std::vector<std::unique_ptr<astNode>> variableNodes;
                     bool continueDeclaration = true;
-                    symbolTable.pushScope();
                     while (continueDeclaration) {
                         // Check if it's an array declaration
                         int arraySize = -1;  // Default, meaning not an array
@@ -273,6 +271,10 @@ public:
                             eat(TokenType::R_BRACKET);
                         }
                         if (current_token_inst.type == TokenType::ASSIGNMENT) {
+                            // Check if this variable exists in this scope
+                            if(!symbolTable.lookupSymbol(varOrFuncName)) {
+                                throw std::runtime_error("Invalid Program : Use of undeclared variable " + varOrFuncName);
+                            }
                             eat(TokenType::ASSIGNMENT);
 
                             // Handle the right-hand side. It can be an expression, a function call, another variable, or a literal.
@@ -316,7 +318,7 @@ public:
                     }
 
                     if (current_token_inst.type == TokenType::R_BRACE) { // Assuming R_CURLY represents the end of a block
-                        symbolTable.popScope();
+                        //symbolTable.popScope();
                     }
                     // If you only have a single node, return it directly, otherwise return a compound node
                     if (variableNodes.size() == 1) {
