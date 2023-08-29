@@ -331,15 +331,19 @@ public:
                 }
             }
             case TokenType::IF:
+                symbolTable.pushScope();
                 return ifStatement();
 
             case TokenType::ELSE:
+                symbolTable.pushScope();
                 return elseStatement();
 
             case TokenType::WHILE:
+                symbolTable.pushScope();
                 return whileStatement();
 
             case TokenType::L_BRACE:
+                symbolTable.pushScope();
                 return blockStatement();
 
             case TokenType::RETURN:

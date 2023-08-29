@@ -1,14 +1,11 @@
-int sum(int a, int b) {
-int c;
-a = 10;
-b = 20;
-c = a + b;
-return c;
-}
 int main () {
-int a, b, c;
-a = 10;
-b = 20;
-c = sum(a, b);
+bool x;
+int a;
+if(x) {
+a = 2;
+}
+else{
+a = 3;
+}
 return 0;
 }
