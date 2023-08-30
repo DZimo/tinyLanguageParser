@@ -17,7 +17,6 @@ private:
     bool isLocked = false;
 
 public:
-
     void pushLockedScope() {
         if (isLocked) {
             throw std::runtime_error("A locked scope is already in place. Can't push another locked scope.");

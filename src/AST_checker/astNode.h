@@ -6,6 +6,7 @@
 #include "../Lexical_checker/tokenizer.h"
 
 
+
 class astNode {
 
 public:
@@ -45,6 +46,10 @@ public:
         return emptyChildren;  // By default, return a reference to an empty vector
     }
     virtual int getChildrenDepth() const { return 0; }  // Default implementation returns 0. This needs to be overridden in derived classes.
+    /*virtual int evaluate( const symbolTable& table ) const {
+        throw std::runtime_error("evaluate not implemented for node of type " + getType());
+    }*/
+
 };
 
 class DeclarationNode : public astNode {
@@ -179,8 +184,28 @@ protected:
         return std::max(leftDepth, rightDepth);
     }
 public:
+
     BinaryOpNode(std::unique_ptr<astNode> left, TokenType op, std::unique_ptr<astNode> right)
             : left(std::move(left)), op(op), right(std::move(right)) {}
+/*
+    int evaluate(const symbolTable& table) const {
+        int leftVal = left->evaluate(table);
+        int rightVal = right->evaluate(table);
+        if (op == TokenType::ADD_OP) {
+            return leftVal + rightVal;
+        } else if (op == TokenType::SUB_OP) {
+            return leftVal - rightVal;
+        } else if (op == TokenType::MUL_OP) {
+            return leftVal * rightVal;
+        } else if (op == TokenType::DIV_OP) {
+            if (rightVal == 0) {
+                throw std::runtime_error("Division by zero");
+            }
+            return leftVal / rightVal;
+        } else {
+            throw std::runtime_error("Unknown operator: " + tokenTypeToString(op));
+        }
+    }*/
 };
 
 class NumberNode : public astNode {
@@ -201,12 +226,27 @@ protected:
 
 public:
     explicit NumberNode(const std::string& value) : value(value) {}
+    /*int evaluate(const symbolTable& table) const override {
+        try {
+            return std::stoi(value);
+        } catch (const std::invalid_argument& e) {
+            throw std::runtime_error("Invalid number: " + value);
+        } catch (const std::out_of_range& e) {
+            throw std::runtime_error("Number out of range: " + value);
+        }
+    }*/
+};
+
+enum class Operator {
+    ADD,
+    SUBTRACT,
+    MULTIPLY,
+    DIVIDE
 };
 
 class VariableNode : public astNode {
 public:
     std::string name;
-
 protected:
     std::string getType() const override { return "Variable"; }
     void appendToJSON(std::ostringstream& os) const override {
@@ -217,7 +257,18 @@ protected:
     }
 
 public:
-    explicit VariableNode(const std::string& name) : name(name) {}
+    explicit VariableNode(const std::string& name)
+            : name(name) {}
+    /*int evaluate(const symbolTable& table) const override {
+        astNode* node = table.lookupSymbol(name);
+        if (node) {
+            // Assuming that the node returned can be evaluated to an integer
+            // You may want to add more checks here depending on your needs
+            return node->evaluate(table);
+        } else {
+            throw std::runtime_error("Variable not found: " + name);
+        }
+    }*/
 };
 
 // Block Statements

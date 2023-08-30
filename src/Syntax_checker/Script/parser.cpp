@@ -4,6 +4,7 @@
 class parser {
 private:
     lexer lexer_inst;
+    overflower overflower;
     std::unique_ptr<astNode> sequence();
     std::string lastDataType;
     symbolTable symbolTable;
@@ -14,8 +15,72 @@ protected:
 public:
     explicit parser(const lexer& lex)
             : lexer_inst(lex),
-              current_token_inst(lexer_inst.getNextToken()) // Only initialize here
-    {}
+              current_token_inst(lexer_inst.getNextToken()) {}// Only initialize here
+
+    int evaluate(const std::unique_ptr<astNode>& node) {
+        if (node->getType() == "Number") {
+            NumberNode* numberNode = dynamic_cast<NumberNode*>(node.get());
+            return std::stoi(numberNode->value); // Assuming the value is stored as a string
+        }
+        else if (node->getType() == "BinaryExpression") {
+            BinaryOpNode* binaryOpNode = dynamic_cast<BinaryOpNode*>(node.get());
+            int leftVal = evaluate(binaryOpNode->left);
+            int rightVal = evaluate(binaryOpNode->right);
+
+            if (binaryOpNode->op == TokenType::ADD_OP) {
+                if (overflower.additionWillOverflow(leftVal, rightVal)) {
+                    throw std::overflow_error("Addition will overflow");
+                }
+                return leftVal + rightVal;
+            }
+            // Add other operations like SUB_OP, MUL_OP, etc.
+        }
+        else if (node->getType() == "Variable") {
+            VariableNode* variableNode = dynamic_cast<VariableNode*>(node.get());
+            astNode* varNode = symbolTable.lookupSymbol(variableNode->name);
+            if (varNode) {
+                return evaluate(varNode); // Using the raw pointer directly
+            }
+            else {
+                throw std::runtime_error("Variable not found: " + variableNode->name);
+            }
+        }
+        // Add other node types as needed
+        return 0; // Default return value, you may want to throw an exception here instead
+    }
+
+    int evaluate(astNode* node) {
+        if (node->getType() == "Number") {
+            NumberNode* numberNode = dynamic_cast<NumberNode*>(node);
+            return std::stoi(numberNode->value); // Assuming the value is stored as a string
+        }
+        else if (node->getType() == "BinaryExpression") {
+            BinaryOpNode* binaryOpNode = dynamic_cast<BinaryOpNode*>(node);
+            int leftVal = evaluate(binaryOpNode->left.get());
+            int rightVal = evaluate(binaryOpNode->right.get());
+
+            if (binaryOpNode->op == TokenType::ADD_OP) {
+                if (overflower.additionWillOverflow(leftVal, rightVal)) {
+                    throw std::overflow_error("Addition will overflow");
+                }
+                return leftVal + rightVal;
+            }
+            // Add other operations like SUB_OP, MUL_OP, etc.
+        }
+        else if (node->getType() == "Variable") {
+            VariableNode* variableNode = dynamic_cast<VariableNode*>(node);
+            astNode* varNode = symbolTable.lookupSymbol(variableNode->name);
+            if (varNode) {
+                return evaluate(varNode); // Using the raw pointer directly
+            }
+            else {
+                throw std::runtime_error("Variable not found: " + variableNode->name);
+            }
+        }
+        // Add other node types as needed
+        return 0; // Default return value, you may want to throw an exception here instead
+    }
+
     void eat(TokenType token_type) {
         if (current_token_inst.type == token_type) {
             current_token_inst = lexer_inst.getNextToken();
@@ -42,12 +107,28 @@ public:
 
     std::unique_ptr<astNode> additiveExpr() {
         auto node = term();
+        int leftValue, rightValue;
 
         while (current_token_inst.type == TokenType::ADD_OP || current_token_inst.type == TokenType::SUB_OP) {
             auto token = current_token_inst;
             eat(token.type);
 
-            node = std::make_unique<BinaryOpNode>(std::move(node), token.type, term());
+            leftValue = this->evaluate(node.get());
+
+            auto rightNode = term();
+            rightValue = this->evaluate(rightNode.get());
+
+            if (token.type == TokenType::ADD_OP) {
+                if (overflower.additionWillOverflow(leftValue, rightValue)) {
+                    throw std::overflow_error("Addition will overflow");
+                }
+            } else if (token.type == TokenType::SUB_OP) {
+                if (overflower.subtractionWillOverflow(leftValue, rightValue)) {
+                    throw std::overflow_error("Subtraction will overflow");
+                }
+            }
+
+            node = std::make_unique<BinaryOpNode>(std::move(node), token.type, std::move(rightNode));
         }
 
         return node;
@@ -59,6 +140,7 @@ public:
         while (current_token_inst.type == TokenType::MUL_OP || current_token_inst.type == TokenType::DIV_OP || current_token_inst.type == TokenType::MOD_OP) {
             auto token = current_token_inst;
             if (token.type == TokenType::MUL_OP) {
+                //overflower.multiplicationWillOverflow();
                 eat(TokenType::MUL_OP);
             } else if (token.type == TokenType::DIV_OP) {
                 eat(TokenType::DIV_OP);

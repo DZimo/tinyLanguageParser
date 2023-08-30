@@ -1,11 +1,6 @@
 int main () {
-bool x;
-int a;
-if(x) {
-a = 2;
-}
-else{
-a = 3;
-}
-return 0;
+int a,b,c,d;
+a = 2; b = 6666666666535;
+c = 699999535;
+d = a + b;
 }

@@ -2,7 +2,6 @@
 #include "main.h"
 #include "headersGeneralizer.h"
 #include "Syntax_checker/Script/parser.cpp"
-#include "Lexical_checker/lexer.h"
 
 std::string readFile(const std::string& filename) {
     std::ifstream file(filename);
