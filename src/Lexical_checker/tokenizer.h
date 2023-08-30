@@ -22,7 +22,7 @@ enum class TokenType {
     L_BRACKET, R_BRACKET,         // Brackets
     COMMA, SEMICOLON,             // Punctuation
     IF, ELSE, WHILE, RETURN,          // Keywords
-    EOF_TOK,INCREMENT,                       // End of file/token stream
+    EOF_TOK,INCREMENT, DECREMENT,                       // End of file/token stream
     LOGICAL_AND, LOGICAL_OR,
     UNKNOWN,    MAIN,
 };

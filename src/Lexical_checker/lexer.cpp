@@ -149,13 +149,17 @@ public:
                         advance();
                         if (current_char == '+') {
                             advance();
-                            return tokenizer( TokenType::INCREMENT, "++", line_number, char_position - 1); // Added token type INCREMENT
+                            return tokenizer( TokenType::INCREMENT, "++", line_number, char_position - 1); // token type INCREMENT
                         }
                         return tokenizer(TokenType::ADD_OP, "+", line_number, char_position);
 
                     case '-':
                         // Similar logic for decrement (--) can be added here, if necessary.
                         advance();
+                        if (current_char == '-') {
+                            advance();
+                            return tokenizer( TokenType::DECREMENT, "--", line_number, char_position - 1); // token type DECREMENT
+                        }
                         return tokenizer(TokenType::SUB_OP, "-", line_number, char_position);
 
                     case '*':

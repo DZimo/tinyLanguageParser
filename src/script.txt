@@ -1,6 +1,5 @@
 int main () {
-int a,b,c,d;
-a = 0; b = 65535;
-c = 2;
-d = a + b;
+int a, b;
+a = 65535; b = 0;
+a = a * b;
 }

@@ -31,7 +31,24 @@ public:
                 }
                 return leftVal + rightVal;
             }
-            // Handle other operations (SUB_OP, MUL_OP, etc.)
+            else if (binaryOpNode->op == TokenType::SUB_OP) {
+                if (overflower.subtractionWillOverflow(leftVal, rightVal)) {
+                    throw std::overflow_error("Subtraction will overflow");
+                }
+                return leftVal - rightVal;
+            }
+            else if (binaryOpNode->op == TokenType::MUL_OP) {
+                if (overflower.multiplicationWillOverflow(leftVal, rightVal)) {
+                    throw std::overflow_error("Multiplication will overflow");
+                }
+                return leftVal * rightVal;
+            }
+            else if (binaryOpNode->op == TokenType::DIV_OP) {
+                if (rightVal == 0) {
+                    throw std::runtime_error("Division by zero");
+                }
+                return leftVal / rightVal;
+            }
         }
         else if (node->getType() == "Variable") {
             VariableNode* variableNode = dynamic_cast<VariableNode*>(node.get());
@@ -72,7 +89,24 @@ public:
                 }
                 return leftVal + rightVal;
             }
-            // Handle other operations (SUB_OP, MUL_OP, etc.)
+            else if (binaryOpNode->op == TokenType::SUB_OP) {
+                if (overflower.subtractionWillOverflow(leftVal, rightVal)) {
+                    throw std::overflow_error("Subtraction will overflow");
+                }
+                return leftVal - rightVal;
+            }
+            else if (binaryOpNode->op == TokenType::MUL_OP) {
+                if (overflower.multiplicationWillOverflow(leftVal, rightVal)) {
+                    throw std::overflow_error("Multiplication will overflow");
+                }
+                return leftVal * rightVal;
+            }
+            else if (binaryOpNode->op == TokenType::DIV_OP) {
+                if (rightVal == 0) {
+                    throw std::runtime_error("Division by zero");
+                }
+                return leftVal / rightVal; // Assuming integer division
+            }
         }
         else if (node->getType() == "Variable") {
             VariableNode* variableNode = dynamic_cast<VariableNode*>(node);
@@ -138,7 +172,7 @@ public:
                                               std::to_string(rightValue) +
                                               " overflows the maximum integer size (16 bit integer).");
                 }
-            } else if (token.type == TokenType::SUB_OP) {
+            }  else if (token.type == TokenType::SUB_OP) {
                 if (overflower.subtractionWillOverflow(leftValue, rightValue)) {
                     throw std::overflow_error("The program contains an integer underflow at line " +
                                               std::to_string(lexer_inst.line_number) + ". The subtraction " +
@@ -147,7 +181,6 @@ public:
                                               " underflows the minimum integer size (16 bit integer).");
                 }
             }
-
             node = std::make_unique<BinaryOpNode>(std::move(node), token.type, std::move(rightNode));
         }
 
@@ -156,11 +189,28 @@ public:
 
     std::unique_ptr<astNode> term() {
         auto node = factor();
+        int leftValue, rightValue;
 
         while (current_token_inst.type == TokenType::MUL_OP || current_token_inst.type == TokenType::DIV_OP || current_token_inst.type == TokenType::MOD_OP) {
             auto token = current_token_inst;
+            leftValue = this->evaluate(node.get());
+
+            eat(token.type);
+
+            auto rightNode = factor();
+            rightValue = this->evaluate(rightNode.get());
+
+            lexer_inst.retreat();
+
             if (token.type == TokenType::MUL_OP) {
                 //overflower.multiplicationWillOverflow();
+                if (overflower.multiplicationWillOverflow(leftValue, rightValue)) {
+                        throw std::overflow_error("The program contains an integer underflow at line " +
+                                                  std::to_string(lexer_inst.line_number) + ". The multiplication " +
+                                                  std::to_string(leftValue) + " - " +
+                                                  std::to_string(rightValue) +
+                                                  " overflows the maximum integer size (16 bit integer).");
+                }
                 eat(TokenType::MUL_OP);
             } else if (token.type == TokenType::DIV_OP) {
                 eat(TokenType::DIV_OP);
