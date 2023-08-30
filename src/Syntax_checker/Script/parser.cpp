@@ -474,7 +474,6 @@ public:
             auto newNode = std::make_unique<BinaryOpNode>(std::move(leftCopy), binaryOpNode->op, std::move(rightCopy));
             return newNode;
         }
-        // ... handle other node types ...
 
         return nullptr; // or throw an exception for an unsupported node type
     }

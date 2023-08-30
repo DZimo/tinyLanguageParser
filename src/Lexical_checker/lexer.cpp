@@ -22,6 +22,24 @@ public:
         }
     }
 
+    void skipComment() {
+        // Skip the first two slashes
+        advance();
+        advance();
+
+        // Skip characters until the end of the line
+        while (current_char != '\n' && current_char != EOF) {
+            advance();
+        }
+
+        // If it's the end of the line, move to the next line
+        if (current_char == '\n') {
+            line_number++;
+            char_position = 1;
+            advance();
+        }
+    }
+
     void skipWhitespace() {
         while (current_char != EOF && std::isspace(current_char)) {
             if (current_char == '\n' ) {
@@ -146,6 +164,10 @@ public:
 
                     case '/':
                         advance();
+                        if (current_char == '/') {
+                            skipComment();
+                            continue;
+                        }
                         return tokenizer(TokenType::DIV_OP, "/", line_number, char_position);
 
                     case '%':
