@@ -5,7 +5,7 @@ TokenType pendingType = TokenType::UNKNOWN;
 
 
 class lexer {
-private:
+public:
     std::string source;
     int pos;
     char current_char;

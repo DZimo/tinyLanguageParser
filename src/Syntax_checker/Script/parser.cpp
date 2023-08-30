@@ -16,69 +16,81 @@ public:
     explicit parser(const lexer& lex)
             : lexer_inst(lex),
               current_token_inst(lexer_inst.getNextToken()) {}// Only initialize here
-
     int evaluate(const std::unique_ptr<astNode>& node) {
         if (node->getType() == "Number") {
             NumberNode* numberNode = dynamic_cast<NumberNode*>(node.get());
-            return std::stoi(numberNode->value); // Assuming the value is stored as a string
+            return std::stoi(numberNode->value);
         }
         else if (node->getType() == "BinaryExpression") {
             BinaryOpNode* binaryOpNode = dynamic_cast<BinaryOpNode*>(node.get());
             int leftVal = evaluate(binaryOpNode->left);
             int rightVal = evaluate(binaryOpNode->right);
-
             if (binaryOpNode->op == TokenType::ADD_OP) {
                 if (overflower.additionWillOverflow(leftVal, rightVal)) {
                     throw std::overflow_error("Addition will overflow");
                 }
                 return leftVal + rightVal;
             }
-            // Add other operations like SUB_OP, MUL_OP, etc.
+            // Handle other operations (SUB_OP, MUL_OP, etc.)
         }
         else if (node->getType() == "Variable") {
             VariableNode* variableNode = dynamic_cast<VariableNode*>(node.get());
             astNode* varNode = symbolTable.lookupSymbol(variableNode->name);
             if (varNode) {
-                return evaluate(varNode); // Using the raw pointer directly
+                return evaluate(varNode);
             }
             else {
                 throw std::runtime_error("Variable not found: " + variableNode->name);
             }
         }
-        // Add other node types as needed
-        return 0; // Default return value, you may want to throw an exception here instead
+
+        else if (node->getType() == "Declaration") {
+            DeclarationNode* declarationNode = dynamic_cast<DeclarationNode*>(node.get());
+            astNode* varNode = symbolTable.lookupSymbol(declarationNode->name);
+            if (varNode) {
+                return evaluate(varNode);
+            }
+            else {
+                throw std::runtime_error("Variable not found: " + declarationNode->name);
+            }
+        }
+        return 0; // Default return value, consider throwing an exception
     }
 
     int evaluate(astNode* node) {
         if (node->getType() == "Number") {
             NumberNode* numberNode = dynamic_cast<NumberNode*>(node);
-            return std::stoi(numberNode->value); // Assuming the value is stored as a string
+            return std::stoi(numberNode->value);
         }
         else if (node->getType() == "BinaryExpression") {
             BinaryOpNode* binaryOpNode = dynamic_cast<BinaryOpNode*>(node);
             int leftVal = evaluate(binaryOpNode->left.get());
             int rightVal = evaluate(binaryOpNode->right.get());
-
             if (binaryOpNode->op == TokenType::ADD_OP) {
                 if (overflower.additionWillOverflow(leftVal, rightVal)) {
                     throw std::overflow_error("Addition will overflow");
                 }
                 return leftVal + rightVal;
             }
-            // Add other operations like SUB_OP, MUL_OP, etc.
+            // Handle other operations (SUB_OP, MUL_OP, etc.)
         }
         else if (node->getType() == "Variable") {
             VariableNode* variableNode = dynamic_cast<VariableNode*>(node);
             astNode* varNode = symbolTable.lookupSymbol(variableNode->name);
             if (varNode) {
-                return evaluate(varNode); // Using the raw pointer directly
+                return evaluate(varNode);
             }
             else {
                 throw std::runtime_error("Variable not found: " + variableNode->name);
             }
         }
-        // Add other node types as needed
-        return 0; // Default return value, you may want to throw an exception here instead
+
+        else if (node->getType() == "Declaration") {
+            DeclarationNode* declarationNode = dynamic_cast<DeclarationNode*>(node);
+            // Assuming DeclarationNode contains a child for its value
+            return evaluate(declarationNode->value.get());
+        }
+        return 0; // Default return value, consider throwing an exception
     }
 
     void eat(TokenType token_type) {
@@ -120,11 +132,19 @@ public:
 
             if (token.type == TokenType::ADD_OP) {
                 if (overflower.additionWillOverflow(leftValue, rightValue)) {
-                    throw std::overflow_error("Addition will overflow");
+                    throw std::overflow_error("The program contains an integer overflow at line " +
+                                              std::to_string(lexer_inst.line_number) + ". The sum " +
+                                              std::to_string(leftValue) + " + " +
+                                              std::to_string(rightValue) +
+                                              " overflows the maximum integer size (16 bit integer).");
                 }
             } else if (token.type == TokenType::SUB_OP) {
                 if (overflower.subtractionWillOverflow(leftValue, rightValue)) {
-                    throw std::overflow_error("Subtraction will overflow");
+                    throw std::overflow_error("The program contains an integer underflow at line " +
+                                              std::to_string(lexer_inst.line_number) + ". The subtraction " +
+                                              std::to_string(leftValue) + " - " +
+                                              std::to_string(rightValue) +
+                                              " underflows the minimum integer size (16 bit integer).");
                 }
             }
 
@@ -358,15 +378,15 @@ public:
                                 throw std::runtime_error("Invalid Program : Use of undeclared variable " + varOrFuncName);
                             }
                             eat(TokenType::ASSIGNMENT);
-
                             // Handle the right-hand side. It can be an expression, a function call, another variable, or a literal.
                             auto rightExpr = expr();
+                            auto rightExprCopy = deepCopyAstNode(rightExpr.get());
 
                             if(arraySize != -1) {
                                 throw std::runtime_error("Invalid Program : Array initialization this way is not supported");
                             }
-
                             variableNodes.push_back(std::make_unique<AssignmentNode>(std::make_unique<IdentifierNode>(varOrFuncName), std::move(rightExpr)));
+                            symbolTable.updateValueInScopes(varOrFuncName, std::move(rightExprCopy));
                         }
                         else {
                             // It's just a variable declaration without an assignment
@@ -440,6 +460,23 @@ public:
                 throw std::runtime_error("Invalid Program : This token is not defined in Grammar");
 
         }
+    }
+
+    std::unique_ptr<astNode> deepCopyAstNode(const astNode* node) {
+        if (node->getType() == "Number") {
+            const NumberNode* numberNode = dynamic_cast<const NumberNode*>(node);
+            return std::make_unique<NumberNode>(*numberNode);
+        }
+        else if (node->getType() == "BinaryExpression") {
+            const BinaryOpNode* binaryOpNode = dynamic_cast<const BinaryOpNode*>(node);
+            auto leftCopy = binaryOpNode->left ? deepCopyAstNode(binaryOpNode->left.get()) : nullptr;
+            auto rightCopy = binaryOpNode->right ? deepCopyAstNode(binaryOpNode->right.get()) : nullptr;
+            auto newNode = std::make_unique<BinaryOpNode>(std::move(leftCopy), binaryOpNode->op, std::move(rightCopy));
+            return newNode;
+        }
+        // ... handle other node types ...
+
+        return nullptr; // or throw an exception for an unsupported node type
     }
 
     std::unique_ptr<astNode> blockStatement() {

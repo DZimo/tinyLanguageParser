@@ -35,6 +35,7 @@ public:
         return 1 + maxChildDepth;  // 1 for the current node + maximum depth of children
     }
 
+
 public:
     // Override these in derived classes
     virtual std::string getType() const = 0;
@@ -53,9 +54,10 @@ public:
 };
 
 class DeclarationNode : public astNode {
-private:
+public:
     std::string dataType;
     std::string name;
+    std::unique_ptr<astNode> value;  // New field to hold the value
 
 protected:
     std::string getType() const override { return "Declaration"; }
@@ -72,6 +74,14 @@ protected:
 public:
     DeclarationNode(const std::string &dataType, const std::string &name)
             : dataType(dataType), name(name) {}
+
+    void updateValue(std::unique_ptr<astNode> newValue) {
+        value = std::move(newValue);
+    }
+    // Getter for the value, can be useful in other parts of the code
+    astNode* getValue() const {
+        return value.get();
+    }
 };
 
 class ArrayDeclarationNode : public astNode {

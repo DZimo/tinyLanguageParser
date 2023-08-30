@@ -10,19 +10,19 @@
 
 class overflower {
 public:
-static bool additionWillOverflow(int16_t a, int16_t b) {
+static bool additionWillOverflow(int a, int b) {
     int32_t result = static_cast<int32_t>(a) + static_cast<int32_t>(b);
-    return result > std::numeric_limits<int16_t>::max() || result < std::numeric_limits<int16_t>::min();
+    return result > std::numeric_limits<uint16_t>::max() || result < std::numeric_limits<uint16_t>::min();
 }
 
-static bool subtractionWillOverflow(int16_t a, int16_t b) {
+static bool subtractionWillOverflow(int a, int b) {
     int32_t result = static_cast<int32_t>(a) - static_cast<int32_t>(b);
-    return result > std::numeric_limits<int16_t>::max() || result < std::numeric_limits<int16_t>::min();
+    return result > std::numeric_limits<uint16_t>::max() || result < std::numeric_limits<uint16_t>::min();
 }
 
-static bool multiplicationWillOverflow(int16_t a, int16_t b) {
+static bool multiplicationWillOverflow(int a, int b) {
     int32_t result = static_cast<int32_t>(a) * static_cast<int32_t>(b);
-    return result > std::numeric_limits<int16_t>::max() || result < std::numeric_limits<int16_t>::min();
+    return result > std::numeric_limits<uint16_t>::max() || result < std::numeric_limits<uint16_t>::min();
 }
 
 };
