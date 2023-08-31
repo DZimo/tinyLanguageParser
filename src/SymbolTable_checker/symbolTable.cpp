@@ -115,6 +115,9 @@ public:
 
     void updateValueInScopes(const std::string& name, std::unique_ptr<astNode> newValue) {
         // Start from the innermost scope and search outwards
+        if (newValue == nullptr) {
+            throw std::runtime_error("Null AST node for " + name);
+        }
         for (auto it = scopes.rbegin(); it != scopes.rend(); ++it) {
             auto found = it->find(name);
             if (found != it->end()) {

@@ -155,16 +155,16 @@ public:
 
     std::unique_ptr<astNode> additiveExpr() {
         auto node = term();
-        int leftValue, rightValue;
+        int leftValue = 0, rightValue = 0;
 
         while (current_token_inst.type == TokenType::ADD_OP || current_token_inst.type == TokenType::SUB_OP) {
             auto token = current_token_inst;
             eat(token.type);
 
-            leftValue = this->evaluate(node.get());
+            //leftValue = this->evaluate(node.get());
 
             auto rightNode = term();
-            rightValue = this->evaluate(rightNode.get());
+            //rightValue = this->evaluate(rightNode.get());
 
             if (token.type == TokenType::ADD_OP) {
                 if (overflower.additionWillOverflow(leftValue, rightValue)) {
@@ -191,7 +191,7 @@ public:
 
     std::unique_ptr<astNode> term() {
         auto node = factor();
-        int leftValue, rightValue;
+        int leftValue = 0, rightValue = 0;
 
         while (current_token_inst.type == TokenType::MUL_OP || current_token_inst.type == TokenType::DIV_OP || current_token_inst.type == TokenType::MOD_OP) {
             auto token = current_token_inst;
@@ -549,7 +549,123 @@ public:
             auto newNode = std::make_unique<BinaryOpNode>(std::move(leftCopy), binaryOpNode->op, std::move(rightCopy));
             return newNode;
         }
+        else if (node->getType() == "Declaration") {
+            const DeclarationNode* declNode = dynamic_cast<const DeclarationNode*>(node);
+            auto valueCopy = deepCopyAstNode(declNode->value.get());
+            auto newDeclNode = std::unique_ptr<DeclarationNode>(new DeclarationNode(declNode->dataType, declNode->name));
+            newDeclNode->updateValue(std::move(valueCopy));
+            return newDeclNode;
+        }
+        else if (node->getType() == "Compound") {
+            const CompoundNode* compoundNode = dynamic_cast<const CompoundNode*>(node);
+            std::vector<std::unique_ptr<astNode>> newNodes;
+            for (const auto& child : compoundNode->nodes) {
+                newNodes.push_back(deepCopyAstNode(child.get()));
+            }
+            return std::make_unique<CompoundNode>(std::move(newNodes));
+        }
+        else if (node->getType() == "IdentifierNode") {
+            const IdentifierNode* idNode = dynamic_cast<const IdentifierNode*>(node);
+            return std::make_unique<IdentifierNode>(idNode->value);
+        }
+        else if (node->getType() == "UnaryOperation") {
+            const UnaryOpNode* unaryOpNode = dynamic_cast<const UnaryOpNode*>(node);
+            auto operandCopy = deepCopyAstNode(unaryOpNode->operand.get());
+            return std::make_unique<UnaryOpNode>(unaryOpNode->op, std::move(operandCopy));
+        }
+        else if (node->getType() == "FunctionCall") {
+            const FunctionCallNode* functionCallNode = dynamic_cast<const FunctionCallNode*>(node);
+            std::vector<std::unique_ptr<astNode>> argumentCopies;
+            for (const auto& arg : functionCallNode->arguments) {
+                argumentCopies.push_back(deepCopyAstNode(arg.get()));
+            }
+            return std::make_unique<FunctionCallNode>(functionCallNode->funcName, std::move(argumentCopies));
+        }else if (node->getType() == "Boolean") {
+            const BooleanNode* booleanNode = dynamic_cast<const BooleanNode*>(node);
+            return std::make_unique<BooleanNode>(booleanNode->value);
+        } else if (node->getType() == "FunctionDeclaration") {
+            const FunctionDeclarationNode* funcDeclNode = dynamic_cast<const FunctionDeclarationNode*>(node);
+            std::vector<std::unique_ptr<astNode>> bodyStatementsCopy;
+            for (const auto& stmt : funcDeclNode->bodyStatements) {
+                bodyStatementsCopy.push_back(deepCopyAstNode(stmt.get()));
+            }
+            return std::make_unique<FunctionDeclarationNode>(funcDeclNode->funcName, funcDeclNode->parameters, std::move(bodyStatementsCopy));
+        }
+        else if (node->getType() == "Return") {
+            const ReturnNode* returnNode = dynamic_cast<const ReturnNode*>(node);
+            auto returnValueCopy = deepCopyAstNode(returnNode->returnValue.get());
+            return std::make_unique<ReturnNode>(std::move(returnValueCopy));
+        }
+        else if (node->getType() == "MainFunctionNode") {
+            const MainFunctionNode* mainFuncNode = dynamic_cast<const MainFunctionNode*>(node);
+            std::vector<std::unique_ptr<astNode>> declarationsCopy, statementsCopy;
+            for (const auto& decl : mainFuncNode->declarations) {
+                declarationsCopy.push_back(deepCopyAstNode(decl.get()));
+            }
+            for (const auto& stmt : mainFuncNode->statements) {
+                statementsCopy.push_back(deepCopyAstNode(stmt.get()));
+            }
+            return std::make_unique<MainFunctionNode>(std::move(declarationsCopy), std::move(statementsCopy));
+        }
+        else if (node->getType() == "FunctionNode") {
+            const FunctionNode* functionNode = dynamic_cast<const FunctionNode*>(node);
+            std::vector<std::unique_ptr<astNode>> declarationsCopy, statementsCopy;
+            for (const auto& decl : functionNode->declarations) {
+                declarationsCopy.push_back(deepCopyAstNode(decl.get()));
+            }
+            for (const auto& stmt : functionNode->statements) {
+                statementsCopy.push_back(deepCopyAstNode(stmt.get()));
+            }
+            return std::make_unique<FunctionNode>(functionNode->returnType, functionNode->name, functionNode->parameters, std::move(declarationsCopy), std::move(statementsCopy));
+        }
+        else if (node->getType() == "CharacterNode") {
+            const CharacterNode* charNode = dynamic_cast<const CharacterNode*>(node);
+            return std::make_unique<CharacterNode>(charNode->value);
+        }
+        else if (node->getType() == "Assignment") {
+            const AssignmentNode* assignmentNode = dynamic_cast<const AssignmentNode*>(node);
+            auto variableCopy = deepCopyAstNode(assignmentNode->variable.get());
+            auto expressionCopy = deepCopyAstNode(assignmentNode->expression.get());
+            return std::make_unique<AssignmentNode>(std::move(variableCopy), std::move(expressionCopy));
+        } else if (node->getType() == "UnaryOperation") {
+            const UnaryOpNode* unaryOpNode = dynamic_cast<const UnaryOpNode*>(node);
+            auto operandCopy = deepCopyAstNode(unaryOpNode->operand.get());
+            return std::make_unique<UnaryOpNode>(unaryOpNode->op, std::move(operandCopy));
+        }
+        else if (node->getType() == "FunctionCall") {
+            const FunctionCallNode* functionCallNode = dynamic_cast<const FunctionCallNode*>(node);
+            std::vector<std::unique_ptr<astNode>> argumentCopies;
+            for (const auto& arg : functionCallNode->arguments) {
+                argumentCopies.push_back(deepCopyAstNode(arg.get()));
+            }
+            return std::make_unique<FunctionCallNode>(functionCallNode->funcName, std::move(argumentCopies));
+        } else if (node->getType() == "Variable") {
+            const VariableNode* variableNode = dynamic_cast<const VariableNode*>(node);
+            return std::make_unique<VariableNode>(variableNode->name);
+        }
+        else if (node->getType() == "Block") {
+            const BlockNode* blockNode = dynamic_cast<const BlockNode*>(node);
+            std::vector<std::unique_ptr<astNode>> statementsCopy;
+            for (const auto& stmt : blockNode->statements) {
+                statementsCopy.push_back(deepCopyAstNode(stmt.get()));
+            }
+            return std::make_unique<BlockNode>(std::move(statementsCopy));
+        }else if (node->getType() == "IfStatement") {
+            const IfNode* ifNode = dynamic_cast<const IfNode*>(node);
+            auto conditionCopy = deepCopyAstNode(ifNode->condition.get());
+            auto trueBranchCopy = deepCopyAstNode(ifNode->trueBranch.get());
+            auto falseBranchCopy = ifNode->falseBranch ? deepCopyAstNode(ifNode->falseBranch.get()) : nullptr;
+            return std::make_unique<IfNode>(std::move(conditionCopy), std::move(trueBranchCopy), std::move(falseBranchCopy));
+        }
+        else if (node->getType() == "WhileLoop") {
+            const WhileNode* whileNode = dynamic_cast<const WhileNode*>(node);
+            auto conditionCopy = deepCopyAstNode(whileNode->condition.get());
+            auto loopBodyCopy = deepCopyAstNode(whileNode->loopBody.get());
+            return std::make_unique<WhileNode>(std::move(conditionCopy), std::move(loopBodyCopy));
+        }
 
+
+        throw std::runtime_error("Unsupported node type to copy: " + node->getType());
         return nullptr; // or throw an exception for an unsupported node type
     }
 
@@ -568,6 +684,7 @@ public:
         eat(TokenType::R_BRACE);
         // Disallow local variables
         insideFunctionScope= false;
+        insideDeclarationScope= true;
         symbolTable.popScope();
         return std::make_unique<BlockNode>(std::move(statements));
     }

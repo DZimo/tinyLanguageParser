@@ -590,52 +590,6 @@ public:
               declarations(std::move(decls)), statements(std::move(stmts)) {}
 };
 
-class ConcatNode : public astNode {
-public:
-    std::unique_ptr<astNode> left;
-    std::unique_ptr<astNode> right;
-
-protected:
-    std::string getType() const override { return "ConcatNode"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"left\": " << left->toJSON() << ", \"right\": " << right->toJSON();
-    }
-    std::string getDescription() const override {
-        return "Concat:";
-    }
-    void printChildren(std::ostream& os, int depth) const override {
-        left->print(os, depth);
-        right->print(os, depth);
-    }
-
-public:
-    ConcatNode(std::unique_ptr<astNode> l, std::unique_ptr<astNode> r)
-            : left(std::move(l)), right(std::move(r)) {}
-};
-
-class AlternativeNode : public astNode {
-public:
-    std::unique_ptr<astNode> left;
-    std::unique_ptr<astNode> right;
-
-protected:
-    std::string getType() const override { return "AlternativeNode"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"left\": " << left->toJSON() << ", \"right\": " << right->toJSON();
-    }
-    std::string getDescription() const override {
-        return "AlternativeNode:";
-    }
-    void printChildren(std::ostream& os, int depth) const override {
-        left->print(os, depth);
-        right->print(os, depth);
-    }
-
-public:
-    AlternativeNode(std::unique_ptr<astNode> lhs, std::unique_ptr<astNode> rhs)
-            : left(std::move(lhs)), right(std::move(rhs)) {}
-};
-
 class CharacterNode : public astNode {
 public:
     char value;
@@ -676,6 +630,32 @@ public:
             : variable(std::move(var)), expression(std::move(expr)) {}
 };
 
+class BooleanNode : public astNode {
+public:
+    bool value;
+
+public:
+    // Constructor
+    BooleanNode(bool val) : value(val) {}
+
+protected:
+    std::string getType() const override {
+        return "Boolean";
+    }
+
+    void appendToJSON(std::ostringstream& os) const override {
+        os << "\"value\": " << (value ? "true" : "false");
+    }
+
+    std::string getDescription() const override {
+        return "Boolean Literal";
+    }
+
+    // Since a BooleanNode won't have children nodes, you can override the printChildren method to do nothing.
+    void printChildren(std::ostream& os, int depth) const override {}
+};
+
+
 class RuleNode : public astNode {
 public:
     std::string ruleName;
@@ -698,29 +678,50 @@ public:
             : ruleName(name), body(std::move(ruleBody)) {}
 };
 
-class BooleanNode : public astNode {
-private:
-    bool value;
-
+class AlternativeNode : public astNode {
 public:
-    // Constructor
-    BooleanNode(bool val) : value(val) {}
+    std::unique_ptr<astNode> left;
+    std::unique_ptr<astNode> right;
 
 protected:
-    std::string getType() const override {
-        return "Boolean";
-    }
-
+    std::string getType() const override { return "AlternativeNode"; }
     void appendToJSON(std::ostringstream& os) const override {
-        os << "\"value\": " << (value ? "true" : "false");
+        os << "\"left\": " << left->toJSON() << ", \"right\": " << right->toJSON();
     }
-
     std::string getDescription() const override {
-        return "Boolean Literal";
+        return "AlternativeNode:";
+    }
+    void printChildren(std::ostream& os, int depth) const override {
+        left->print(os, depth);
+        right->print(os, depth);
     }
 
-    // Since a BooleanNode won't have children nodes, you can override the printChildren method to do nothing.
-    void printChildren(std::ostream& os, int depth) const override {}
+public:
+    AlternativeNode(std::unique_ptr<astNode> lhs, std::unique_ptr<astNode> rhs)
+            : left(std::move(lhs)), right(std::move(rhs)) {}
+};
+
+class ConcatNode : public astNode {
+public:
+    std::unique_ptr<astNode> left;
+    std::unique_ptr<astNode> right;
+
+protected:
+    std::string getType() const override { return "ConcatNode"; }
+    void appendToJSON(std::ostringstream& os) const override {
+        os << "\"left\": " << left->toJSON() << ", \"right\": " << right->toJSON();
+    }
+    std::string getDescription() const override {
+        return "Concat:";
+    }
+    void printChildren(std::ostream& os, int depth) const override {
+        left->print(os, depth);
+        right->print(os, depth);
+    }
+
+public:
+    ConcatNode(std::unique_ptr<astNode> l, std::unique_ptr<astNode> r)
+            : left(std::move(l)), right(std::move(r)) {}
 };
 
 #endif //TINYLANGUAGEPARSER_ASTNODE_H

@@ -45,8 +45,8 @@ int main() {
         auto astNodes = parse.parseAST();
         generatedParserJson = parse.serializeAST(astNodes);
         // GENERATE IMAGE
-        auto bmpData = generator.astToBMP(astNodes);
-        generator.saveBMP("test.bmp",bmpData);
+        //auto bmpData = generator.astToBMP(astNodes);
+        //generator.saveBMP("test.bmp",bmpData);
     } catch(const std::runtime_error& e) {
         std::cerr << "Parsing failed - " << e.what() << std::endl;
         logger::error(e.what());
