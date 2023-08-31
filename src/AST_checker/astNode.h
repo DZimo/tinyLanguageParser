@@ -427,7 +427,9 @@ public:
 class FunctionDeclarationNode : public astNode {
 public:
     std::string funcName;
-    std::vector<std::pair<std::string, std::string>> parameters;
+    //std::vector<std::pair<std::string, std::string>> parameters;
+    std::vector<std::unique_ptr<DeclarationNode>> parameters;
+
     std::vector<std::unique_ptr<astNode>> bodyStatements;
 
 protected:
@@ -435,7 +437,7 @@ protected:
     void appendToJSON(std::ostringstream& os) const override {
         os << "\"name\": \"" << funcName << "\", \"parameters\": [";
         for (size_t i = 0; i < parameters.size(); ++i) {
-            os << "{ \"type\": \"" << parameters[i].first << "\", \"name\": \"" << parameters[i].second << "\" }";
+            os << parameters[i]->toJSON(); // Assumes DeclarationNode has toJSON()
             if (i < parameters.size() - 1) os << ", ";
         }
         os << "], \"body\": [";
@@ -456,7 +458,7 @@ protected:
 
 public:
     FunctionDeclarationNode(const std::string &funcName,
-                            std::vector<std::pair<std::string, std::string>> parameters,
+                            std::vector<std::unique_ptr<DeclarationNode>> parameters,
                             std::vector<std::unique_ptr<astNode>> bodyStatements)
             : funcName(funcName),
               parameters(std::move(parameters)),

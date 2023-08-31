@@ -350,7 +350,8 @@ public:
                     // Here we check if it is a function call or declaration
                     eat(TokenType::L_PAREN);
                     symbolTable.pushScope();
-                    std::vector<std::pair<std::string, std::string>> parameters;
+                    //std::vector<std::pair<std::string, std::string>> parameters;
+                    std::vector<std::unique_ptr<DeclarationNode>> parameters;
                     if (current_token_inst.type != TokenType::R_PAREN) {
                         do{  // This loop will handle multiple parameters
                             // Expecting a type (like INT, CHAR, etc.)
@@ -371,9 +372,11 @@ public:
                                 eat(TokenType::IDENTIFIER);
 
                                 // Add to parameters list
-                                parameters.emplace_back(paramType, paramName);
+                                //parameters.emplace_back(paramType, paramName);
                                 auto declarationNode = std::make_unique<DeclarationNode>(lastDataType,paramName);
                                 symbolTable.insertSymbol(paramName, declarationNode.get());
+                                parameters.push_back(std::move(declarationNode));  // Add to parameters list
+
                                 // If next token is a comma, then eat it and continue the loop for next parameter
                                 if (current_token_inst.type == TokenType::COMMA) {
                                     eat(TokenType::COMMA);
@@ -589,7 +592,21 @@ public:
             for (const auto& stmt : funcDeclNode->bodyStatements) {
                 bodyStatementsCopy.push_back(deepCopyAstNode(stmt.get()));
             }
-            return std::make_unique<FunctionDeclarationNode>(funcDeclNode->funcName, funcDeclNode->parameters, std::move(bodyStatementsCopy));
+            // Deep copy parameters
+            std::vector<std::unique_ptr<DeclarationNode>> parametersCopy;
+            for (const auto& param : funcDeclNode->parameters) {
+                auto paramCopy = deepCopyAstNode(param.get());
+                if (DeclarationNode* declNode = dynamic_cast<DeclarationNode*>(paramCopy.get())) {
+                    parametersCopy.push_back(std::unique_ptr<DeclarationNode>(declNode));
+                } else {
+                    throw std::runtime_error("Failed to deep copy parameter as DeclarationNode");
+                }
+            }
+            return std::make_unique<FunctionDeclarationNode>(
+                    funcDeclNode->funcName,
+                    std::move(parametersCopy),
+                    std::move(bodyStatementsCopy)
+            );
         }
         else if (node->getType() == "Return") {
             const ReturnNode* returnNode = dynamic_cast<const ReturnNode*>(node);

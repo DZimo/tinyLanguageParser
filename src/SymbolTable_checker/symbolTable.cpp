@@ -124,11 +124,26 @@ public:
                 astNode* node = found->second;
 
                 // Dynamic cast to DeclarationNode
+                FunctionDeclarationNode* funcDeclNode = dynamic_cast<FunctionDeclarationNode*>(node);
                 DeclarationNode* declNode = dynamic_cast<DeclarationNode*>(node);
-                if (declNode) {
+
+                // Dynamic cast to DeclarationNode
+                if (DeclarationNode* declNode = dynamic_cast<DeclarationNode*>(node)) {
                     declNode->updateValue(std::move(newValue));
                     return; // Successfully updated, exit the function
                 }
+
+                // Dynamic cast to FunctionDeclarationNode and update parameters
+                if (FunctionDeclarationNode* funcDeclNode = dynamic_cast<FunctionDeclarationNode*>(node)) {
+                    for (auto& param : funcDeclNode->parameters) {
+                        if (param->name == name) {
+                            param->updateValue(std::move(newValue));
+                            return;  // Successfully updated, exit the function
+                        }
+                    }
+                    throw std::runtime_error("Parameter " + name + " not found in function.");
+                }
+                throw std::runtime_error("Symbol " + name + " found but is not a valid type for updating.");
             }
         }
         throw std::runtime_error("Symbol not found in any scope");
