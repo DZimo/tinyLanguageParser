@@ -9,6 +9,7 @@ private:
     std::string lastDataType;
     symbolTable symbolTable;
     bool insideFunctionScope = false;
+    bool insideDeclarationScope = true;
 
 protected:
     tokenizer current_token_inst;
@@ -131,7 +132,8 @@ public:
         if (current_token_inst.type == token_type) {
             current_token_inst = lexer_inst.getNextToken();
         } else {
-            throw std::runtime_error("Invalid Program : Expected " + tokenTypeToString(token_type));
+            throw std::runtime_error("Invalid Program : Expected " + tokenTypeToString(token_type)+ " at line " +
+            std::to_string(lexer_inst.line_number));
         }
     }
 
@@ -193,14 +195,14 @@ public:
 
         while (current_token_inst.type == TokenType::MUL_OP || current_token_inst.type == TokenType::DIV_OP || current_token_inst.type == TokenType::MOD_OP) {
             auto token = current_token_inst;
-            leftValue = this->evaluate(node.get());
+            //leftValue = this->evaluate(node.get());
 
-            eat(token.type);
+            //eat(token.type);
 
-            auto rightNode = factor();
-            rightValue = this->evaluate(rightNode.get());
+            //auto rightNode = factor();
+            //rightValue = this->evaluate(rightNode.get());
 
-            lexer_inst.retreat();
+            //lexer_inst.retreat();
 
             if (token.type == TokenType::MUL_OP) {
                 //overflower.multiplicationWillOverflow();
@@ -243,7 +245,8 @@ public:
 
             // Check if this variable exists in this scope
             if(!symbolTable.lookupSymbol(potentialVarName)) {
-                throw std::runtime_error("Invalid Program : Use of undeclared variable " + potentialVarName);
+                throw std::runtime_error("Invalid Program : Use of undeclared variable " + potentialVarName +  " at line " +
+                std::to_string(lexer_inst.line_number));
             }
             if (current_token_inst.type == TokenType::L_PAREN) {
                 return functionCall(potentialVarName);
@@ -256,7 +259,8 @@ public:
             eat(TokenType::R_PAREN);
             return node;
         } else {
-            throw std::runtime_error("Invalid Program : Invalid token in factor!");
+            throw std::runtime_error("Invalid Program : Invalid token in factor!" +  token.value +  " at line " +
+                                          std::to_string(lexer_inst.line_number));
         }
     }
 
@@ -273,7 +277,8 @@ public:
 
             // Now expect a semicolon or end of file after a non-null statement.
             if (node != nullptr && current_token_inst.type != TokenType::SEMICOLON && current_token_inst.type != TokenType::EOF_TOK) {
-                throw std::runtime_error("Invalid Program : Expected end of statement!");
+                throw std::runtime_error("Invalid Program : Expected end of statement! at line " +
+                std::to_string(lexer_inst.line_number));
             }
 
             // If it was a semicolon, move to the next token.
@@ -294,10 +299,12 @@ public:
         auto varName = current_token_inst.value;
         if(current_token_inst.type != TokenType::IDENTIFIER)
         {
-            throw std::runtime_error("Invalid Program : Expected identifier after type");
+            throw std::runtime_error("Invalid Program : Expected identifier after "+ current_token_inst.value + " at line " +
+            std::to_string(lexer_inst.line_number));
         }
         if (lexer_inst.getNextToken().type == TokenType::ASSIGNMENT) {
-            throw std::runtime_error("Invalid Program : Direct assignment during declaration is not allowed");
+            throw std::runtime_error("Invalid Program : Direct assignment during declaration is not allowed at line " +
+                                     std::to_string(lexer_inst.line_number));
         }
         lexer_inst.retreat();
         return statement();
@@ -357,7 +364,8 @@ public:
 
                                 // Expecting an identifier for the parameter name
                                 if (current_token_inst.type != TokenType::IDENTIFIER) {
-                                    throw std::runtime_error("Invalid Program : Expected parameter name");
+                                    throw std::runtime_error("Invalid Program : Expected parameter name at line " +
+                                                             std::to_string(lexer_inst.line_number));
                                 }
                                 std::string paramName = current_token_inst.value;
                                 eat(TokenType::IDENTIFIER);
@@ -374,7 +382,8 @@ public:
                                     break;
                                 } else {
                                     // Anything other than a comma or right parenthesis is an error
-                                    throw std::runtime_error("Invalid Program : Expected , or ) after parameter declaration");
+                                    throw std::runtime_error("Invalid Program : Expected , or ) after parameter declaration at line " +
+                                                             std::to_string(lexer_inst.line_number));
                                 }
                             }
                             else {
@@ -384,7 +393,8 @@ public:
                     }
                     eat(TokenType::R_PAREN);
                     if (current_token_inst.type != TokenType::L_BRACE) {
-                        throw std::runtime_error("Invalid Program : Expected { after function definition");
+                        throw std::runtime_error("Invalid Program : Expected { after function definition at line " +
+                                                 std::to_string(lexer_inst.line_number));
                     }
 
                     auto funcBody = blockStatement();
@@ -394,7 +404,8 @@ public:
                         symbolTable.insertSymbol(varOrFuncName,functionNode.get());
                         return functionNode;
                     } else {
-                        throw std::runtime_error("Invalid Program : Expected a BlockNode for the function body.");
+                        throw std::runtime_error("Invalid Program : Expected a BlockNode for the function body at line " +
+                                                 std::to_string(lexer_inst.line_number));
                     }
                 }
                 else if(current_token_inst.type != TokenType::L_PAREN)
@@ -412,20 +423,23 @@ public:
                             eat(TokenType::L_BRACKET);
 
                             if(current_token_inst.type != TokenType::NUMBER) {
-                                throw std::runtime_error("Invalid Program : Array size should be a number");
+                                throw std::runtime_error("Invalid Program : Array size should be a number at line " +
+                                std::to_string(lexer_inst.line_number));
                             }
                             arraySize = std::stoi(current_token_inst.value);
                             eat(TokenType::NUMBER);
 
                             if(current_token_inst.type != TokenType::R_BRACKET) {
-                                throw std::runtime_error("Invalid Program : Expected closing bracket");
+                                throw std::runtime_error("Invalid Program : Expected closing bracket at line " +
+                                std::to_string(lexer_inst.line_number));
                             }
                             eat(TokenType::R_BRACKET);
                         }
                         if (current_token_inst.type == TokenType::ASSIGNMENT) {
                             // Check if this variable exists in this scope
                             if(!symbolTable.lookupSymbol(varOrFuncName)) {
-                                throw std::runtime_error("Invalid Program : Use of undeclared variable " + varOrFuncName);
+                                throw std::runtime_error("Invalid Program : Use of undeclared variable " + varOrFuncName + " at line " +
+                                std::to_string(lexer_inst.line_number));
                             }
                             eat(TokenType::ASSIGNMENT);
                             // Handle the right-hand side. It can be an expression, a function call, another variable, or a literal.
@@ -433,13 +447,20 @@ public:
                             auto rightExprCopy = deepCopyAstNode(rightExpr.get());
 
                             if(arraySize != -1) {
-                                throw std::runtime_error("Invalid Program : Array initialization this way is not supported");
+                                throw std::runtime_error("Invalid Program : Array initialization this way is not supported at line " +
+                                std::to_string(lexer_inst.line_number));
                             }
                             variableNodes.push_back(std::make_unique<AssignmentNode>(std::make_unique<IdentifierNode>(varOrFuncName), std::move(rightExpr)));
                             symbolTable.updateValueInScopes(varOrFuncName, std::move(rightExprCopy));
+                            insideDeclarationScope=false;
                         }
                         else {
                             // It's just a variable declaration without an assignment
+                            if(!insideDeclarationScope)
+                            {
+                                throw std::runtime_error("Invalid Program : Declaration must be at the beginning at line " +
+                                std::to_string(lexer_inst.line_number));
+                            }
                             if(arraySize != -1) {
                                 variableNodes.push_back(std::make_unique<ArrayDeclarationNode>(lastDataType, varOrFuncName, arraySize));
                                 symbolTable.insertSymbol(varOrFuncName, variableNodes.back().get());  // Assuming ArrayDeclarationNode derives from astNode
@@ -454,7 +475,8 @@ public:
                             // Either normal assignment or function assignment
                             eat(TokenType::COMMA);
                             if (current_token_inst.type != TokenType::IDENTIFIER) {
-                                throw std::runtime_error("Invalid Program : Expected another variable name after comma");
+                                throw std::runtime_error("Invalid Program : Expected another variable name after comma at line " +
+                                std::to_string(lexer_inst.line_number));
                             }
                             varOrFuncName = current_token_inst.value;
                             eat(TokenType::IDENTIFIER);
@@ -465,7 +487,8 @@ public:
                             continueDeclaration = false;
                         }
                         else {
-                            throw std::runtime_error("Invalid Program : Expected comma, assignment, or semicolon");
+                            throw std::runtime_error("Invalid Program : Expected comma, assignment, or semicolon at line " +
+                            std::to_string(lexer_inst.line_number));
                         }
                     }
 
@@ -479,7 +502,8 @@ public:
                     return std::make_unique<CompoundNode>(std::move(variableNodes));
                 }
                 else {
-                    throw std::runtime_error("Invalid Program : Unexpected token after IDENTIFIER");
+                    throw std::runtime_error("Invalid Program : Unexpected token after IDENTIFIER at line " +
+                                             std::to_string(lexer_inst.line_number));
                 }
             }
             case TokenType::IF:
@@ -507,7 +531,8 @@ public:
                 return {};
 
             default:
-                throw std::runtime_error("Invalid Program : This token is not defined in Grammar");
+                throw std::runtime_error("Invalid Program : This token is not defined in Grammar at line " +
+                std::to_string(lexer_inst.line_number));
 
         }
     }
@@ -551,7 +576,8 @@ public:
         eat(TokenType::RETURN);
         auto returnValue = expr();
         if (current_token_inst.type != TokenType::SEMICOLON) {
-            throw std::runtime_error("Invalid Program : Expected ; after return statement");
+            throw std::runtime_error("Invalid Program : Expected ; after return statement at line " +
+            std::to_string(lexer_inst.line_number));
         }
         eat(TokenType::SEMICOLON);
         return std::make_unique<ReturnNode>(std::move(returnValue));
@@ -564,7 +590,8 @@ public:
         eat(TokenType::R_PAREN);
         auto trueBranch = statement();
         if (current_token_inst.type != TokenType::ELSE) {
-            throw std::runtime_error("Invalid Program : Expected else branch !");
+            throw std::runtime_error("Invalid Program : Expected else branch ! at line " +
+                                     std::to_string(lexer_inst.line_number));
         }
         eat(TokenType::ELSE);
         std::unique_ptr<astNode> falseBranch = statement();
@@ -619,7 +646,8 @@ public:
             if (current_token_inst.type == TokenType::COMMA) {
                 eat(TokenType::COMMA);
             } else if (current_token_inst.type != TokenType::R_PAREN) {
-                throw std::runtime_error("Invalid Program : Expected comma or right parenthesis in function call");
+                throw std::runtime_error("Invalid Program : Expected comma or right parenthesis in function call at line " +
+                std::to_string(lexer_inst.line_number));
             }
         }
         eat(TokenType::R_PAREN);
@@ -653,7 +681,8 @@ public:
                 eat(TokenType::COMMA);
             } else if (current_token_inst.type != TokenType::R_PAREN) {
                 // If it's not a comma and not a closing parenthesis, it's an error
-                throw std::runtime_error("Invalid Program : Expected , or ) in parameter list");
+                throw std::runtime_error("Invalid Program : Expected , or ) in parameter list at line " +
+                                         std::to_string(lexer_inst.line_number));
             }
         }
         eat(TokenType::R_PAREN);
@@ -717,7 +746,8 @@ public:
                 eat(TokenType::BOOL);
                 return "bool";
             default:
-                throw std::runtime_error("Invalid Program : Invalid type!");
+                throw std::runtime_error("Invalid Program : Invalid type! at line " +
+                std::to_string(lexer_inst.line_number));
         }
     }
 

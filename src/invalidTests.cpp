@@ -18,8 +18,8 @@ void randomInvalidTest ()
         std::string excpectedException = "Invalid Program : Global variables not allowed";
         if(e.what()== excpectedException)
         {
-            std::cout << "Test Passed ( programBInvalidTest ) : " << e.what() << std::endl;
-        } else std::cout << "Test Failed ( programBInvalidTest ) " << std::endl;
+            std::cout << "Test Passed ( programRandomInvalidTest ) : " << e.what() << std::endl;
+        } else std::cout << "Test Failed ( programRandomInvalidTest ) " << std::endl;
     }
     //if("[{ \"type\": \"FunctionDeclaration\", \"name\": \"main\", \"parameters\": [{ \"type\": \"int\", \"name\": \"b\" }, { \"type\": \"int\", \"name\": \"c\" }], \"body\": [{ \"type\": \"Declaration\", \"name\": \"a\", \"dataType\": \"INT\" }, { \"type\": \"Declaration\", \"name\": \"b\", \"dataType\": \"INT\" }, { \"type\": \"Declaration\", \"name\": \"d", \"dataType\": \"FLOAT" }, { "type": "Declaration", "name": "s", "dataType": "BOOL" }] }, { "type": "FunctionDeclaration", "name": "f", "parameters": [], "body": [{ "type": "Declaration", "name": "c", "dataType": "INT" }] }, { "type": "FunctionDeclaration", "name": "c", "parameters": [], "body": [] }, { "type": "Assignment", "left": { "type": "IdentifierNode", "value": "a" }, "right": { "type": "BinaryExpression", "operator": "ADD_OP", "left": { "type": "Variable", "name": "c" }, "right": { "type": "Variable", "name": "d" } } }]"
 }
@@ -37,9 +37,12 @@ void programAInvalidTest ()
     std::string providedParserJson;
     try {
         auto astNodes = parse.parseAST();
-        std::cout << "Test Failed ( programAInvalidTest ) " << std::endl;
     } catch (const std::runtime_error& e) {
-        std::cout << "Test Passed ( programAInvalidTest ) : " << e.what() << std::endl;
+        std::string excpectedException = "Invalid Program : Declaration must be at the beginning at line 4";
+        if(e.what()== excpectedException)
+        {
+            std::cout << "Test Passed ( programAInvalidTest ) : " << e.what() << std::endl;
+        } else std::cout << "Test Failed ( programAInvalidTest ) " <<  e.what() << std::endl;
     }
     //if("[{ \"type\": \"FunctionDeclaration\", \"name\": \"main\", \"parameters\": [{ \"type\": \"int\", \"name\": \"b\" }, { \"type\": \"int\", \"name\": \"c\" }], \"body\": [{ \"type\": \"Declaration\", \"name\": \"a\", \"dataType\": \"INT\" }, { \"type\": \"Declaration\", \"name\": \"b\", \"dataType\": \"INT\" }, { \"type\": \"Declaration\", \"name\": \"d", \"dataType\": \"FLOAT" }, { "type": "Declaration", "name": "s", "dataType": "BOOL" }] }, { "type": "FunctionDeclaration", "name": "f", "parameters": [], "body": [{ "type": "Declaration", "name": "c", "dataType": "INT" }] }, { "type": "FunctionDeclaration", "name": "c", "parameters": [], "body": [] }, { "type": "Assignment", "left": { "type": "IdentifierNode", "value": "a" }, "right": { "type": "BinaryExpression", "operator": "ADD_OP", "left": { "type": "Variable", "name": "c" }, "right": { "type": "Variable", "name": "d" } } }]"
 }
@@ -56,11 +59,11 @@ void programBInvalidTest ()
     try {
         auto astNodes = parse.parseAST();
     } catch (const std::runtime_error& e) {
-        std::string excpectedException = "Invalid Program : Direct assignment during declaration is not allowed";
+        std::string excpectedException = "Invalid Program : Direct assignment during declaration is not allowed at line 2";
         if(e.what()== excpectedException)
         {
             std::cout << "Test Passed ( programBInvalidTest ) : " << e.what() << std::endl;
-        } else std::cout << "Test Failed ( programBInvalidTest ) " << std::endl;
+        } else std::cout << "Test Failed ( programBInvalidTest ) " << e.what() << std::endl;
     }
     //if("[{ \"type\": \"FunctionDeclaration\", \"name\": \"main\", \"parameters\": [{ \"type\": \"int\", \"name\": \"b\" }, { \"type\": \"int\", \"name\": \"c\" }], \"body\": [{ \"type\": \"Declaration\", \"name\": \"a\", \"dataType\": \"INT\" }, { \"type\": \"Declaration\", \"name\": \"b\", \"dataType\": \"INT\" }, { \"type\": \"Declaration\", \"name\": \"d", \"dataType\": \"FLOAT" }, { "type": "Declaration", "name": "s", "dataType": "BOOL" }] }, { "type": "FunctionDeclaration", "name": "f", "parameters": [], "body": [{ "type": "Declaration", "name": "c", "dataType": "INT" }] }, { "type": "FunctionDeclaration", "name": "c", "parameters": [], "body": [] }, { "type": "Assignment", "left": { "type": "IdentifierNode", "value": "a" }, "right": { "type": "BinaryExpression", "operator": "ADD_OP", "left": { "type": "Variable", "name": "c" }, "right": { "type": "Variable", "name": "d" } } }]"
 }
@@ -79,7 +82,7 @@ void programCInvalidTest ()
     try {
         auto astNodes = parse.parseAST();
     } catch (const std::runtime_error& e) {
-        std::string excpectedException = "Invalid Program : Use of undeclared variable a";
+        std::string excpectedException = "Invalid Program : Use of undeclared variable a at line 3";
         if(e.what()== excpectedException)
         {
             std::cout << "Test Passed ( programCInvalidTest ) : " << e.what() << std::endl;
