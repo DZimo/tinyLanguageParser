@@ -1,4 +1,5 @@
 
+#include <unordered_set>
 #include "parser.h"
 
 class parser {
@@ -13,11 +14,13 @@ private:
 
 protected:
     tokenizer current_token_inst;
+    std::unordered_set<std::string> visitedSymbols;  // Global or class member
+
 public:
     explicit parser(const lexer& lex)
             : lexer_inst(lex),
               current_token_inst(lexer_inst.getNextToken()) {}// Only initialize here
-    int evaluate(const std::unique_ptr<astNode>& node) {
+    /*int evaluate(const std::unique_ptr<astNode>& node) {
         if (node->getType() == "Number") {
             NumberNode* numberNode = dynamic_cast<NumberNode*>(node.get());
             return std::stoi(numberNode->value);
@@ -126,6 +129,41 @@ public:
             return evaluate(declarationNode->value.get());
         }
         return 0; // Default return value, consider throwing an exception
+    }*/
+    int evaluate(astNode* node) {
+        if (!node) {
+            throw std::runtime_error("Null node encountered");
+        }
+
+        std::string nodeType = node->getType();
+
+        if (nodeType == "Number") {
+            NumberNode* numberNode = dynamic_cast<NumberNode*>(node);
+            return std::stoi(numberNode->value);
+        }
+        else if (nodeType == "BinaryExpression") {
+            BinaryOpNode* binaryOpNode = dynamic_cast<BinaryOpNode*>(node);
+            int leftVal = evaluate(binaryOpNode->left.get());
+            int rightVal = evaluate(binaryOpNode->right.get());
+            // ... (your overflow checks and operations here)
+        }
+        else if (nodeType == "Variable") {
+            VariableNode* variableNode = dynamic_cast<VariableNode*>(node);
+            astNode* varNode = symbolTable.lookupSymbol(variableNode->name);
+            if (varNode) {
+                return evaluate(varNode);
+            }
+            else {
+                throw std::runtime_error("Variable not found: " + variableNode->name);
+            }
+        }
+        else if (nodeType == "Declaration") {
+            DeclarationNode* declarationNode = dynamic_cast<DeclarationNode*>(node);
+            return evaluate(declarationNode->value.get());
+        }
+        // ... (handle other node types)
+
+        return 0;  // Default return value; consider throwing an exception
     }
 
     void eat(TokenType token_type) {
@@ -161,10 +199,10 @@ public:
             auto token = current_token_inst;
             eat(token.type);
 
-            //leftValue = this->evaluate(node.get());
+            leftValue = this->evaluate(node.get());
 
             auto rightNode = term();
-            //rightValue = this->evaluate(rightNode.get());
+            rightValue = this->evaluate(rightNode.get());
 
             if (token.type == TokenType::ADD_OP) {
                 if (overflower.additionWillOverflow(leftValue, rightValue)) {
@@ -447,6 +485,9 @@ public:
                             eat(TokenType::ASSIGNMENT);
                             // Handle the right-hand side. It can be an expression, a function call, another variable, or a literal.
                             auto rightExpr = expr();
+                            int evaluatedValue = evaluate(rightExpr.get());
+                            auto newValueNode = std::make_unique<NumberNode>(std::to_string(evaluatedValue));
+
                             auto rightExprCopy = deepCopyAstNode(rightExpr.get());
 
                             if(arraySize != -1) {
@@ -454,7 +495,7 @@ public:
                                 std::to_string(lexer_inst.line_number));
                             }
                             variableNodes.push_back(std::make_unique<AssignmentNode>(std::make_unique<IdentifierNode>(varOrFuncName), std::move(rightExpr)));
-                            symbolTable.updateValueInScopes(varOrFuncName, std::move(rightExprCopy));
+                            symbolTable.updateValueInScopes(varOrFuncName, std::move(newValueNode));
                             insideDeclarationScope=false;
                         }
                         else {
