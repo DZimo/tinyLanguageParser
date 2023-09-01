@@ -1,5 +1,5 @@
 # HOW TO RUN ?
-Simply put your desired script in "src/script.txt" then compile the code g++ -o src/main after that execute it with ./main 
+Simply put your desired script in "src/script.txt" then compile the code g++ -o main src/main.cpp after that execute it with ./main 
 you will get the results either in run prompt or log.txt if it is a valid or invalid program then the constructed AST in both JSON format and BMP format for image representation
 
 # HOW IT WORKS ?

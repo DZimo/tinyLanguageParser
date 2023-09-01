@@ -12,6 +12,7 @@ public:
 
     // Now the function accepts a vector of unique pointers to astNode
     std::vector<std::vector<Color>> astToBMP(const std::vector<std::unique_ptr<astNode>>& ast);
+    void drawAST(const std::unique_ptr<astNode>& node, int x, int y, int level, std::vector<std::vector<imageGenerator::Color>>& data);
     void saveBMP(const std::string& filename, const std::vector<std::vector<Color>>& data);
 };
 
