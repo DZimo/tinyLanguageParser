@@ -32,14 +32,13 @@ std::string serializeWithGeneratedSerializer(const std::vector<std::unique_ptr<a
 }
 
 int main() {
-    //std::string script = "main ( int b, int c ) { int a; int b; float d; bool s;} f () { int c;} c() {}  a = c + d;";
     std::string script = readFile("src/script.txt");
     logger::initialize();
     lexer lex(script);
     parser parse(lex);
     imageGenerator generator;
-
     std::string generatedParserJson;
+
     try {
         // PARSE
         auto astNodes = parse.parseAST();
@@ -47,16 +46,18 @@ int main() {
         // GENERATE IMAGE
         //auto bmpData = generator.astToBMP(astNodes);
         //generator.saveBMP("test.bmp",bmpData);
+
+        std::string providedParserJson;
+        std::ofstream generatedOut("generatedAST.json");
+        generatedOut << generatedParserJson;
+        generatedOut.close();
+        std::cout << "AST: " << generatedParserJson;
+
     } catch(const std::runtime_error& e) {
         std::cerr << "Parsing failed - " << e.what() << std::endl;
         logger::error(e.what());
     }
-    std::string ebnfContent = readFile("EBNF_grammar_Tiny.txt");
-    std::string providedParserJson;
-    std::ofstream generatedOut("generatedAST.json");
-    generatedOut << generatedParserJson;
-    generatedOut.close();
-    std::cout << "AST: " << generatedParserJson;
+
     logger::close();
     return 0;
 }

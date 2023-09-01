@@ -12,15 +12,16 @@ class astNode {
 public:
     virtual ~astNode() = default;
 
-    std::string toJSON() const {
-            if(this != NULL)
-            {
-                std::ostringstream json;
-                json << "{ \"type\": \"" << getType() << "\", ";
-                appendToJSON(json);
-                json << " }";
-                return json.str();
-            }
+    std::string toJSON(int indent = 0) const {
+        if (this != nullptr) {
+            std::ostringstream json;
+            std::string indentStr(indent, ' ');
+            json << "{\n"
+                 << indentStr << "  \"type\": \"" << getType() << "\",\n";
+            appendToJSON(json, indent + 2);
+            json << "\n" << indentStr << "}";
+            return json.str();
+        }
         return "";
     }
 
@@ -39,7 +40,7 @@ public:
 public:
     // Override these in derived classes
     virtual std::string getType() const = 0;
-    virtual void appendToJSON(std::ostringstream& os) const = 0;
+    virtual void appendToJSON(std::ostringstream& os, int indent) const = 0;
     virtual std::string getDescription() const = 0;
     virtual void printChildren(std::ostream& os, int depth) const {}
     virtual const std::vector<std::unique_ptr<astNode>>& getChildren() const {
@@ -61,8 +62,10 @@ public:
 
 protected:
     std::string getType() const override { return "Declaration"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"name\": \"" << name << "\", \"dataType\": \"" << dataType << "\"";
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"name\": \"" << name << "\",\n"
+           << indentStr << "\"dataType\": \"" << dataType << "\"";
     }
     std::string getDescription() const override {
         return "Declaration: " + dataType + " " + name;
@@ -92,8 +95,11 @@ private:
 
 protected:
     std::string getType() const override { return "ArrayDeclaration"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"name\": \"" << name << "\", \"dataType\": \"" << dataType << "\", \"size\": " << size;
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"name\": \"" << name << "\",\n"
+           << indentStr << "\"dataType\": \"" << dataType << "\",\n"
+           << indentStr << "\"size\": " << size;
     }
     std::string getDescription() const override {
         return "ArrayDeclaration: " + dataType + " " + name + "[" + std::to_string(size) + "]";
@@ -117,16 +123,16 @@ protected:
     const std::vector<std::unique_ptr<astNode>>& getChildren() const override {
         return nodes;  // Return a reference to the nodes for CompoundNode
     }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"type\": \"" << getType() << "\", ";
-        os << "\"nodes\": [";
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"nodes\": [\n";
         for (size_t i = 0; i < nodes.size(); ++i) {
-            os << nodes[i]->toJSON();
+            os << nodes[i]->toJSON(indent + 2);
             if (i != nodes.size() - 1) {
-                os << ", ";
+                os << ",\n";
             }
         }
-        os << "]";
+        os << "\n" << indentStr << "]";
     }
 
     std::string getDescription() const override {
@@ -156,8 +162,9 @@ public:
 
 protected:
     std::string getType() const override { return "IdentifierNode"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"value\": \"" << value << "\"";
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"value\": \"" << value << "\"";
     }
     std::string getDescription() const override {
         return "Identifier: " + value;
@@ -177,9 +184,11 @@ public:
 
 protected:
     std::string getType() const override { return "BinaryExpression"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"operator\": \"" << tokenTypeToString(op) << "\", "
-           << "\"left\": " << left->toJSON() << ", \"right\": " << right->toJSON();
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"operator\": \"" << "YourTokenTypeToStringHere" << "\",\n"
+           << indentStr << "\"left\": \n" << left->toJSON(indent + 2) << ",\n"
+           << indentStr << "\"right\": \n" << right->toJSON(indent + 2);
     }
     std::string getDescription() const override {
         return "BinaryOp: " + tokenTypeToString(op);
@@ -224,8 +233,9 @@ public:
 
 protected:
     std::string getType() const override { return "Number"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"value\": \"" << value << "\"";
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"value\": \"" << value << "\"";
     }
     std::string getDescription() const override {
         return "Number: " + value;
@@ -259,8 +269,9 @@ public:
     std::string name;
 protected:
     std::string getType() const override { return "Variable"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"name\": \"" << name << "\"";
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"name\": \"" << name << "\"";
     }
     std::string getDescription() const override {
         return "Variable: " + name;
@@ -288,14 +299,18 @@ public:
 
 protected:
     std::string getType() const override { return "Block"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"statements\": [";
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"statements\": [\n";
         for (size_t i = 0; i < statements.size(); ++i) {
-            os << statements[i]->toJSON();
-            if (i < statements.size() - 1) os << ", ";
+            os << statements[i]->toJSON(indent + 2);
+            if (i != statements.size() - 1) {
+                os << ",\n";
+            }
         }
-        os << "]";
+        os << "\n" << indentStr << "]";
     }
+
     std::string getDescription() const override {
         return "Block:";
     }
@@ -319,11 +334,12 @@ public:
 
 protected:
     std::string getType() const override { return "IfStatement"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"condition\": " << condition->toJSON()
-           << ", \"trueBranch\": " << trueBranch->toJSON();
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"condition\": \n" << condition->toJSON(indent + 2) << ",\n"
+           << indentStr << "\"trueBranch\": \n" << trueBranch->toJSON(indent + 2);
         if (falseBranch) {
-            os << ", \"falseBranch\": " << falseBranch->toJSON();
+            os << ",\n" << indentStr << "\"falseBranch\": \n" << falseBranch->toJSON(indent + 2);
         }
     }
     std::string getDescription() const override {
@@ -351,9 +367,10 @@ public:
 
 protected:
     std::string getType() const override { return "WhileLoop"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"condition\": " << condition->toJSON()
-           << ", \"body\": " << loopBody->toJSON();
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"condition\": \n" << condition->toJSON(indent + 2) << ",\n"
+           << indentStr << "\"body\": \n" << loopBody->toJSON(indent + 2);
     }
     std::string getDescription() const override {
         return "While Condition:";
@@ -377,9 +394,10 @@ public:
 
 protected:
     std::string getType() const override { return "UnaryOperation"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"operator\": \"" << tokenTypeToString(op) << "\", "
-           << "\"operand\": " << operand->toJSON();
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"operator\": \"" << "YourTokenTypeToStringHere" << "\",\n"
+           << indentStr << "\"operand\": \n" << operand->toJSON(indent + 2);
     }
     std::string getDescription() const override {
         return "Unary Operation: " + tokenTypeToString(op);
@@ -401,13 +419,14 @@ public:
 
 protected:
     std::string getType() const override { return "FunctionCall"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"name\": \"" << funcName << "\", \"arguments\": [";
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"name\": \"" << funcName << "\",\n" << indentStr << "\"arguments\": [\n";
         for (size_t i = 0; i < arguments.size(); ++i) {
-            os << arguments[i]->toJSON();
-            if (i < arguments.size() - 1) os << ", ";
+            os << arguments[i]->toJSON(indent + 2);
+            if (i < arguments.size() - 1) os << ",\n";
         }
-        os << "]";
+        os << "\n" << indentStr << "]";
     }
     std::string getDescription() const override {
         return "Function Call: " + funcName;
@@ -434,18 +453,19 @@ public:
 
 protected:
     std::string getType() const override { return "FunctionDeclaration"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"name\": \"" << funcName << "\", \"parameters\": [";
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"name\": \"" << funcName << "\",\n" << indentStr << "\"parameters\": [\n";
         for (size_t i = 0; i < parameters.size(); ++i) {
-            os << parameters[i]->toJSON(); // Assumes DeclarationNode has toJSON()
-            if (i < parameters.size() - 1) os << ", ";
+            os << parameters[i]->toJSON(indent + 2);
+            if (i < parameters.size() - 1) os << ",\n";
         }
-        os << "], \"body\": [";
+        os << "\n" << indentStr << "],\n" << indentStr << "\"body\": [\n";
         for (size_t i = 0; i < bodyStatements.size(); ++i) {
-            os << bodyStatements[i]->toJSON();
-            if (i < bodyStatements.size() - 1) os << ", ";
+            os << bodyStatements[i]->toJSON(indent + 2);
+            if (i < bodyStatements.size() - 1) os << ",\n";
         }
-        os << "]";
+        os << "\n" << indentStr << "]";
     }
     std::string getDescription() const override {
         return "Function Declaration: " + funcName;
@@ -474,8 +494,9 @@ public:
 protected:
     std::string getType() const override { return "Return"; }
 
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"return_value\": " << returnValue->toJSON();
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"return_value\": \n" << returnValue->toJSON(indent + 2);
     }
 
     std::string getDescription() const override {
@@ -494,18 +515,19 @@ public:
 
 protected:
     std::string getType() const override { return "MainFunctionNode"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"declarations\": [";
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"declarations\": [\n";
         for (size_t i = 0; i < declarations.size(); ++i) {
-            os << declarations[i]->toJSON();
-            if (i < declarations.size() - 1) os << ", ";
+            os << declarations[i]->toJSON(indent + 2);
+            if (i < declarations.size() - 1) os << ",\n";
         }
-        os << "], \"statements\": [";
+        os << "\n" << indentStr << "],\n" << indentStr << "\"statements\": [\n";
         for (size_t i = 0; i < statements.size(); ++i) {
-            os << statements[i]->toJSON();
-            if (i < statements.size() - 1) os << ", ";
+            os << statements[i]->toJSON(indent + 2);
+            if (i < statements.size() - 1) os << ",\n";
         }
-        os << "]";
+        os << "\n" << indentStr << "]";
     }
     std::string getDescription() const override {
         return "MainFunction:";
@@ -535,33 +557,33 @@ public:
 
 protected:
     std::string getType() const override { return "FunctionNode"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"returnType\": \"" << returnType << "\", ";
-        os << "\"name\": \"" << name << "\", ";
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"returnType\": \"" << returnType << "\",\n" << indentStr << "\"name\": \"" << name << "\",\n";
 
-        // Serialize parameters
-        os << "\"parameters\": [";
+        // Parameters
+        os << indentStr << "\"parameters\": [\n";
         for (size_t i = 0; i < parameters.size(); ++i) {
-            os << "{\"type\": \"" << parameters[i].first << "\", \"name\": \"" << parameters[i].second << "\"}";
-            if (i < parameters.size() - 1) os << ", ";
+            os << indentStr << "  {\"type\": \"" << parameters[i].first << "\", \"name\": \"" << parameters[i].second << "\"}";
+            if (i < parameters.size() - 1) os << ",\n";
         }
-        os << "], ";
+        os << "\n" << indentStr << "],\n";
 
-        // Serialize declarations
-        os << "\"declarations\": [";
+        // Declarations
+        os << indentStr << "\"declarations\": [\n";
         for (size_t i = 0; i < declarations.size(); ++i) {
-            os << declarations[i]->toJSON();
-            if (i < declarations.size() - 1) os << ", ";
+            os << declarations[i]->toJSON(indent + 2);
+            if (i < declarations.size() - 1) os << ",\n";
         }
-        os << "], ";
+        os << "\n" << indentStr << "],\n";
 
-        // Serialize statements
-        os << "\"statements\": [";
+        // Statements
+        os << indentStr << "\"statements\": [\n";
         for (size_t i = 0; i < statements.size(); ++i) {
-            os << statements[i]->toJSON();
-            if (i < statements.size() - 1) os << ", ";
+            os << statements[i]->toJSON(indent + 2);
+            if (i < statements.size() - 1) os << ",\n";
         }
-        os << "]";
+        os << "\n" << indentStr << "]";
     }
 
     std::string getDescription() const override {
@@ -598,9 +620,11 @@ public:
 
 protected:
     std::string getType() const override { return "CharacterNode"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"value\": \"" << value << "\"";
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"value\": \"" << value << "\"";
     }
+
     std::string getDescription() const override {
         return "CharacterNode: " + std::string(1, value);
     }
@@ -616,8 +640,10 @@ public:
 
 protected:
     std::string getType() const override { return "Assignment"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"left\": " << variable->toJSON() << ", \"right\": " << expression->toJSON();
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"left\": " << variable->toJSON(indent + 2) << ",\n";
+        os << indentStr << "\"right\": " << expression->toJSON(indent + 2);
     }
     std::string getDescription() const override {
         return "Assignment:";
@@ -645,8 +671,9 @@ protected:
         return "Boolean";
     }
 
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"value\": " << (value ? "true" : "false");
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"value\": " << (value ? "true" : "false");
     }
 
     std::string getDescription() const override {
@@ -665,8 +692,10 @@ public:
 
 protected:
     std::string getType() const override { return "RuleNode"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"name\": \"" << ruleName << "\", \"body\": " << body->toJSON();
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"name\": \"" << ruleName << "\",\n";
+        os << indentStr << "\"body\": " << body->toJSON(indent + 2);
     }
     std::string getDescription() const override {
         return "Rule: " + ruleName;
@@ -687,8 +716,10 @@ public:
 
 protected:
     std::string getType() const override { return "AlternativeNode"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"left\": " << left->toJSON() << ", \"right\": " << right->toJSON();
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"left\": " << left->toJSON(indent + 2) << ",\n";
+        os << indentStr << "\"right\": " << right->toJSON(indent + 2);
     }
     std::string getDescription() const override {
         return "AlternativeNode:";
@@ -710,8 +741,10 @@ public:
 
 protected:
     std::string getType() const override { return "ConcatNode"; }
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"left\": " << left->toJSON() << ", \"right\": " << right->toJSON();
+    void appendToJSON(std::ostringstream& os, int indent) const override {
+        std::string indentStr(indent, ' ');
+        os << indentStr << "\"left\": " << left->toJSON(indent + 2) << ",\n";
+        os << indentStr << "\"right\": " << right->toJSON(indent + 2);
     }
     std::string getDescription() const override {
         return "Concat:";

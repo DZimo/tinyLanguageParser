@@ -13,20 +13,22 @@ public:
 protected:
     std::string getType() const override { return "ProgramNode"; }
 
-    void appendToJSON(std::ostringstream& os) const override {
-        os << "\"statements\": [";
-        for (size_t i = 0; i < statements.size(); ++i) {
-            os << statements[i]->toJSON();
-            if (i < statements.size() - 1) os << ", ";
-        }
-        os << "], ";
+    void appendToJSON(std::ostringstream& os, int indent = 0) const override {
+        std::string indentStr(indent, ' ');
 
-        os << "\"functions\": [";
-        for (size_t i = 0; i < functions.size(); ++i) {
-            os << functions[i]->toJSON();
-            if (i < functions.size() - 1) os << ", ";
+        os << indentStr << "\"statements\": [\n";
+        for (size_t i = 0; i < statements.size(); ++i) {
+            os << statements[i]->toJSON(indent + 2);
+            if (i < statements.size() - 1) os << ",\n";
         }
-        os << "]";
+        os << "\n" << indentStr << "],\n";
+
+        os << indentStr << "\"functions\": [\n";
+        for (size_t i = 0; i < functions.size(); ++i) {
+            os << functions[i]->toJSON(indent + 2);
+            if (i < functions.size() - 1) os << ",\n";
+        }
+        os << "\n" << indentStr << "]";
     }
 
     std::string getDescription() const override {
