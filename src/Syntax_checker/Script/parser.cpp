@@ -297,7 +297,7 @@ public:
             eat(TokenType::R_PAREN);
             return node;
         } else {
-            throw std::runtime_error("Invalid Program : Invalid token in factor!" +  token.value +  " at line " +
+            throw std::runtime_error("Invalid Program : Invalid token in factor! " +  token.value +  " at line " +
                                           std::to_string(lexer_inst.line_number));
         }
     }
@@ -571,7 +571,10 @@ public:
 
             case TokenType::SEMICOLON:
                 // Empty statement.
-                eat(TokenType::SEMICOLON);
+                if(current_token_inst.type==TokenType::SEMICOLON)
+                {
+                    throw std::runtime_error("Invalid Program : Unexpected token after SEMICOLON at line " +
+                                             std::to_string(lexer_inst.line_number));      }
                 return {};
 
             default:
