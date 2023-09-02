@@ -186,7 +186,7 @@ protected:
     std::string getType() const override { return "BinaryExpression"; }
     void appendToJSON(std::ostringstream& os, int indent) const override {
         std::string indentStr(indent, ' ');
-        os << indentStr << "\"operator\": \"" << "YourTokenTypeToStringHere" << "\",\n"
+        os << indentStr << "\"operator\": \"" << tokenTypeToString(op) << "\",\n"
            << indentStr << "\"left\": \n" << left->toJSON(indent + 2) << ",\n"
            << indentStr << "\"right\": \n" << right->toJSON(indent + 2);
     }
@@ -396,7 +396,7 @@ protected:
     std::string getType() const override { return "UnaryOperation"; }
     void appendToJSON(std::ostringstream& os, int indent) const override {
         std::string indentStr(indent, ' ');
-        os << indentStr << "\"operator\": \"" << "YourTokenTypeToStringHere" << "\",\n"
+        os << indentStr << "\"operator\": \"" << tokenTypeToString(op) << "\",\n"
            << indentStr << "\"operand\": \n" << operand->toJSON(indent + 2);
     }
     std::string getDescription() const override {

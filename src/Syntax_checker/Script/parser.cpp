@@ -462,13 +462,22 @@ public:
                         int arraySize = -1;  // Default, meaning not an array
                         if(current_token_inst.type == TokenType::L_BRACKET) {
                             eat(TokenType::L_BRACKET);
-
-                            if(current_token_inst.type != TokenType::NUMBER) {
+                            // Array declaration
+                            if(current_token_inst.type == TokenType::NUMBER) {
+                                arraySize = std::stoi(current_token_inst.value);
+                                eat(TokenType::NUMBER);
+                            }
+                            // Array assignment
+                            else if(current_token_inst.type == TokenType::IDENTIFIER) {
+                                if(!symbolTable.lookupSymbol(varOrFuncName)) {
+                                    throw std::runtime_error("Invalid Program : Use of undeclared variable " + varOrFuncName + " at line " +
+                                                             std::to_string(lexer_inst.line_number));
+                                }
+                                eat(TokenType::IDENTIFIER);
+                            } else{
                                 throw std::runtime_error("Invalid Program : Array size should be a number at line " +
                                 std::to_string(lexer_inst.line_number));
                             }
-                            arraySize = std::stoi(current_token_inst.value);
-                            eat(TokenType::NUMBER);
 
                             if(current_token_inst.type != TokenType::R_BRACKET) {
                                 throw std::runtime_error("Invalid Program : Expected closing bracket at line " +
@@ -507,7 +516,7 @@ public:
                             }
                             if(arraySize != -1) {
                                 variableNodes.push_back(std::make_unique<ArrayDeclarationNode>(lastDataType, varOrFuncName, arraySize));
-                                symbolTable.insertSymbol(varOrFuncName, variableNodes.back().get());  // Assuming ArrayDeclarationNode derives from astNode
+                                symbolTable.insertSymbol(varOrFuncName, variableNodes.back().get(),arraySize);  // Assuming ArrayDeclarationNode derives from astNode
 
                             } else {
                                 variableNodes.push_back(std::make_unique<DeclarationNode>(lastDataType, varOrFuncName));
