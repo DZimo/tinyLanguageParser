@@ -469,9 +469,15 @@ public:
                             }
                             // Array assignment
                             else if(current_token_inst.type == TokenType::IDENTIFIER) {
-                                if(!symbolTable.lookupSymbol(varOrFuncName)) {
-                                    throw std::runtime_error("Invalid Program : Use of undeclared variable " + varOrFuncName + " at line " +
+                                if(!symbolTable.lookupSymbol(current_token_inst.value)) {
+                                    throw std::runtime_error("Invalid Program : Use of undeclared variable " + current_token_inst.value + " at line " +
                                                              std::to_string(lexer_inst.line_number));
+                                }
+                                if(!(evaluate(symbolTable.lookupSymbol(current_token_inst.value)) <= symbolTable.getArraySize(varOrFuncName)))
+                                {
+                                    throw std::overflow_error("The program contains an integer overflow at line " +
+                                                              std::to_string(lexer_inst.line_number) + ". The sum " +
+                                                              " overflows the maximum array size.");
                                 }
                                 eat(TokenType::IDENTIFIER);
                             } else{
