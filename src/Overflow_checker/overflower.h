@@ -1,7 +1,3 @@
-//
-// Created by Admin on 8/29/2023.
-//
-
 #ifndef TINYLANGUAGEPARSER_OVERFLOWER_H
 #define TINYLANGUAGEPARSER_OVERFLOWER_H
 

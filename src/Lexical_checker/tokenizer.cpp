@@ -1,7 +1,3 @@
-//
-// Created by Admin on 8/10/2023.
-//
-
 #include "tokenizer.h"
 
 
