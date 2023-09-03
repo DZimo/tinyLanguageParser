@@ -5,8 +5,6 @@
 #include "../headersGeneralizer.h"
 #include "../Lexical_checker/tokenizer.h"
 
-
-
 class astNode {
 
 public:
@@ -33,7 +31,7 @@ public:
 
     int getMaxDepthRecursive() const {
         int maxChildDepth = getChildrenDepth();
-        return 1 + maxChildDepth;  // 1 for the current node + maximum depth of children
+        return 1 + maxChildDepth;
     }
 
 
@@ -58,7 +56,7 @@ class DeclarationNode : public astNode {
 public:
     std::string dataType;
     std::string name;
-    std::unique_ptr<astNode> value;  // New field to hold the value
+    std::unique_ptr<astNode> value;
 
 protected:
     std::string getType() const override { return "Declaration"; }
@@ -71,7 +69,7 @@ protected:
         return "Declaration: " + dataType + " " + name;
     }
     int getChildrenDepth() const override {
-        return 0;  // DeclarationNode does not have children, so it returns 0.
+        return 0;  // DeclarationNode does not have children.
     }
 
 public:
@@ -105,7 +103,7 @@ protected:
         return "ArrayDeclaration: " + dataType + " " + name + "[" + std::to_string(size) + "]";
     }
     int getChildrenDepth() const override {
-        return 0;  // ArrayDeclarationNode does not have children, so it returns 0.
+        return 0;  // ArrayDeclarationNode does not have children
     }
 public:
     ArrayDeclarationNode(const std::string &dataType, const std::string &name, int size)
@@ -121,7 +119,7 @@ protected:
         return "Compound";
     }
     const std::vector<std::unique_ptr<astNode>>& getChildren() const override {
-        return nodes;  // Return a reference to the nodes for CompoundNode
+        return nodes;
     }
     void appendToJSON(std::ostringstream& os, int indent) const override {
         std::string indentStr(indent, ' ');
@@ -170,7 +168,7 @@ protected:
         return "Identifier: " + value;
     }
     int getChildrenDepth() const override {
-        return 0;  // IdentifierNode does not have children, so it returns 0.
+        return 0;  // IdentifierNode does not have children
     }
 public:
     IdentifierNode(const std::string& val) : value(val) {}
@@ -241,7 +239,7 @@ protected:
         return "Number: " + value;
     }
     int getChildrenDepth() const override {
-        return 0;  // NumberNode does not have children, so it returns 0.
+        return 0;  // NumberNode does not have children
     }
 
 public:
@@ -283,8 +281,6 @@ public:
     /*int evaluate(const symbolTable& table) const override {
         astNode* node = table.lookupSymbol(name);
         if (node) {
-            // Assuming that the node returned can be evaluated to an integer
-            // You may want to add more checks here depending on your needs
             return node->evaluate(table);
         } else {
             throw std::runtime_error("Variable not found: " + name);
@@ -551,7 +547,7 @@ class FunctionNode : public astNode {
 public:
     std::string returnType;
     std::string name;
-    std::vector<std::pair<std::string, std::string>> parameters;  // pair of type and name
+    std::vector<std::pair<std::string, std::string>> parameters;
     std::vector<std::unique_ptr<astNode>> declarations;
     std::vector<std::unique_ptr<astNode>> statements;
 
@@ -680,10 +676,8 @@ protected:
         return "Boolean Literal";
     }
 
-    // Since a BooleanNode won't have children nodes, you can override the printChildren method to do nothing.
     void printChildren(std::ostream& os, int depth) const override {}
 };
-
 
 class RuleNode : public astNode {
 public:

@@ -1,11 +1,8 @@
-//
-// Created by Admin on 8/29/2023.
-//
 
 #include "overflower.h"
 #include <iostream>
-#include <cstdint> // For int16_t, int32_t, etc.
-#include <limits>  // For std::numeric_limits
+#include <cstdint>
+#include <limits>
 
 
 class overflower {

@@ -60,7 +60,6 @@ public:
         std::string value = source.substr(start_pos, pos - start_pos);
 
         // Check if the identifier is a type or just an identifier
-
         TokenType type;
         if (value == "int") type =  TokenType::INT;
         else if (value == "float") type =  TokenType::FLOAT;
@@ -94,7 +93,7 @@ public:
         }
 
         std::string value = source.substr(start_pos, pos - start_pos);
-        return tokenizer( TokenType::NUMBER, value, line_number, char_position);  // Can differentiate between INT_NUMBER and FLOAT_NUMBER if needed
+        return tokenizer( TokenType::NUMBER, value, line_number, char_position);
     }
     tokenizer getChar() {
         advance();
@@ -126,10 +125,8 @@ public:
             }
 
             else if (std::isalpha(current_char)) {
-                // Use your getIdentifier function to get the token for the identifier
                 tokenizer token = getIdentifier();
 
-                // If the token type indicates that it's a regular identifier, then check if it's in the symbol table.
                 if (token.getType() ==  TokenType::IDENTIFIER) {
                     // Add to symbol table if not already present
                     if (!symbolTableInstant.exists(token.getValue())) {
@@ -154,7 +151,6 @@ public:
                         return tokenizer(TokenType::ADD_OP, "+", line_number, char_position);
 
                     case '-':
-                        // Similar logic for decrement (--) can be added here, if necessary.
                         advance();
                         if (current_char == '-') {
                             advance();
@@ -261,7 +257,7 @@ public:
 
                     case ';':
                         advance();
-                        pendingType = TokenType::UNKNOWN;  // Clear the pending type upon encountering a semicolon
+                        pendingType = TokenType::UNKNOWN;  // Clear the pending type
                         return tokenizer(TokenType::SEMICOLON, ";", line_number, char_position);
 
                     default:
@@ -271,7 +267,7 @@ public:
             }
 
         }
-        return tokenizer(TokenType::EOF_TOK, "", line_number, char_position);  // Return an EOF token if we've reached the end of the source
+        return tokenizer(TokenType::EOF_TOK, "", line_number, char_position);  // Return an EOF at the end
     }
 
     tokenizer peekNextToken() {
@@ -292,7 +288,7 @@ public:
     void retreat() {
         pos--;
         if (pos < 0) {
-            current_char = EOF;  // Indicates start of source
+            current_char = EOF;
         } else {
             current_char = source[pos];
             char_position--;

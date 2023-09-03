@@ -1,7 +1,3 @@
-//
-// Created by Admin on 8/10/2023.
-//
-
 #ifndef TINYLANGUAGEPARSER_TOKENIZER_H
 #define TINYLANGUAGEPARSER_TOKENIZER_H
 #include <string>
