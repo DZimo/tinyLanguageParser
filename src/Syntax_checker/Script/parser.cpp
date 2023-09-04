@@ -1,4 +1,3 @@
-
 #include <unordered_set>
 #include "parser.h"
 
@@ -14,12 +13,12 @@ private:
 
 protected:
     tokenizer current_token_inst;
-    std::unordered_set<std::string> visitedSymbols;  // Global or class member
+    std::unordered_set<std::string> visitedSymbols;
 
 public:
     explicit parser(const lexer& lex)
             : lexer_inst(lex),
-              current_token_inst(lexer_inst.getNextToken()) {}// Only initialize here
+              current_token_inst(lexer_inst.getNextToken()) {}
     /*int evaluate(const std::unique_ptr<astNode>& node) {
         if (node->getType() == "Number") {
             NumberNode* numberNode = dynamic_cast<NumberNode*>(node.get());
@@ -145,7 +144,7 @@ public:
             BinaryOpNode* binaryOpNode = dynamic_cast<BinaryOpNode*>(node);
             int leftVal = evaluate(binaryOpNode->left.get());
             int rightVal = evaluate(binaryOpNode->right.get());
-            // ... (your overflow checks and operations here)
+            // ...
         }
         else if (nodeType == "Variable") {
             VariableNode* variableNode = dynamic_cast<VariableNode*>(node);
@@ -161,9 +160,9 @@ public:
             DeclarationNode* declarationNode = dynamic_cast<DeclarationNode*>(node);
             return evaluate(declarationNode->value.get());
         }
-        // ... (handle other node types)
 
-        return 0;  // Default return value; consider throwing an exception
+
+        return 0;
     }
 
     void eat(TokenType token_type) {
@@ -183,7 +182,7 @@ public:
                current_token_inst.type == TokenType::EQUAL || current_token_inst.type == TokenType::NOT_EQUAL) {
 
             auto token = current_token_inst;
-            eat(token.type);  // Consume the operator
+            eat(token.type);
 
             node = std::make_unique<BinaryOpNode>(std::move(node), token.type, additiveExpr());
         }
@@ -391,8 +390,8 @@ public:
                     //std::vector<std::pair<std::string, std::string>> parameters;
                     std::vector<std::unique_ptr<DeclarationNode>> parameters;
                     if (current_token_inst.type != TokenType::R_PAREN) {
-                        do{  // This loop will handle multiple parameters
-                            // Expecting a type (like INT, CHAR, etc.)
+                        do{
+                            // Expecting a type INT, CHAR, BOOL
                             if (current_token_inst.type == TokenType::INT ||
                                 current_token_inst.type == TokenType::CHAR ||
                                 current_token_inst.type == TokenType::FLOAT ||
@@ -415,14 +414,11 @@ public:
                                 symbolTable.insertSymbol(paramName, declarationNode.get());
                                 parameters.push_back(std::move(declarationNode));  // Add to parameters list
 
-                                // If next token is a comma, then eat it and continue the loop for next parameter
                                 if (current_token_inst.type == TokenType::COMMA) {
                                     eat(TokenType::COMMA);
                                 } else if (current_token_inst.type == TokenType::R_PAREN) {
-                                    // If it's a right parenthesis, then parameter list has ended
                                     break;
                                 } else {
-                                    // Anything other than a comma or right parenthesis is an error
                                     throw std::runtime_error("Invalid Program : Expected , or ) after parameter declaration at line " +
                                                              std::to_string(lexer_inst.line_number));
                                 }
@@ -458,7 +454,7 @@ public:
                     std::vector<std::unique_ptr<astNode>> variableNodes;
                     bool continueDeclaration = true;
                     while (continueDeclaration) {
-                        // Check if it's an array declaration
+                        // Check if it's an array declaration or assignment
                         int arraySize = -1;  // Default, meaning not an array
                         if(current_token_inst.type == TokenType::L_BRACKET) {
                             eat(TokenType::L_BRACKET);
@@ -551,10 +547,9 @@ public:
                         }
                     }
 
-                    if (current_token_inst.type == TokenType::R_BRACE) { // Assuming R_CURLY represents the end of a block
+                    if (current_token_inst.type == TokenType::R_BRACE) { // R_CURLY means end of block
                         //symbolTable.popScope();
                     }
-                    // If you only have a single node, return it directly, otherwise return a compound node
                     if (variableNodes.size() == 1) {
                         return std::move(variableNodes[0]);
                     }
@@ -742,7 +737,7 @@ public:
 
 
         throw std::runtime_error("Unsupported node type to copy: " + node->getType());
-        return nullptr; // or throw an exception for an unsupported node type
+        return nullptr;
     }
 
     std::unique_ptr<astNode> blockStatement() {
@@ -849,14 +844,14 @@ public:
     }
 
     std::unique_ptr<astNode> function() {
-        // 1. Parse the return type of the function
+        // Parse the return type of the function
         auto returnType = type();
 
-        // 2. Parse the function name
+        // Parse the function name
         auto funcName = current_token_inst.value;
         eat(TokenType::IDENTIFIER);
 
-        // 3. Parse the parameter list
+        // Parse the parameter list
         eat(TokenType::L_PAREN);
         std::vector<std::pair<std::string, std::string>> parameters;
 
@@ -873,14 +868,12 @@ public:
             if (current_token_inst.type == TokenType::COMMA) {
                 eat(TokenType::COMMA);
             } else if (current_token_inst.type != TokenType::R_PAREN) {
-                // If it's not a comma and not a closing parenthesis, it's an error
                 throw std::runtime_error("Invalid Program : Expected , or ) in parameter list at line " +
                                          std::to_string(lexer_inst.line_number));
             }
         }
         eat(TokenType::R_PAREN);
 
-        // 4. Parse the function body
 
         // Handle declarations inside the function
         std::vector<std::unique_ptr<astNode>> decls;
@@ -905,13 +898,10 @@ public:
     std::unique_ptr<astNode> tiny_program() {
         auto mainFuncNode = main_function();
 
-        // Create a program node with an empty vector of statements
         std::unique_ptr<ProgramNode> program = std::make_unique<ProgramNode>(std::vector<std::unique_ptr<astNode>>{});
 
-        // Add the main function to the functions vector
         program->addFunction(std::move(mainFuncNode));
 
-        // If there are more functions after the main function, parse them
         while (current_token_inst.type != TokenType::EOF_TOK &&
                (current_token_inst.type == TokenType::INT ||
                 current_token_inst.type == TokenType::FLOAT ||
@@ -947,7 +937,7 @@ public:
     std::string serializeAST(const std::vector<std::unique_ptr<astNode>>& astNodes) {
         std::string result = "[";
         for (size_t i = 0; i < astNodes.size(); ++i) {
-            if (astNodes[i]) {  // Check if node is not nullptr
+            if (astNodes[i]) {
                 result += astNodes[i]->toJSON();
                 if (i != astNodes.size() - 1) {
                     result += ", ";

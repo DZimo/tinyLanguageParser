@@ -11,7 +11,7 @@ private:
 
 public:
     static void initialize() {
-        logFile.open("log.txt", std::ios::out | std::ios::app); // Open in append mode to prevent overwriting previous logs.
+        logFile.open("log.txt", std::ios::out | std::ios::app);
         if (!logFile) {
             std::cerr << "Failed to open log file." << std::endl;
         } else {
@@ -44,7 +44,7 @@ public:
 
     static std::string getTime()
     {
-        time_t now = time(0); // get current dat/time with respect to system.
+        time_t now = time(0);
         char* dt = ctime(&now);
         return dt;
     }

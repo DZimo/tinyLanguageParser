@@ -1,7 +1,3 @@
-//
-// Created by Admin on 8/13/2023.
-//
-
 #ifndef TINYLANGUAGEPARSER_PROGRAMNODE_H
 #define TINYLANGUAGEPARSER_PROGRAMNODE_H
 

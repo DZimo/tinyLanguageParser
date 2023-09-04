@@ -33,7 +33,7 @@ public:
         if (scopes.empty()) {
             throw std::runtime_error("No global scope found.");
         }
-        scopes[0][name] = node;  // Always insert into the global scope (the first scope)
+        scopes[0][name] = node;
     }
 
     void insert(const std::string& name, TokenType type) {
@@ -112,7 +112,7 @@ public:
         // Insert only if the name does not already exist in the current scope
         if (currentScope.find(name) == currentScope.end()) {
             currentScope[name] = node;
-            // If this is an array, store the size information as well
+            // If this is an array, store the size information also
             if (arraySize != -1) {
                 arraySizes[name] = arraySize;
             }
@@ -133,7 +133,6 @@ public:
     void updateValueInScopes(const std::string& name, std::unique_ptr<astNode> newValue) {
         // Start from the innermost scope and search outwards
         if (isArray(name)) {
-            // Handle array update logic
         } else {
             if (newValue == nullptr) {
                 throw std::runtime_error("Null AST node for " + name);
@@ -179,7 +178,7 @@ public:
                 return found->second; // Return the node if found
             }
         }
-        return nullptr; // Symbol not found in any scope
+        return nullptr; // Symbol not found
     }
 
     /*

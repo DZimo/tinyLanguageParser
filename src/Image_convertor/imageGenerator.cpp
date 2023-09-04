@@ -12,12 +12,12 @@ int getMaxDepthRecursive(const std::unique_ptr<astNode>& node) {
         maxChildDepth = std::max(maxChildDepth, getMaxDepthRecursive(child));
     }
 
-    return 1 + maxChildDepth;  // 1 for the current node + maximum depth of children
+    return 1 + maxChildDepth;
 }
 
 int getMaxDepth(const std::vector<std::unique_ptr<astNode>>& ast) {
     if (ast.empty()) {
-        return 0;  // Return 0 if the AST is empty
+        return 0;
     }
 
     int maxDepth = 0;
@@ -39,30 +39,24 @@ void drawRectangle(int x, int y, int width, int height, std::vector<std::vector<
 }
 
 void drawArrow(int x1, int y1, int x2, int y2, std::vector<std::vector<imageGenerator::Color>>& data, imageGenerator::Color color) {
-    // Code to draw a straight line (for simplicity)
     for (int i = std::min(y1, y2); i <= std::max(y1, y2); ++i) {
         if (x1 >= 0 && x1 < data[0].size() && i >= 0 && i < data.size()) {
             data[i][x1] = color;
         }
     }
-    // Code to add arrow tip can be added here
 }
 
-// Function to draw the AST as a tree
 void drawAST(const std::unique_ptr<astNode>& node, int x, int y, int level, std::vector<std::vector<imageGenerator::Color>>& data) {
     if (!node) {
         return;
     }
 
-    // Draw the current node at (x, y)
     std::string type = node->getType();
     imageGenerator::Color color;
-    // Set the color based on the type
-    // ...
+
 
     drawRectangle(x, y, 50, 50, data, color);  // Assume each node is represented as a 50x50 rectangle
 
-    // Draw children
     int childX = x - 100;  // Starting x-coordinate for children
     int childY = y + 100;  // Starting y-coordinate for children
     for (const auto& child : node->getChildren()) {
