@@ -51,6 +51,7 @@ int main() {
         std::ofstream generatedOut("generatedAST.json");
         generatedOut << generatedParserJson;
         generatedOut.close();
+        std::cerr << "Valid program - " << std::endl;
         std::cout << "AST: " << generatedParserJson;
 
     } catch(const std::runtime_error& e) {

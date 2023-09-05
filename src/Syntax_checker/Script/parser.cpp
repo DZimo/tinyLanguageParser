@@ -4,10 +4,10 @@
 class parser {
 private:
     lexer lexer_inst;
-    overflower overflower;
+    overflower overflowerInstance;
     std::unique_ptr<astNode> sequence();
     std::string lastDataType;
-    symbolTable symbolTable;
+    symbolTable symbolTableInstance;
     bool insideFunctionScope = false;
     bool insideDeclarationScope = true;
 
@@ -148,7 +148,7 @@ public:
         }
         else if (nodeType == "Variable") {
             VariableNode* variableNode = dynamic_cast<VariableNode*>(node);
-            astNode* varNode = symbolTable.lookupSymbol(variableNode->name);
+            astNode* varNode = symbolTableInstance.lookupSymbol(variableNode->name);
             if (varNode) {
                 return evaluate(varNode);
             }
@@ -204,7 +204,7 @@ public:
             rightValue = this->evaluate(rightNode.get());
 
             if (token.type == TokenType::ADD_OP) {
-                if (overflower.additionWillOverflow(leftValue, rightValue)) {
+                if (overflowerInstance.additionWillOverflow(leftValue, rightValue)) {
                     throw std::overflow_error("The program contains an integer overflow at line " +
                                               std::to_string(lexer_inst.line_number) + ". The sum " +
                                               std::to_string(leftValue) + " + " +
@@ -212,7 +212,7 @@ public:
                                               " overflows the maximum integer size (16 bit integer).");
                 }
             }  else if (token.type == TokenType::SUB_OP) {
-                if (overflower.subtractionWillOverflow(leftValue, rightValue)) {
+                if (overflowerInstance.subtractionWillOverflow(leftValue, rightValue)) {
                     throw std::overflow_error("The program contains an integer underflow at line " +
                                               std::to_string(lexer_inst.line_number) + ". The subtraction " +
                                               std::to_string(leftValue) + " - " +
@@ -243,7 +243,7 @@ public:
 
             if (token.type == TokenType::MUL_OP) {
                 //overflower.multiplicationWillOverflow();
-                if (overflower.multiplicationWillOverflow(leftValue, rightValue)) {
+                if (overflowerInstance.multiplicationWillOverflow(leftValue, rightValue)) {
                         throw std::overflow_error("The program contains an integer underflow at line " +
                                                   std::to_string(lexer_inst.line_number) + ". The multiplication " +
                                                   std::to_string(leftValue) + " - " +
@@ -281,7 +281,7 @@ public:
             eat(TokenType::IDENTIFIER);
 
             // Check if this variable exists in this scope
-            if(!symbolTable.lookupSymbol(potentialVarName)) {
+            if(!symbolTableInstance.lookupSymbol(potentialVarName)) {
                 throw std::runtime_error("Invalid Program : Use of undeclared variable " + potentialVarName +  " at line " +
                 std::to_string(lexer_inst.line_number));
             }
@@ -303,7 +303,7 @@ public:
 
     std::vector<std::unique_ptr<astNode>> parseAST() {
         std::vector<std::unique_ptr<astNode>> nodes;
-        symbolTable.pushScope();
+        symbolTableInstance.pushScope();
         // Keep parsing until we hit the end of file token.
         while (current_token_inst.type != TokenType::EOF_TOK) {
             auto node = statement();
@@ -386,7 +386,7 @@ public:
                 if (current_token_inst.type == TokenType::L_PAREN) {
                     // Here we check if it is a function call or declaration
                     eat(TokenType::L_PAREN);
-                    symbolTable.pushScope();
+                    symbolTableInstance.pushScope();
                     //std::vector<std::pair<std::string, std::string>> parameters;
                     std::vector<std::unique_ptr<DeclarationNode>> parameters;
                     if (current_token_inst.type != TokenType::R_PAREN) {
@@ -411,7 +411,7 @@ public:
                                 // Add to parameters list
                                 //parameters.emplace_back(paramType, paramName);
                                 auto declarationNode = std::make_unique<DeclarationNode>(lastDataType,paramName);
-                                symbolTable.insertSymbol(paramName, declarationNode.get());
+                                symbolTableInstance.insertSymbol(paramName, declarationNode.get());
                                 parameters.push_back(std::move(declarationNode));  // Add to parameters list
 
                                 if (current_token_inst.type == TokenType::COMMA) {
@@ -438,7 +438,7 @@ public:
                     if (BlockNode* blockNode = dynamic_cast<BlockNode*>(funcBody.get())) {
                         auto functionNode = std::make_unique<FunctionDeclarationNode>(varOrFuncName, std::move(parameters), std::move(blockNode->statements));
                         //symbolTable.insertGlobalSymbol(varOrFuncName, functionNode.get());
-                        symbolTable.insertSymbol(varOrFuncName,functionNode.get());
+                        symbolTableInstance.insertSymbol(varOrFuncName,functionNode.get());
                         return functionNode;
                     } else {
                         throw std::runtime_error("Invalid Program : Expected a BlockNode for the function body at line " +
@@ -465,11 +465,11 @@ public:
                             }
                             // Array assignment
                             else if(current_token_inst.type == TokenType::IDENTIFIER) {
-                                if(!symbolTable.lookupSymbol(current_token_inst.value)) {
+                                if(!symbolTableInstance.lookupSymbol(current_token_inst.value)) {
                                     throw std::runtime_error("Invalid Program : Use of undeclared variable " + current_token_inst.value + " at line " +
                                                              std::to_string(lexer_inst.line_number));
                                 }
-                                if(!(evaluate(symbolTable.lookupSymbol(current_token_inst.value)) <= symbolTable.getArraySize(varOrFuncName)))
+                                if(!(evaluate(symbolTableInstance.lookupSymbol(current_token_inst.value)) <= symbolTableInstance.getArraySize(varOrFuncName)))
                                 {
                                     throw std::overflow_error("The program contains an integer overflow at line " +
                                                               std::to_string(lexer_inst.line_number) + ". The sum " +
@@ -489,7 +489,7 @@ public:
                         }
                         if (current_token_inst.type == TokenType::ASSIGNMENT) {
                             // Check if this variable exists in this scope
-                            if(!symbolTable.lookupSymbol(varOrFuncName)) {
+                            if(!symbolTableInstance.lookupSymbol(varOrFuncName)) {
                                 throw std::runtime_error("Invalid Program : Use of undeclared variable " + varOrFuncName + " at line " +
                                 std::to_string(lexer_inst.line_number));
                             }
@@ -506,7 +506,7 @@ public:
                                 std::to_string(lexer_inst.line_number));
                             }
                             variableNodes.push_back(std::make_unique<AssignmentNode>(std::make_unique<IdentifierNode>(varOrFuncName), std::move(rightExpr)));
-                            symbolTable.updateValueInScopes(varOrFuncName, std::move(newValueNode));
+                            symbolTableInstance.updateValueInScopes(varOrFuncName, std::move(newValueNode));
                             insideDeclarationScope=false;
                         }
                         else {
@@ -518,11 +518,11 @@ public:
                             }
                             if(arraySize != -1) {
                                 variableNodes.push_back(std::make_unique<ArrayDeclarationNode>(lastDataType, varOrFuncName, arraySize));
-                                symbolTable.insertSymbol(varOrFuncName, variableNodes.back().get(),arraySize);  // Assuming ArrayDeclarationNode derives from astNode
+                                symbolTableInstance.insertSymbol(varOrFuncName, variableNodes.back().get(),arraySize);  // Assuming ArrayDeclarationNode derives from astNode
 
                             } else {
                                 variableNodes.push_back(std::make_unique<DeclarationNode>(lastDataType, varOrFuncName));
-                                symbolTable.insertSymbol(varOrFuncName, variableNodes.back().get());
+                                symbolTableInstance.insertSymbol(varOrFuncName, variableNodes.back().get());
                             }
                         }
 
@@ -561,19 +561,19 @@ public:
                 }
             }
             case TokenType::IF:
-                symbolTable.pushScope();
+                symbolTableInstance.pushScope();
                 return ifStatement();
 
             case TokenType::ELSE:
-                symbolTable.pushScope();
+                symbolTableInstance.pushScope();
                 return elseStatement();
 
             case TokenType::WHILE:
-                symbolTable.pushScope();
+                symbolTableInstance.pushScope();
                 return whileStatement();
 
             case TokenType::L_BRACE:
-                symbolTable.pushScope();
+                symbolTableInstance.pushScope();
                 return blockStatement();
 
             case TokenType::RETURN:
@@ -756,7 +756,7 @@ public:
         // Disallow local variables
         insideFunctionScope= false;
         insideDeclarationScope= true;
-        symbolTable.popScope();
+        symbolTableInstance.popScope();
         return std::make_unique<BlockNode>(std::move(statements));
     }
 

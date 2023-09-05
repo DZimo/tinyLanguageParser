@@ -1,0 +1,117 @@
+[{
+  "type": "FunctionDeclaration",
+  "name": "main",
+  "parameters": [
+
+  ],
+  "body": [
+{
+      "type": "Compound",
+      "nodes": [
+{
+          "type": "ArrayDeclaration",
+          "name": "a",
+          "dataType": "INT",
+          "size": 10
+        },
+{
+          "type": "Declaration",
+          "name": "i",
+          "dataType": "INT"
+        }
+      ]
+    },
+{
+      "type": "Declaration",
+      "name": "a",
+      "dataType": "BOOL"
+    },
+{
+      "type": "Assignment",
+      "left": {
+          "type": "IdentifierNode",
+          "value": "i"
+        },
+      "right": {
+          "type": "Number",
+          "value": "5"
+        }
+    },
+{
+      "type": "IfStatement",
+      "condition": 
+{
+          "type": "Boolean",
+          "value": true
+        },
+      "trueBranch": 
+{
+          "type": "Block",
+          "statements": [
+{
+              "type": "Assignment",
+              "left": {
+                  "type": "IdentifierNode",
+                  "value": "i"
+                },
+              "right": {
+                  "type": "BinaryExpression",
+                  "operator": "ADD_OP",
+                  "left": 
+{
+                      "type": "Variable",
+                      "name": "i"
+                    },
+                  "right": 
+{
+                      "type": "Number",
+                      "value": "1"
+                    }
+                }
+            },
+{
+              "type": "Assignment",
+              "left": {
+                  "type": "IdentifierNode",
+                  "value": "a"
+                },
+              "right": {
+                  "type": "Boolean",
+                  "value": true
+                }
+            }
+          ]
+        },
+      "falseBranch": 
+{
+          "type": "Block",
+          "statements": [
+
+          ]
+        }
+    },
+{
+      "type": "WhileLoop",
+      "condition": 
+{
+          "type": "Variable",
+          "name": "a"
+        },
+      "body": 
+{
+          "type": "Block",
+          "statements": [
+
+          ]
+        }
+    },
+{
+      "type": "Return",
+      "return_value": 
+{
+          "type": "Number",
+          "value": "0"
+        }
+    }
+  ]
+}]
