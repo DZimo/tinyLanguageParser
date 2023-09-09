@@ -4234,3 +4234,41 @@
 [LOG]: Sat Sep 09 10:37:15 2023
 
 --------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:39:02 2023
+
+[LOG]: script.txt...Sat Sep 09 10:39:02 2023
+
+[LOG]: Sat Sep 09 10:39:02 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:39:16 2023
+
+[LOG]: script.txt...Sat Sep 09 10:39:16 2023
+
+[LOG]: Sat Sep 09 10:39:16 2023
+
+[ERROR]: Invalid Program : Global variables not allowed
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:44:46 2023
+
+[LOG]: script.txt...Sat Sep 09 10:44:46 2023
+
+[LOG]: Sat Sep 09 10:44:46 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:46:32 2023
+
+[LOG]: script.txt...Sat Sep 09 10:46:32 2023
+
+[LOG]: Sat Sep 09 10:46:32 2023
+
+[ERROR]: Invalid Program : Declaration must be at the beginning at line 13
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:46:47 2023
+
+[LOG]: script.txt...Sat Sep 09 10:46:47 2023
+
+[LOG]: Sat Sep 09 10:46:47 2023
+
+[ERROR]: Invalid Program : Declaration must be at the beginning at line 13
+--------------- DONE ---------------- 

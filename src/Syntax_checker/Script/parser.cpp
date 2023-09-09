@@ -449,7 +449,7 @@ public:
                                                  std::to_string(lexer_inst.line_number));
                     }
 
-                    auto funcBody = blockStatement();
+                    auto funcBody = blockStatement(true);
                     if (BlockNode* blockNode = dynamic_cast<BlockNode*>(funcBody.get())) {
                         if(varOrFuncName == tokenTypeToString(TokenType::MAIN))
                         {
@@ -599,7 +599,7 @@ public:
 
             case TokenType::L_BRACE:
                 symbolTableInstance.pushScope();
-                return blockStatement();
+                return blockStatement(false);
 
             case TokenType::RETURN:
                 return returnStatement();
@@ -762,9 +762,12 @@ public:
         return nullptr;
     }
 
-    std::unique_ptr<astNode> blockStatement() {
+    std::unique_ptr<astNode> blockStatement(bool insideFunction) {
         // Allow local variables
-        insideFunctionScope=true;
+        if(insideFunction)
+        {
+            insideFunctionScope=true;
+        }
         eat(TokenType::L_BRACE);
         std::vector<std::unique_ptr<astNode>> statements;
 
@@ -776,8 +779,11 @@ public:
         }
         eat(TokenType::R_BRACE);
         // Disallow local variables
-        insideFunctionScope= false;
-        insideDeclarationScope= true;
+        if(insideFunction)
+        {
+            insideFunctionScope= false;
+            insideDeclarationScope= true;
+        }
         symbolTableInstance.popScope();
         return std::make_unique<BlockNode>(std::move(statements));
     }
