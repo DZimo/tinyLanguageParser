@@ -4702,3 +4702,11 @@
 
 [ERROR]: The program contains an integer overflow at line 5. The multiplication 65535 * 2 overflows the maximum integer size (16 bit integer).
 --------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 16:36:38 2023
+
+[LOG]: script.txt...Sat Sep 09 16:36:38 2023
+
+[LOG]: Sat Sep 09 16:36:38 2023
+
+[ERROR]: The program contains an integer overflow at line 5. The multiplication 65535 * 2 overflows the maximum integer size (16 bit integer).
+--------------- DONE ---------------- 

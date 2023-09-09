@@ -16,14 +16,10 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bee0bb80-df49-4a1a-9fe5-660e3e46d80d" name="Changes" comment="test push">
+    <list default="true" id="bee0bb80-df49-4a1a-9fe5-660e3e46d80d" name="Changes" comment="fixed overflows, works perfectly with all operations now.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generatedAST.json" beforeDir="false" afterPath="$PROJECT_DIR$/generatedAST.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST_checker/astNode.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST_checker/astNode.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexical_checker/lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexical_checker/lexer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/script.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/script.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +64,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="C/C++ File.main.cpp">
+  <component name="RunManager" selected="C/C++ File.validTests.cpp">
     <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -120,7 +116,7 @@
       <workItem from="1693944828836" duration="282000" />
       <workItem from="1694114686992" duration="247000" />
       <workItem from="1694247481337" duration="4506000" />
-      <workItem from="1694259106765" duration="5500000" />
+      <workItem from="1694259106765" duration="6139000" />
     </task>
     <task id="LOCAL-00001" summary="small fixes for image generator">
       <created>1693559976894</created>
@@ -185,7 +181,14 @@
       <option name="project" value="LOCAL" />
       <updated>1694259992894</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="fixed overflows, works perfectly with all operations now.">
+      <created>1694270121384</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1694270121384</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -224,6 +227,7 @@
     <MESSAGE value="updates for structures and small code refactoring" />
     <MESSAGE value="small merge" />
     <MESSAGE value="test push" />
-    <option name="LAST_COMMIT_MESSAGE" value="test push" />
+    <MESSAGE value="fixed overflows, works perfectly with all operations now." />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed overflows, works perfectly with all operations now." />
   </component>
 </project>

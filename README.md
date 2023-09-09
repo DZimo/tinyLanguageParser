@@ -43,7 +43,9 @@ If the syntax analysis pass then we can start our semantic check, if for example
 
 Overflow Analysis:
 If an operation either addition,subtraction, multiplication, division or modulo exceeds the max int or min int, also same for buffers then we output overflow error with the details of the line and variables.
-I assumed that we have only unsigned numbers, basically 16 bits is equal to a max_int of 65536
+I assumed that we have only unsigned numbers, basically 16 bits is equal to a max_int of 65536.
+After getting the AST we try to go node by node and whenever we have an binary operation node then we check the right value and left value with the given operation
+to check if it overflows or no.
 
 Output:
 if all analysis pass then we output valid program with the AST.
