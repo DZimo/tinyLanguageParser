@@ -1,24 +1,97 @@
 [{
-  "type": "MainFunctionNode",
-  "name": "main",
+  "type": "FunctionDeclaration",
+  "name": "sum",
+  "parameters": [
+{
+      "type": "Declaration",
+      "name": "a",
+      "dataType": "INT"
+    },
+{
+      "type": "Declaration",
+      "name": "b",
+      "dataType": "INT"
+    }
+  ],
   "body": [
 {
       "type": "Declaration",
-      "name": "x",
-      "dataType": "BOOL"
+      "name": "c",
+      "dataType": "INT"
     },
+{
+      "type": "Assignment",
+      "left": {
+          "type": "IdentifierNode",
+          "value": "a"
+        },
+      "right": {
+          "type": "Number",
+          "value": "10"
+        }
+    },
+{
+      "type": "Assignment",
+      "left": {
+          "type": "IdentifierNode",
+          "value": "b"
+        },
+      "right": {
+          "type": "Number",
+          "value": "20"
+        }
+    },
+{
+      "type": "Assignment",
+      "left": {
+          "type": "IdentifierNode",
+          "value": "c"
+        },
+      "right": {
+          "type": "BinaryExpression",
+          "operator": "ADD_OP",
+          "left": 
+{
+              "type": "Variable",
+              "name": "a"
+            },
+          "right": 
+{
+              "type": "Variable",
+              "name": "b"
+            }
+        }
+    },
+{
+      "type": "Return",
+      "return_value": 
+{
+          "type": "Variable",
+          "name": "c"
+        }
+    }
+  ]
+}, {
+  "type": "MainFunctionNode",
+  "name": "main",
+  "body": [
 {
       "type": "Compound",
       "nodes": [
 {
           "type": "Declaration",
-          "name": "y",
-          "dataType": "FLOAT"
+          "name": "a",
+          "dataType": "INT"
         },
 {
           "type": "Declaration",
-          "name": "z",
-          "dataType": "FLOAT"
+          "name": "b",
+          "dataType": "INT"
+        },
+{
+          "type": "Declaration",
+          "name": "c",
+          "dataType": "INT"
         }
       ]
     },
@@ -26,101 +99,44 @@
       "type": "Assignment",
       "left": {
           "type": "IdentifierNode",
-          "value": "z"
+          "value": "a"
         },
       "right": {
           "type": "Number",
-          "value": "0"
+          "value": "10"
         }
     },
 {
       "type": "Assignment",
       "left": {
           "type": "IdentifierNode",
-          "value": "y"
+          "value": "b"
         },
       "right": {
           "type": "Number",
-          "value": "0"
+          "value": "20"
         }
     },
 {
       "type": "Assignment",
       "left": {
           "type": "IdentifierNode",
-          "value": "x"
+          "value": "c"
         },
       "right": {
-          "type": "Boolean",
-          "value": true
-        }
-    },
+          "type": "FunctionCall",
+          "name": "sum",
+          "arguments": [
 {
-      "type": "IfStatement",
-      "condition": 
+              "type": "Variable",
+              "name": "a"
+            },
 {
-          "type": "Variable",
-          "name": "x"
-        },
-      "trueBranch": 
-{
-          "type": "Block",
-          "statements": [
-{
-              "type": "Assignment",
-              "left": {
-                  "type": "IdentifierNode",
-                  "value": "y"
-                },
-              "right": {
-                  "type": "BinaryExpression",
-                  "operator": "ADD_OP",
-                  "left": 
-{
-                      "type": "Variable",
-                      "name": "y"
-                    },
-                  "right": 
-{
-                      "type": "Variable",
-                      "name": "z"
-                    }
-                }
-            }
-          ]
-        },
-      "falseBranch": 
-{
-          "type": "Block",
-          "statements": [
-{
-              "type": "Assignment",
-              "left": {
-                  "type": "IdentifierNode",
-                  "value": "y"
-                },
-              "right": {
-                  "type": "BinaryExpression",
-                  "operator": "SUB_OP",
-                  "left": 
-{
-                      "type": "Variable",
-                      "name": "y"
-                    },
-                  "right": 
-{
-                      "type": "Variable",
-                      "name": "z"
-                    }
-                }
+              "type": "Variable",
+              "name": "b"
             }
           ]
         }
-    },
-{
-      "type": "Declaration",
-      "name": "a",
-      "dataType": "INT"
     },
 {
       "type": "Return",

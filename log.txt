@@ -4272,3 +4272,34 @@
 
 [ERROR]: Invalid Program : Declaration must be at the beginning at line 13
 --------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:53:49 2023
+
+[LOG]: script.txt...Sat Sep 09 10:53:49 2023
+
+[LOG]: Sat Sep 09 10:53:49 2023
+
+[ERROR]: Invalid Program : Declaration must be at the beginning at line 13
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:53:59 2023
+
+[LOG]: script.txt...Sat Sep 09 10:53:59 2023
+
+[LOG]: Sat Sep 09 10:53:59 2023
+
+[ERROR]: Invalid Program : Global variables not allowed
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:54:14 2023
+
+[LOG]: script.txt...Sat Sep 09 10:54:14 2023
+
+[LOG]: Sat Sep 09 10:54:14 2023
+
+[ERROR]: Invalid Program : Global variables not allowed
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:58:03 2023
+
+[LOG]: script.txt...Sat Sep 09 10:58:03 2023
+
+[LOG]: Sat Sep 09 10:58:03 2023
+
+--------------- DONE ---------------- 

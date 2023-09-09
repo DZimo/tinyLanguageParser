@@ -1,41 +1,67 @@
-<tiny_program> ::= <main_function> | <main_function> { <function> }
+<tiny_program> ::= <MainFunctionNode> | <MainFunctionNode> { <function> }
 
-<main_function> ::= "int" "main" "(" ")" "{" <declarations> <statements> "}"
+<MainFunctionNode> ::= <MainName> <MainType> <L_Paren> <R_Paren> <L_Brace> <DeclarationNode> <BlockNode> <R_Brace>
 
-<function> ::= <type> <identifier> "(" <parameter_list> ")" "{" <declarations> <statements> "}"
+<FunctionNode> ::= <TokenTypes> <IdentifierNames> <L_Paren> <ParametersList> <R_Paren> <L_Brace> <declarations> <BlockNode <R_Brace>
 
-<type> ::= "int" | "float" | "char" | "bool"
+<TokenTypes> ::= "int" | "float" | "char" | "bool"
 
-<declarations> ::= { <declaration> }
-<declaration> ::= <type> <identifier> "=" <expression> ";"
+<DeclarationNode> ::= { <Declaration> }
 
-<parameter_list> ::= [ <type> <identifier> { "," <type> <identifier> } ]
+<Declaration> ::= <TokenTypes> <IdentifierNames> <Assignment> <expression> <Semicolon>
 
-<statements> ::= { <statement> }
+<ParametersList> ::= [ <TokenTypes> <IdentifierNames> { "," <TokenTypes> <IdentifierNames> } ]
 
-<statement> ::= <assignment> | <if_statement> | <while_loop>
+<BlockNode> ::= { <Statement> }
 
-<assignment> ::= <identifier> "=" <expression> ";"
+<Statement> ::= <AssignmentNode> | <IfNode> | <WhileNode>
 
-<if_statement> ::= "if" "(" <condition> ")" "{" <statements> "}" ["else" "{" <statements> "}"]
+<AssignmentNode> ::= <IdentifierNames> <Assignment> <expression> <Semicolon>
 
-<while_loop> ::= "while" "(" <condition> ")" "{" <statements> "}"
+<IfNode> ::= "if" <L_Paren> <Condition> <R_Paren> <L_Brace> <statements> <R_Brace> ["else" "{" <BlockNode> "}"]
 
-<condition> ::= <expression> <logical_op> <expression>
+<WhileNode> ::= "while" <L_Paren> <Condition> <R_Paren> <L_Brace> <BlockNode> <R_Brace>
+
+<Condition> ::= <expression> <logical_op> <expression>
+
 <logical_op> ::= "&&" | "||" | "!" | "==" | "!=" | "<" | ">" | "<=" | ">="
 
 <expression> ::= <term> { <add_op> <term> }
+
 <term> ::= <factor> { <mul_op> <factor> }
+
 <factor> ::= <identifier> | <number> | <char_value> | "(" <expression> ")"
 
 <add_op> ::= "+" | "-"
+
 <mul_op> ::= "*" | "/" | "%"
 
-<identifier> ::= [a-zA-Z_][a-zA-Z0-9_]*
+<IdentifierNames> ::= [a-zA-Z_][a-zA-Z0-9_]*
+
 <number> ::= <int_value> | <float_value>
+
 <int_value> ::= [0-9]{1,5}  (* Up to 5 digits to roughly stay within 16 bits *)
+
 <float_value> ::= [0-9]{1,10} "." [0-9]{1,10}  (* Up to 10 digits before and after the dot to roughly stay within 32 bits *)
+
 <char_value> ::= "'" <char> "'"
+
 <char> ::= [a-zA-Z0-9]  (* This represents an 8-bit character *)
 
 <array> ::= <identifier> "[" <expression> "]
+
+<MainName> ::= "main"
+
+<MainType> ::= "int"
+
+<L_Paren> ::= "("
+
+<R_Paren> ::= ")"
+
+<L_Brace> ::= "{"
+
+<R_Brace> ::= "}"
+
+<Assignment> ::= "="
+
+<Semicolon> ::= ";"
