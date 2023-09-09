@@ -3,26 +3,26 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-  <component name="CMakePresetLoader">{
-  &quot;useNewFormat&quot;: true
-}</component>
+  <component name="CMakePresetLoader"><![CDATA[{
+  "useNewFormat": true
+}]]></component>
   <component name="CMakeReloadState">
     <option name="reloaded" value="true" />
   </component>
   <component name="CMakeRunConfigurationManager">
-    <generated>
-      <config projectName="tinyLanguageParser" targetName="tinyLanguageParser" />
-    </generated>
+    <generated />
   </component>
-  <component name="CMakeSettings" AUTO_RELOAD="true">
-    <configurations>
-      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
-    </configurations>
+  <component name="CMakeSettings">
+    <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bee0bb80-df49-4a1a-9fe5-660e3e46d80d" name="Changes" comment="small merge">
+    <list default="true" id="bee0bb80-df49-4a1a-9fe5-660e3e46d80d" name="Changes" comment="fix name conflict problem, works good with older gcc version now">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedAST.json" beforeDir="false" afterPath="$PROJECT_DIR$/generatedAST.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST_checker/astNode.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST_checker/astNode.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexical_checker/tokenizer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexical_checker/tokenizer.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/script.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/script.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,82 +34,20 @@
     <option name="formatViaClangd" value="false" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="4a37f924-c43c-4306-9710-8a8bab6ae504" />
-        <option name="url" value="https://github.com/DZimo/tinyLanguageParser.git" />
-      </UrlAndAccount>
-    </option>
-  </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="araco405" />
   </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="ProjectId" id="2UmutNtgmPZrL5oSjwSthBajdFg" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Admin/Desktop/tinyLanguageParser/src/validTests.cpp&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-  }
-}</component>
-  <component name="RunManager" selected="C/C++ File.main.cpp">
-    <configuration name="tinyLanguageParser" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="tinyLanguageParser" TARGET_NAME="tinyLanguageParser" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="tinyLanguageParser" RUN_TARGET_NAME="tinyLanguageParser">
+  <component name="RunManager">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration name="invalidTests.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="tinyLanguageParser" TARGET_NAME="invalidTests.cpp" CONFIG_NAME="invalidTests.cpp">
-      <option name="sourceFile" value="C:\Users\Admin\Desktop\tinyLanguageParser\src\invalidTests.cpp" />
-      <method v="2">
-        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="main.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="tinyLanguageParser" TARGET_NAME="main.cpp" CONFIG_NAME="main.cpp">
-      <option name="sourceFile" value="C:\Users\Admin\Desktop\tinyLanguageParser\src\main.cpp" />
-      <method v="2">
-        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="validTests.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="tinyLanguageParser" TARGET_NAME="validTests.cpp" CONFIG_NAME="validTests.cpp">
-      <option name="sourceFile" value="C:\Users\Admin\Desktop\tinyLanguageParser\src\validTests.cpp" />
-      <method v="2">
-        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <list>
-      <item itemvalue="C/C++ File.main.cpp" />
-      <item itemvalue="C/C++ File.invalidTests.cpp" />
-      <item itemvalue="C/C++ File.validTests.cpp" />
-      <item itemvalue="CMake Application.tinyLanguageParser" />
-    </list>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="bee0bb80-df49-4a1a-9fe5-660e3e46d80d" name="Changes" comment="" />
@@ -128,7 +66,9 @@
       <workItem from="1693937917988" duration="3561000" />
       <workItem from="1693943832278" duration="109000" />
       <workItem from="1693944040394" duration="1000" />
-      <workItem from="1693944828836" duration="135000" />
+      <workItem from="1693944828836" duration="282000" />
+      <workItem from="1694114686992" duration="247000" />
+      <workItem from="1694247481337" duration="1146000" />
     </task>
     <task id="LOCAL-00001" summary="small fixes for image generator">
       <created>1693559976894</created>
@@ -189,15 +129,6 @@
     <option name="localTasksCounter" value="9" />
     <servers />
   </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="VCPKGProject">
-    <isAutomaticEditVcpkgJson value="false" />
-    <isAutomaticCheckingOnLaunch value="false" />
-    <isAutomaticFoundErrors value="true" />
-    <isAutomaticFoundErrors value="true" />
-  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -231,16 +162,5 @@
     <MESSAGE value="updates for structures and small code refactoring" />
     <MESSAGE value="small merge" />
     <option name="LAST_COMMIT_MESSAGE" value="small merge" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp</url>
-          <line>520</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

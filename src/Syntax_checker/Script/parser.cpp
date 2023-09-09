@@ -323,7 +323,22 @@ public:
                 eat(TokenType::SEMICOLON);
             }
         }
-        return nodes;
+        // After finishing parsing checking if main exists otherwise syntax error
+        bool mainFound = false;
+        for (auto &&node : nodes )
+        {
+            if(node.get()->getType() == "MainFunctionNode")
+            {
+                mainFound = true;
+            }
+        }
+        if (mainFound)
+        {
+            return nodes;
+        } else{
+            throw std::runtime_error("Invalid Program : Main not found in line : " +
+                                     std::to_string(lexer_inst.line_number));
+        }
     }
 
     std::unique_ptr<astNode> declaration() {
@@ -436,10 +451,20 @@ public:
 
                     auto funcBody = blockStatement();
                     if (BlockNode* blockNode = dynamic_cast<BlockNode*>(funcBody.get())) {
-                        auto functionNode = std::make_unique<FunctionDeclarationNode>(varOrFuncName, std::move(parameters), std::move(blockNode->statements));
-                        //symbolTable.insertGlobalSymbol(varOrFuncName, functionNode.get());
-                        symbolTableInstance.insertSymbol(varOrFuncName,functionNode.get());
-                        return functionNode;
+                        if(varOrFuncName == tokenTypeToString(TokenType::MAIN))
+                        {
+                            auto functionNode = std::make_unique<MainFunctionNode>(varOrFuncName, std::move(blockNode->statements));
+                            //symbolTable.insertGlobalSymbol(varOrFuncName, functionNode.get());
+                            symbolTableInstance.insertSymbol(varOrFuncName,functionNode.get());
+                            return functionNode;
+                        }
+                        else{
+                            auto functionNode = std::make_unique<FunctionDeclarationNode>(varOrFuncName, std::move(parameters), std::move(blockNode->statements));
+                            //symbolTable.insertGlobalSymbol(varOrFuncName, functionNode.get());
+                            symbolTableInstance.insertSymbol(varOrFuncName,functionNode.get());
+                            return functionNode;
+                        }
+
                     } else {
                         throw std::runtime_error("Invalid Program : Expected a BlockNode for the function body at line " +
                                                  std::to_string(lexer_inst.line_number));
@@ -669,14 +694,11 @@ public:
         }
         else if (node->getType() == "MainFunctionNode") {
             const MainFunctionNode* mainFuncNode = dynamic_cast<const MainFunctionNode*>(node);
-            std::vector<std::unique_ptr<astNode>> declarationsCopy, statementsCopy;
-            for (const auto& decl : mainFuncNode->declarations) {
-                declarationsCopy.push_back(deepCopyAstNode(decl.get()));
+            std::vector<std::unique_ptr<astNode>> bodyStatementsCopy;
+            for (const auto& stmt : mainFuncNode->bodyStatements) {
+                bodyStatementsCopy.push_back(deepCopyAstNode(stmt.get()));
             }
-            for (const auto& stmt : mainFuncNode->statements) {
-                statementsCopy.push_back(deepCopyAstNode(stmt.get()));
-            }
-            return std::make_unique<MainFunctionNode>(std::move(declarationsCopy), std::move(statementsCopy));
+            return std::make_unique<MainFunctionNode>(mainFuncNode->funcName, std::move(bodyStatementsCopy));
         }
         else if (node->getType() == "FunctionNode") {
             const FunctionNode* functionNode = dynamic_cast<const FunctionNode*>(node);
@@ -823,7 +845,7 @@ public:
 
         eat(TokenType::R_BRACE);
 
-        return std::make_unique<MainFunctionNode>(std::move(decls), std::move(stmts));
+        return std::make_unique<MainFunctionNode>("main", std::move(stmts));
     }
 
     std::unique_ptr<astNode> functionCall(const std::string& funcName) {

@@ -4081,3 +4081,156 @@
 [LOG]: Tue Sep 05 22:16:09 2023
 
 --------------- DONE ---------------- 
+[LOG]: Parsing...Thu Sep 07 21:24:58 2023
+
+[LOG]: script.txt...Thu Sep 07 21:24:58 2023
+
+[LOG]: Thu Sep 07 21:24:58 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Thu Sep 07 21:25:04 2023
+
+[LOG]: script.txt...Thu Sep 07 21:25:04 2023
+
+[LOG]: Thu Sep 07 21:25:04 2023
+
+[ERROR]: Invalid Program : Global variables not allowed
+--------------- DONE ---------------- 
+[LOG]: Parsing...Thu Sep 07 21:27:28 2023
+
+[LOG]: script.txt...Thu Sep 07 21:27:28 2023
+
+[LOG]: Thu Sep 07 21:27:28 2023
+
+[ERROR]: Invalid Program : Global variables not allowed
+--------------- DONE ---------------- 
+[LOG]: Parsing...Thu Sep 07 21:27:43 2023
+
+[LOG]: script.txt...Thu Sep 07 21:27:43 2023
+
+[LOG]: Thu Sep 07 21:27:43 2023
+
+[ERROR]: Invalid Program : Global variables not allowed
+--------------- DONE ---------------- 
+[LOG]: Parsing...Thu Sep 07 21:28:13 2023
+
+[LOG]: script.txt...Thu Sep 07 21:28:13 2023
+
+[LOG]: Thu Sep 07 21:28:13 2023
+
+[ERROR]: Invalid Program : Use of undeclared variable z at line 4
+--------------- DONE ---------------- 
+[LOG]: Parsing...Thu Sep 07 21:28:23 2023
+
+[LOG]: script.txt...Thu Sep 07 21:28:23 2023
+
+[LOG]: Thu Sep 07 21:28:23 2023
+
+[ERROR]: Invalid Program : Global variables not allowed
+--------------- DONE ---------------- 
+[LOG]: Parsing...Thu Sep 07 21:28:36 2023
+
+[LOG]: script.txt...Thu Sep 07 21:28:36 2023
+
+[LOG]: Thu Sep 07 21:28:36 2023
+
+[LOG]: Parsing...Sat Sep 09 10:21:13 2023
+
+[LOG]: script.txt...Sat Sep 09 10:21:13 2023
+
+[LOG]: Sat Sep 09 10:21:13 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:21:17 2023
+
+[LOG]: script.txt...Sat Sep 09 10:21:17 2023
+
+[LOG]: Sat Sep 09 10:21:17 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:22:16 2023
+
+[LOG]: script.txt...Sat Sep 09 10:22:16 2023
+
+[LOG]: Sat Sep 09 10:22:16 2023
+
+[LOG]: Parsing...Sat Sep 09 10:25:04 2023
+
+[LOG]: script.txt...Sat Sep 09 10:25:04 2023
+
+[LOG]: Sat Sep 09 10:25:04 2023
+
+[ERROR]: Invalid Program : Main not found 14
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:25:15 2023
+
+[LOG]: script.txt...Sat Sep 09 10:25:15 2023
+
+[LOG]: Sat Sep 09 10:25:15 2023
+
+[ERROR]: Invalid Program : Main not found 14
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:25:23 2023
+
+[LOG]: script.txt...Sat Sep 09 10:25:23 2023
+
+[LOG]: Sat Sep 09 10:25:23 2023
+
+[LOG]: Parsing...Sat Sep 09 10:27:26 2023
+
+[LOG]: script.txt...Sat Sep 09 10:27:26 2023
+
+[LOG]: Sat Sep 09 10:27:26 2023
+
+[ERROR]: Invalid Program : Main not found 14
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:33:36 2023
+
+[LOG]: script.txt...Sat Sep 09 10:33:36 2023
+
+[LOG]: Sat Sep 09 10:33:36 2023
+
+[ERROR]: Invalid Program : Main not found 14
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:33:59 2023
+
+[LOG]: script.txt...Sat Sep 09 10:33:59 2023
+
+[LOG]: Sat Sep 09 10:33:59 2023
+
+[LOG]: Parsing...Sat Sep 09 10:34:51 2023
+
+[LOG]: script.txt...Sat Sep 09 10:34:51 2023
+
+[LOG]: Sat Sep 09 10:34:51 2023
+
+[LOG]: Parsing...Sat Sep 09 10:36:09 2023
+
+[LOG]: script.txt...Sat Sep 09 10:36:09 2023
+
+[LOG]: Sat Sep 09 10:36:09 2023
+
+[ERROR]: Invalid Program : Main not found 14
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:36:37 2023
+
+[LOG]: script.txt...Sat Sep 09 10:36:37 2023
+
+[LOG]: Sat Sep 09 10:36:37 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:36:45 2023
+
+[LOG]: script.txt...Sat Sep 09 10:36:45 2023
+
+[LOG]: Sat Sep 09 10:36:45 2023
+
+[ERROR]: Invalid Program : Main not found 8
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 10:37:15 2023
+
+[LOG]: script.txt...Sat Sep 09 10:37:15 2023
+
+[LOG]: Sat Sep 09 10:37:15 2023
+
+--------------- DONE ---------------- 

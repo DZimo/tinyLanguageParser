@@ -80,6 +80,8 @@ std::string tokenTypeToString(TokenType type) {
         case TokenType::R_BRACKET: return "R_BRACKET";
         case TokenType::L_BRACKET: return "L_BRACKET";
         case TokenType::BOOL_VALUE: return "BOOL_VALUE";
+        case TokenType::MAIN: return "main";
+
 
 
         default: return "UNKNOWN";

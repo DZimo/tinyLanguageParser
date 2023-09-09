@@ -506,41 +506,37 @@ protected:
 
 class MainFunctionNode : public astNode {
 public:
-    std::vector<std::unique_ptr<astNode>> declarations;
-    std::vector<std::unique_ptr<astNode>> statements;
+    std::string funcName; // Adding function name variable
+    std::vector<std::unique_ptr<astNode>> bodyStatements;
 
 protected:
     std::string getType() const override { return "MainFunctionNode"; }
+
     void appendToJSON(std::ostringstream& os, int indent) const override {
         std::string indentStr(indent, ' ');
-        os << indentStr << "\"declarations\": [\n";
-        for (size_t i = 0; i < declarations.size(); ++i) {
-            os << declarations[i]->toJSON(indent + 2);
-            if (i < declarations.size() - 1) os << ",\n";
-        }
-        os << "\n" << indentStr << "],\n" << indentStr << "\"statements\": [\n";
-        for (size_t i = 0; i < statements.size(); ++i) {
-            os << statements[i]->toJSON(indent + 2);
-            if (i < statements.size() - 1) os << ",\n";
+        os << indentStr << "\"name\": \"" << funcName << "\",\n" << indentStr << "\"body\": [\n";
+        for (size_t i = 0; i < bodyStatements.size(); ++i) {
+            os << bodyStatements[i]->toJSON(indent + 2);
+            if (i < bodyStatements.size() - 1) os << ",\n";
         }
         os << "\n" << indentStr << "]";
     }
+
     std::string getDescription() const override {
-        return "MainFunction:";
+        return "MainFunction: " + funcName;
     }
+
     void printChildren(std::ostream& os, int depth) const override {
-        for (const auto& decl : declarations) {
-            decl->print(os, depth);
-        }
-        for (const auto& stmt : statements) {
+        for (const auto& stmt : bodyStatements) {
             stmt->print(os, depth);
         }
     }
 
 public:
-    MainFunctionNode(std::vector<std::unique_ptr<astNode>> decls,
-                     std::vector<std::unique_ptr<astNode>> stmts)
-            : declarations(std::move(decls)), statements(std::move(stmts)) {}
+    MainFunctionNode(const std::string &funcName,
+                     std::vector<std::unique_ptr<astNode>> bodyStmts)
+            : funcName(funcName),
+              bodyStatements(std::move(bodyStmts)) {}
 };
 
 class FunctionNode : public astNode {

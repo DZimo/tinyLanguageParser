@@ -1,14 +1,14 @@
-int main() {
- int a[10], i;
- bool a;
- i = 5;
- if(true) {
- i = i+1;
- a = true;
- }
-else {
+int sum(int a, int b) {
+int c;
+a = 10;
+b = 20;
+c = a + b;
+return c;
 }
-while(a){
-}
- return 0;
+int main () {
+int a, b, c;
+a = 10;
+b = 20;
+c = sum(a, b);
+return 0;
 }
