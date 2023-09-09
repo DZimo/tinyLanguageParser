@@ -179,6 +179,7 @@ public:
     std::unique_ptr<astNode> left;
     std::unique_ptr<astNode> right;
     TokenType op;
+    int lineNumber;
 
 protected:
     std::string getType() const override { return "BinaryExpression"; }
@@ -202,8 +203,8 @@ protected:
     }
 public:
 
-    BinaryOpNode(std::unique_ptr<astNode> left, TokenType op, std::unique_ptr<astNode> right)
-            : left(std::move(left)), op(op), right(std::move(right)) {}
+    BinaryOpNode(std::unique_ptr<astNode> left, TokenType op, std::unique_ptr<astNode> right, int lineNumber)
+            : left(std::move(left)), op(op), right(std::move(right)), lineNumber(lineNumber) {}
 /*
     int evaluate(const symbolTable& table) const {
         int leftVal = left->evaluate(table);

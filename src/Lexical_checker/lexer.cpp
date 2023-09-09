@@ -297,4 +297,22 @@ public:
     const symbolTable getSymbolTable() const {
         return symbolTableInstant;
     }
+
+    struct LexerState {
+        int pos;
+        int line_number;
+        int char_position;
+        char current_char;
+    };
+
+    LexerState saveState() {
+        return { pos, line_number, char_position, current_char };
+    }
+
+    void restoreState(const LexerState& state) {
+        pos = state.pos;
+        line_number = state.line_number;
+        char_position = state.char_position;
+        current_char = state.current_char;
+    }
 };

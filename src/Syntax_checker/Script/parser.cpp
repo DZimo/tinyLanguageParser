@@ -144,7 +144,57 @@ public:
             BinaryOpNode* binaryOpNode = dynamic_cast<BinaryOpNode*>(node);
             int leftVal = evaluate(binaryOpNode->left.get());
             int rightVal = evaluate(binaryOpNode->right.get());
-            // ...
+
+            if (binaryOpNode->op == TokenType::MUL_OP) {
+                if (overflowerInstance.multiplicationWillOverflow(leftVal, rightVal)) {
+                    throw std::overflow_error("The program contains an integer overflow at line " +
+                                              std::to_string(lexer_inst.line_number) + ". The multiplication " +
+                                              std::to_string(leftVal) + " * " +
+                                              std::to_string(rightVal) +
+                                              " overflows the maximum integer size (16 bit integer).");
+                }
+                return leftVal * rightVal;
+            }
+            else if (binaryOpNode->op == TokenType::ADD_OP) {
+                if (overflowerInstance.additionWillOverflow(leftVal, rightVal)) {
+                    throw std::overflow_error("The program contains an integer overflow at line " +
+                                              std::to_string(lexer_inst.line_number) + ". The addition " +
+                                              std::to_string(leftVal) + " + " +
+                                              std::to_string(rightVal) +
+                                              " overflows the maximum integer size (16 bit integer).");
+                }
+                return leftVal + rightVal;
+            }
+            else if (binaryOpNode->op == TokenType::SUB_OP) {
+                if (overflowerInstance.subtractionWillOverflow(leftVal, rightVal)) {
+                    throw std::overflow_error("The program contains an integer overflow at line " +
+                                              std::to_string(lexer_inst.line_number) + ". The subtraction " +
+                                              std::to_string(leftVal) + " - " +
+                                              std::to_string(rightVal) +
+                                              " overflows the maximum integer size (16 bit integer).");
+                }
+                return leftVal - rightVal;
+            }
+            else if (binaryOpNode->op == TokenType::DIV_OP) {
+                if (rightVal == 0) {
+                    throw std::overflow_error("The program contains an integer overflow at line " +
+                                              std::to_string(lexer_inst.line_number) + ". The division " +
+                                              std::to_string(leftVal) + " / " +
+                                              std::to_string(rightVal) +
+                                              " overflows the maximum integer size (16 bit integer).");
+                }
+                return leftVal / rightVal;
+            }
+            else if (binaryOpNode->op == TokenType::MOD_OP) {
+                if (rightVal == 0) {
+                    throw std::overflow_error("The program contains an integer overflow at line " +
+                                              std::to_string(lexer_inst.line_number) + ". The mudolo " +
+                                              std::to_string(leftVal) + " % " +
+                                              std::to_string(rightVal) +
+                                              " overflows the maximum integer size (16 bit integer).");
+                }
+                return leftVal % rightVal;
+            }
         }
         else if (nodeType == "Variable") {
             VariableNode* variableNode = dynamic_cast<VariableNode*>(node);
@@ -184,7 +234,7 @@ public:
             auto token = current_token_inst;
             eat(token.type);
 
-            node = std::make_unique<BinaryOpNode>(std::move(node), token.type, additiveExpr());
+            node = std::make_unique<BinaryOpNode>(std::move(node), token.type, additiveExpr(), lexer_inst.line_number);
         }
 
         return node;
@@ -204,23 +254,23 @@ public:
             rightValue = this->evaluate(rightNode.get());
 
             if (token.type == TokenType::ADD_OP) {
-                if (overflowerInstance.additionWillOverflow(leftValue, rightValue)) {
-                    throw std::overflow_error("The program contains an integer overflow at line " +
-                                              std::to_string(lexer_inst.line_number) + ". The sum " +
-                                              std::to_string(leftValue) + " + " +
-                                              std::to_string(rightValue) +
-                                              " overflows the maximum integer size (16 bit integer).");
-                }
+//                if (overflowerInstance.additionWillOverflow(leftValue, rightValue)) {
+//                    throw std::overflow_error("The program contains an integer overflow at line " +
+//                                              std::to_string(lexer_inst.line_number) + ". The sum " +
+//                                              std::to_string(leftValue) + " + " +
+//                                              std::to_string(rightValue) +
+//                                              " overflows the maximum integer size (16 bit integer).");
+//                }
             }  else if (token.type == TokenType::SUB_OP) {
-                if (overflowerInstance.subtractionWillOverflow(leftValue, rightValue)) {
-                    throw std::overflow_error("The program contains an integer underflow at line " +
-                                              std::to_string(lexer_inst.line_number) + ". The subtraction " +
-                                              std::to_string(leftValue) + " - " +
-                                              std::to_string(rightValue) +
-                                              " underflows the minimum integer size (16 bit integer).");
-                }
+//                if (overflowerInstance.subtractionWillOverflow(leftValue, rightValue)) {
+//                    throw std::overflow_error("The program contains an integer underflow at line " +
+//                                              std::to_string(lexer_inst.line_number) + ". The subtraction " +
+//                                              std::to_string(leftValue) + " - " +
+//                                              std::to_string(rightValue) +
+//                                              " underflows the minimum integer size (16 bit integer).");
+//                }
             }
-            node = std::make_unique<BinaryOpNode>(std::move(node), token.type, std::move(rightNode));
+            node = std::make_unique<BinaryOpNode>(std::move(node), token.type, std::move(rightNode), lexer_inst.line_number);
         }
 
         return node;
@@ -232,14 +282,15 @@ public:
 
         while (current_token_inst.type == TokenType::MUL_OP || current_token_inst.type == TokenType::DIV_OP || current_token_inst.type == TokenType::MOD_OP) {
             auto token = current_token_inst;
-            //leftValue = this->evaluate(node.get());
+//            auto lexerState = lexer_inst.saveState();
 
-            //eat(token.type);
+//            // Evaluate the nodes without consuming tokens
+//            leftValue = this->evaluate(node.get());
+//            eat(token.type);
+//
+//            auto rightNode = factor(); // Now get the right node
+//            rightValue = this->evaluate(rightNode.get());
 
-            //auto rightNode = factor();
-            //rightValue = this->evaluate(rightNode.get());
-
-            //lexer_inst.retreat();
 
             if (token.type == TokenType::MUL_OP) {
                 //overflower.multiplicationWillOverflow();
@@ -257,7 +308,11 @@ public:
                 eat(TokenType::MOD_OP);
             }
 
-            node = std::make_unique<BinaryOpNode>(std::move(node), token.type, factor());
+//            lexer_inst.restoreState(lexerState);
+
+            node = std::make_unique<BinaryOpNode>(std::move(node), token.type, factor(),lexer_inst.line_number);
+            //node = std::make_unique<BinaryOpNode>(std::move(node), token.type, std::move(rightNode), lexer_inst.line_number);
+
         }
 
         return node;
@@ -298,6 +353,16 @@ public:
         } else {
             throw std::runtime_error("Invalid Program : Invalid token in factor! " +  token.value +  " at line " +
                                           std::to_string(lexer_inst.line_number));
+        }
+    }
+
+    void checkASTForOverflows(const std::vector<std::unique_ptr<astNode>>& nodes) {
+        for (const auto& node : nodes) {
+            try {
+                evaluate(node.get());
+            } catch (const std::overflow_error& e) {
+                std::cerr << e.what() << std::endl;
+            }
         }
     }
 
@@ -628,7 +693,7 @@ public:
             const BinaryOpNode* binaryOpNode = dynamic_cast<const BinaryOpNode*>(node);
             auto leftCopy = binaryOpNode->left ? deepCopyAstNode(binaryOpNode->left.get()) : nullptr;
             auto rightCopy = binaryOpNode->right ? deepCopyAstNode(binaryOpNode->right.get()) : nullptr;
-            auto newNode = std::make_unique<BinaryOpNode>(std::move(leftCopy), binaryOpNode->op, std::move(rightCopy));
+            auto newNode = std::make_unique<BinaryOpNode>(std::move(leftCopy), binaryOpNode->op, std::move(rightCopy), lexer_inst.line_number);
             return newNode;
         }
         else if (node->getType() == "Declaration") {

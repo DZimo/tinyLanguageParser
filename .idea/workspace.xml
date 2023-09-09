@@ -16,7 +16,15 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bee0bb80-df49-4a1a-9fe5-660e3e46d80d" name="Changes" comment="fix name conflict problem, works good with older gcc version now" />
+    <list default="true" id="bee0bb80-df49-4a1a-9fe5-660e3e46d80d" name="Changes" comment="test push">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedAST.json" beforeDir="false" afterPath="$PROJECT_DIR$/generatedAST.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST_checker/astNode.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST_checker/astNode.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Lexical_checker/lexer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexical_checker/lexer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/script.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/script.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -112,7 +120,7 @@
       <workItem from="1693944828836" duration="282000" />
       <workItem from="1694114686992" duration="247000" />
       <workItem from="1694247481337" duration="4506000" />
-      <workItem from="1694259106765" duration="860000" />
+      <workItem from="1694259106765" duration="5500000" />
     </task>
     <task id="LOCAL-00001" summary="small fixes for image generator">
       <created>1693559976894</created>
@@ -170,7 +178,14 @@
       <option name="project" value="LOCAL" />
       <updated>1693938655526</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="test push">
+      <created>1694259992894</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1694259992894</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -208,6 +223,7 @@
     <MESSAGE value="Updated some code for better readability, update of structure" />
     <MESSAGE value="updates for structures and small code refactoring" />
     <MESSAGE value="small merge" />
-    <option name="LAST_COMMIT_MESSAGE" value="small merge" />
+    <MESSAGE value="test push" />
+    <option name="LAST_COMMIT_MESSAGE" value="test push" />
   </component>
 </project>
