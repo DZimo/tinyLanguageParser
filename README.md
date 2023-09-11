@@ -11,6 +11,8 @@ Basically the tests are methods that have try catch inside, and you must expect 
 I assumed that program D is not valid as we have a buffer overflow, we try to access the 10th element and assign it which does not exist as we start from 0, we already
 have return 0 and i<0, so we have to assume that 0 is present as digit, and we start from 0.
 
+# MAIN
+Main method does not have parameters as described it is function and has the fixed declaration “int main().”
 
 # HOW IT WORKS ?
 I wrote a Lexer and Parser from scratch depending on the provided EBNF grammar for this Tiny Programming Language.
