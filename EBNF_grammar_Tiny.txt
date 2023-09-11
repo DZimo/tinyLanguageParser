@@ -1,8 +1,12 @@
-<tinyProgramNode> ::= <MainFunctionNode> | <MainFunctionNode> { <function> }
+<TinyProgramNode> ::= <MainFunctionNode> | <MainFunctionNode> { <FunctionNode> }
 
 <MainFunctionNode> ::= <MainName> <MainType> <L_Paren> <R_Paren> <L_Brace> <DeclarationNode> <BlockNode> <R_Brace>
 
-<FunctionNode> ::= <TokenTypes> <IdentifierNames> <L_Paren> <ParametersList> <R_Paren> <L_Brace> <DeclarationNode> <BlockNode> <ReturnFunction> <R_Brace>
+<FunctionNode> ::= <TokenTypes> <IdentifierNames> <L_Paren> <ParametersList> <R_Paren> <L_Brace> <DeclarationNode> <BlockNode> <ReturnNode> <R_Brace>
+
+<FunctionCallNode> ::= <IdentifierNames> <L_Paren> [ ParametersListCall ] <R_Paren> <Semicolon>
+
+<CommentSkip> ::= "/""/" [ <Character> { <Character> } ]
 
 <ReturnNode> ::= "return" <ReturnValue>  // <ReturnValue> type must be equal to <TokenTypes> of function
 
@@ -13,6 +17,8 @@
 <Declaration> ::= <TokenTypes> <IdentifierNames> <Assignment> <expression> <Semicolon>
 
 <ParametersList> ::= [ <TokenTypes> <IdentifierNames> { "," <TokenTypes> <IdentifierNames> } ]
+
+<ParametersListCall> ::= [ <IdentifierNames> { "," <IdentifierNames> } ]
 
 <BlockNode> ::= { <Statement> }
 
@@ -38,21 +44,23 @@
 
 <MultiOperation> ::= "*" | "/" | "%"
 
-<IdentifierNames> ::= [a-zA-Z_][a-zA-Z0-9_]*
+<IdentifierNames> ::= <Character> { (<Character> | <IntValues>) }
 
 <Numbers> ::= <IntValues> | <FloatValues>
 
 <ReturnValue> ::= <IntValues> | <FloatValues> | <CharValues>  | <BoolValues> | <IdentifierNames>
 
-<IntValues> ::= [0-9]{1,5}  // Max is 2^16 as it is unsigned 16 bits
+<IntValues> ::= <Digits> { <Digits> }  // Max is 2^16 as it is unsigned 16 bits
 
-<FloatValues> ::= [0-9]{1,10} "." [0-9]{1,10} // Max is 2^32 as it is unsigned 32 bits
+<FloatValues> ::= <Digits> { <Digits> }  [ "." <Digits> { <Digits> } ] // Max is 2^32 as it is unsigned 32 bits
 
 <BoolValues> ::= "true" | "false"
 
 <CharValues> ::= "'" <Character> "'"
 
-<Character> ::= [a-zA-Z0-9]  (* This represents an 8-bit character *)
+<Digits> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+<Character> :: "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
 
 <Array> ::= <TokenTypes> <IdentifierNames> "[" <IntValues> "]
 

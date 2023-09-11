@@ -586,7 +586,7 @@ public:
                             eat(TokenType::ASSIGNMENT);
                             // Handle the right-hand side. It can be an expression, a function call, another variable, or a literal.
                             auto rightExpr = expr();
-                            int evaluatedValue = evaluate(rightExpr.get());
+                            auto evaluatedValue = evaluate(rightExpr.get());
                             auto newValueNode = std::make_unique<NumberNode>(std::to_string(evaluatedValue));
 
                             auto rightExprCopy = deepCopyAstNode(rightExpr.get());

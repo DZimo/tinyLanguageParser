@@ -4748,3 +4748,120 @@
 [LOG]: Sun Sep 10 11:27:03 2023
 
 --------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 19:27:54 2023
+
+[LOG]: script.txt...Mon Sep 11 19:27:54 2023
+
+[LOG]: Mon Sep 11 19:27:54 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 19:29:38 2023
+
+[LOG]: script.txt...Mon Sep 11 19:29:38 2023
+
+[LOG]: Mon Sep 11 19:29:38 2023
+
+[ERROR]: The program contains an integer overflow at line 5. The multiplication 100000 * 2 overflows the maximum integer size (16 bit integer).
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 19:31:28 2023
+
+[LOG]: script.txt...Mon Sep 11 19:31:28 2023
+
+[LOG]: Mon Sep 11 19:31:28 2023
+
+[ERROR]: The program contains an integer overflow at line 5. The multiplication 100000 * 2 overflows the maximum integer size (16 bit integer).
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 19:32:07 2023
+
+[LOG]: script.txt...Mon Sep 11 19:32:07 2023
+
+[LOG]: Mon Sep 11 19:32:07 2023
+
+[LOG]: Parsing...Mon Sep 11 19:32:32 2023
+
+[LOG]: script.txt...Mon Sep 11 19:32:32 2023
+
+[LOG]: Mon Sep 11 19:32:32 2023
+
+[ERROR]: The program contains an integer overflow at line 5. The multiplication 100000 * 2 overflows the maximum integer size (16 bit integer).
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 19:33:12 2023
+
+[LOG]: script.txt...Mon Sep 11 19:33:12 2023
+
+[LOG]: Mon Sep 11 19:33:12 2023
+
+[ERROR]: The program contains an integer overflow at line 5. The multiplication 100000 * 2 overflows the maximum integer size (16 bit integer).
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 19:33:53 2023
+
+[LOG]: script.txt...Mon Sep 11 19:33:53 2023
+
+[LOG]: Mon Sep 11 19:33:53 2023
+
+[LOG]: Parsing...Mon Sep 11 19:34:29 2023
+
+[LOG]: script.txt...Mon Sep 11 19:34:29 2023
+
+[LOG]: Mon Sep 11 19:34:29 2023
+
+[LOG]: Parsing...Mon Sep 11 19:35:05 2023
+
+[LOG]: script.txt...Mon Sep 11 19:35:05 2023
+
+[LOG]: Mon Sep 11 19:35:05 2023
+
+[LOG]: Parsing...Mon Sep 11 19:35:23 2023
+
+[LOG]: script.txt...Mon Sep 11 19:35:23 2023
+
+[LOG]: Mon Sep 11 19:35:23 2023
+
+[LOG]: Parsing...Mon Sep 11 19:35:38 2023
+
+[LOG]: script.txt...Mon Sep 11 19:35:38 2023
+
+[LOG]: Mon Sep 11 19:35:38 2023
+
+[LOG]: Parsing...Mon Sep 11 19:35:47 2023
+
+[LOG]: script.txt...Mon Sep 11 19:35:47 2023
+
+[LOG]: Mon Sep 11 19:35:47 2023
+
+[LOG]: Parsing...Mon Sep 11 19:36:27 2023
+
+[LOG]: script.txt...Mon Sep 11 19:36:27 2023
+
+[LOG]: Mon Sep 11 19:36:27 2023
+
+[ERROR]: The program contains an integer overflow at line 5. The multiplication 100000 * 2 overflows the maximum integer size (16 bit integer).
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 19:36:37 2023
+
+[LOG]: script.txt...Mon Sep 11 19:36:37 2023
+
+[LOG]: Mon Sep 11 19:36:37 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:06:24 2023
+
+[LOG]: script.txt...Mon Sep 11 20:06:24 2023
+
+[LOG]: Mon Sep 11 20:06:24 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:06:28 2023
+
+[LOG]: script.txt...Mon Sep 11 20:06:28 2023
+
+[LOG]: Mon Sep 11 20:06:28 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:06:50 2023
+
+[LOG]: script.txt...Mon Sep 11 20:06:50 2023
+
+[LOG]: Mon Sep 11 20:06:50 2023
+
+--------------- DONE ---------------- 
