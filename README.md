@@ -3,8 +3,13 @@ Simply put your desired script in "src/script.txt" then compile the code g++ -o 
 you will get the results either in run prompt or log.txt if it is a valid you get the constructed AST in both JSON format and BMP format for image representation
 otherwise in case it is an invalid program then you get the error.
 
-In case you want to run Tests you must first read how i'm handling tests, then just compile the code and run it.
-Basically the tests are methods that have try catch inside and you must expect the resulting output ( string error ) to see if it passes or no.
+In case you want to run Tests you must first read how I'm handling tests, then just compile the code and run it.
+Basically the tests are methods that have try catch inside, and you must expect the resulting output ( string error ) to see if it passes or no.
+
+# BUFFER OVERFLOW
+I assumed that program D is not valid as we have a buffer overflow, we try to access the 10th element and assign it which does not exist as we start from 0, we already
+have return 0 and i<0, so we have to assume that 0 is present as digit, and we start from 0.
+
 
 # HOW IT WORKS ?
 I wrote a Lexer and Parser from scratch depending on the provided EBNF grammar for this Tiny Programming Language.
@@ -69,7 +74,7 @@ If all analysis pass then we output valid program with the AST.
 CMAKE is not well maintained and currently the project works only with normal g++ compile.
 
 # Version control
-GIT has been used to control the versions and get the worklog, the repo is currently private and cannot be accessed only by me.
+GIT has been used to control the versions and get the work-log, the repo is currently private and cannot be accessed only by me.
 
 # VERSIONS
 C++ 17

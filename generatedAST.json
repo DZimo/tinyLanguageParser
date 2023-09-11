@@ -1,19 +1,13 @@
 [{
-  "type": "FunctionDeclaration",
-  "name": "sum",
-  "parameters": [
-{
-      "type": "Declaration",
-      "name": "a",
-      "dataType": "INT"
-    },
-{
-      "type": "Declaration",
-      "name": "b",
-      "dataType": "INT"
-    }
-  ],
+  "type": "MainFunctionNode",
+  "name": "main",
   "body": [
+{
+      "type": "ArrayDeclaration",
+      "name": "a",
+      "dataType": "INT",
+      "size": 10
+    },
 {
       "type": "Declaration",
       "name": "c",
@@ -23,119 +17,22 @@
       "type": "Assignment",
       "left": {
           "type": "IdentifierNode",
-          "value": "a"
-        },
-      "right": {
-          "type": "Number",
-          "value": "10"
-        }
-    },
-{
-      "type": "Assignment",
-      "left": {
-          "type": "IdentifierNode",
-          "value": "b"
-        },
-      "right": {
-          "type": "Number",
-          "value": "20"
-        }
-    },
-{
-      "type": "Assignment",
-      "left": {
-          "type": "IdentifierNode",
           "value": "c"
         },
       "right": {
-          "type": "BinaryExpression",
-          "operator": "ADD_OP",
-          "left": 
-{
-              "type": "Variable",
-              "name": "a"
-            },
-          "right": 
-{
-              "type": "Variable",
-              "name": "b"
-            }
+          "type": "Number",
+          "value": "8"
         }
     },
 {
-      "type": "Return",
-      "return_value": 
-{
+      "type": "Assignment",
+      "left": {
+          "type": "IdentifierNode",
+          "value": "a"
+        },
+      "right": {
           "type": "Variable",
           "name": "c"
-        }
-    }
-  ]
-}, {
-  "type": "MainFunctionNode",
-  "name": "main",
-  "body": [
-{
-      "type": "Compound",
-      "nodes": [
-{
-          "type": "Declaration",
-          "name": "a",
-          "dataType": "INT"
-        },
-{
-          "type": "Declaration",
-          "name": "b",
-          "dataType": "INT"
-        },
-{
-          "type": "Declaration",
-          "name": "c",
-          "dataType": "INT"
-        }
-      ]
-    },
-{
-      "type": "Assignment",
-      "left": {
-          "type": "IdentifierNode",
-          "value": "a"
-        },
-      "right": {
-          "type": "Number",
-          "value": "10"
-        }
-    },
-{
-      "type": "Assignment",
-      "left": {
-          "type": "IdentifierNode",
-          "value": "b"
-        },
-      "right": {
-          "type": "Number",
-          "value": "20"
-        }
-    },
-{
-      "type": "Assignment",
-      "left": {
-          "type": "IdentifierNode",
-          "value": "c"
-        },
-      "right": {
-          "type": "FunctionCall",
-          "name": "sum",
-          "arguments": [
-{
-              "type": "Variable",
-              "name": "a"
-            },
-{
-              "type": "Variable",
-              "name": "b"
-            }
-          ]
         }
     },
 {

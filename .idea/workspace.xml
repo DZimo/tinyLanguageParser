@@ -16,7 +16,14 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bee0bb80-df49-4a1a-9fe5-660e3e46d80d" name="Changes" comment="fixed function call arguments, and fix of ebnf" />
+    <list default="true" id="bee0bb80-df49-4a1a-9fe5-660e3e46d80d" name="Changes" comment="fixed function call arguments, and fix of ebnf">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedAST.json" beforeDir="false" afterPath="$PROJECT_DIR$/generatedAST.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/script.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/script.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,7 +68,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="C/C++ File.main.cpp">
+  <component name="RunManager" selected="C/C++ File.invalidTests.cpp">
     <configuration name="invalidTests.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="tinyLanguageParser" TARGET_NAME="invalidTests.cpp" CONFIG_NAME="invalidTests.cpp">
       <option name="sourceFile" value="C:\Users\Admin\Desktop\tinyLanguageParser\src\invalidTests.cpp" />
       <method v="2">
@@ -112,6 +119,7 @@
       <workItem from="1694281796313" duration="298000" />
       <workItem from="1694335852626" duration="3003000" />
       <workItem from="1694441634581" duration="9706000" />
+      <workItem from="1694458429841" duration="1491000" />
     </task>
     <task id="LOCAL-00001" summary="small fixes for image generator">
       <created>1693559976894</created>
@@ -268,8 +276,18 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp</url>
-          <line>593</line>
-          <option name="timeStamp" value="6" />
+          <line>587</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp</url>
+          <line>581</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp</url>
+          <line>612</line>
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

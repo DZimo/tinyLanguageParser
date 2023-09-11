@@ -559,11 +559,11 @@ public:
                                     throw std::runtime_error("Invalid Program : Use of undeclared variable " + current_token_inst.value + " at line " +
                                                              std::to_string(lexer_inst.line_number));
                                 }
-                                if(!(evaluate(symbolTableInstance.lookupSymbol(current_token_inst.value)) <= symbolTableInstance.getArraySize(varOrFuncName)))
+                                if(!(evaluate(symbolTableInstance.lookupSymbol(current_token_inst.value)) <= symbolTableInstance.getArraySize(varOrFuncName) - 1 ) )
                                 {
-                                    throw std::overflow_error("The program contains an integer overflow at line " +
-                                                              std::to_string(lexer_inst.line_number) + ". The sum " +
-                                                              " overflows the maximum array size.");
+                                    throw std::overflow_error("The program contains a buffer overflow at line " +
+                                                              std::to_string(lexer_inst.line_number) + ". the index " +
+                                                              "overflows the maximum array size.");
                                 }
                                 eat(TokenType::IDENTIFIER);
                             } else{
@@ -611,9 +611,20 @@ public:
                             auto rightExprCopy = deepCopyAstNode(rightExpr.get());
 
                             if(arraySize != -1) {
-                                throw std::runtime_error("Invalid Program : Array initialization this way is not supported at line " +
-                                std::to_string(lexer_inst.line_number));
+                                if(arraySize > symbolTableInstance.getArraySize(varOrFuncName) - 1 )
+                                {
+                                    throw std::overflow_error("The program contains a buffer overflow at line " +
+                                                              std::to_string(lexer_inst.line_number) + ". the index " +
+                                                              "overflows the maximum array size.");
+                                }
                             }
+                            /*
+                            if(!(evaluate(symbolTableInstance.lookupSymbol(current_token_inst.value)) <= symbolTableInstance.getArraySize(varOrFuncName)))
+                            {
+                                throw std::overflow_error("The program contains an integer overflow at line " +
+                                                          std::to_string(lexer_inst.line_number) + ". The sum " +
+                                                          " overflows the maximum array size.");
+                            }*/
                             variableNodes.push_back(std::make_unique<AssignmentNode>(std::make_unique<IdentifierNode>(varOrFuncName), std::move(rightExpr)));
                             symbolTableInstance.updateValueInScopes(varOrFuncName, std::move(newValueNode));
                             insideDeclarationScope=false;

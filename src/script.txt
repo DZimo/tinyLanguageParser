@@ -1,14 +1,8 @@
-int sum(int a, int b) {
-int c;
-a = 10;
-b = 20;
-c = a + b;
-return c;
-}
-int main () {
-int a, b, c;
-a = 10;
-b = 20;
-c = sum(a, b);
-return 0;
+int main() {
+ int a[10], i;
+ i = 10;
+ while(i > 0) {
+ a[i] = i;
+ }
+ return 0;
 }
