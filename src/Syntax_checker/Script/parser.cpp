@@ -10,6 +10,7 @@ private:
     symbolTable symbolTableInstance;
     bool insideFunctionScope = false;
     bool insideDeclarationScope = true;
+    bool insideScopeIfFound= false;
 
 protected:
     tokenizer current_token_inst;
@@ -682,6 +683,7 @@ public:
             }
             case TokenType::IF:
                 symbolTableInstance.pushScope();
+                insideScopeIfFound=true;
                 return ifStatement();
 
             case TokenType::ELSE:
@@ -905,11 +907,17 @@ public:
                                      std::to_string(lexer_inst.line_number));
         }
         eat(TokenType::ELSE);
+        insideScopeIfFound = false;
         std::unique_ptr<astNode> falseBranch = statement();
         return std::make_unique<IfNode>(std::move(condition), std::move(trueBranch), std::move(falseBranch));
     }
 
     std::unique_ptr<astNode> elseStatement() {
+        if(!insideScopeIfFound)
+        {
+            throw std::runtime_error("Invalid Program : Expected if branch ! at line " +
+                                     std::to_string(lexer_inst.line_number));
+        }
         eat(TokenType::ELSE);
         return statement();
     }

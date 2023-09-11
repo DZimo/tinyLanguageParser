@@ -3,36 +3,118 @@
   "name": "main",
   "body": [
 {
-      "type": "ArrayDeclaration",
-      "name": "a",
-      "dataType": "INT",
-      "size": 10
+      "type": "Declaration",
+      "name": "x",
+      "dataType": "BOOL"
     },
 {
-      "type": "Declaration",
-      "name": "c",
-      "dataType": "INT"
+      "type": "Compound",
+      "nodes": [
+{
+          "type": "Declaration",
+          "name": "y",
+          "dataType": "FLOAT"
+        },
+{
+          "type": "Declaration",
+          "name": "z",
+          "dataType": "FLOAT"
+        }
+      ]
     },
 {
       "type": "Assignment",
       "left": {
           "type": "IdentifierNode",
-          "value": "c"
+          "value": "z"
         },
       "right": {
           "type": "Number",
-          "value": "8"
+          "value": "0"
         }
     },
 {
       "type": "Assignment",
       "left": {
           "type": "IdentifierNode",
-          "value": "a"
+          "value": "y"
         },
       "right": {
+          "type": "Number",
+          "value": "0"
+        }
+    },
+{
+      "type": "Assignment",
+      "left": {
+          "type": "IdentifierNode",
+          "value": "x"
+        },
+      "right": {
+          "type": "Boolean",
+          "value": true
+        }
+    },
+{
+      "type": "IfStatement",
+      "condition": 
+{
           "type": "Variable",
-          "name": "c"
+          "name": "x"
+        },
+      "trueBranch": 
+{
+          "type": "Block",
+          "statements": [
+{
+              "type": "Assignment",
+              "left": {
+                  "type": "IdentifierNode",
+                  "value": "y"
+                },
+              "right": {
+                  "type": "BinaryExpression",
+                  "operator": "ADD_OP",
+                  "left": 
+{
+                      "type": "Variable",
+                      "name": "y"
+                    },
+                  "right": 
+{
+                      "type": "Variable",
+                      "name": "z"
+                    }
+                }
+            }
+          ]
+        },
+      "falseBranch": 
+{
+          "type": "Block",
+          "statements": [
+{
+              "type": "Assignment",
+              "left": {
+                  "type": "IdentifierNode",
+                  "value": "y"
+                },
+              "right": {
+                  "type": "BinaryExpression",
+                  "operator": "SUB_OP",
+                  "left": 
+{
+                      "type": "Variable",
+                      "name": "y"
+                    },
+                  "right": 
+{
+                      "type": "Variable",
+                      "name": "z"
+                    }
+                }
+            }
+          ]
         }
     },
 {

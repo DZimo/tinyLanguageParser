@@ -5406,3 +5406,122 @@
 [LOG]: Mon Sep 11 21:08:25 2023
 
 --------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 21:19:19 2023
+
+[LOG]: script.txt...Mon Sep 11 21:19:19 2023
+
+[LOG]: Mon Sep 11 21:19:19 2023
+
+[ERROR]: The program contains a buffer overflow at line 5. the index overflows the maximum array size.
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 21:19:34 2023
+
+[LOG]: script.txt...Mon Sep 11 21:19:34 2023
+
+[LOG]: Mon Sep 11 21:19:34 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 21:19:47 2023
+
+[LOG]: script.txt...Mon Sep 11 21:19:47 2023
+
+[LOG]: Mon Sep 11 21:19:47 2023
+
+[ERROR]: The program contains an integer overflow at line 5. The addition 65535 + 2 overflows the maximum integer size (16 bit integer).
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 21:19:52 2023
+
+[LOG]: script.txt...Mon Sep 11 21:19:52 2023
+
+[LOG]: Mon Sep 11 21:19:52 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 22:52:40 2023
+
+[LOG]: script.txt...Mon Sep 11 22:52:40 2023
+
+[LOG]: Mon Sep 11 22:52:40 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 22:53:05 2023
+
+[LOG]: script.txt...Mon Sep 11 22:53:05 2023
+
+[LOG]: Mon Sep 11 22:53:05 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 22:55:44 2023
+
+[LOG]: script.txt...Mon Sep 11 22:55:44 2023
+
+[LOG]: Mon Sep 11 22:55:44 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 22:55:50 2023
+
+[LOG]: script.txt...Mon Sep 11 22:55:50 2023
+
+[LOG]: Mon Sep 11 22:55:50 2023
+
+[ERROR]: Invalid Program : Expected if branch ! at line 8
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 22:55:55 2023
+
+[LOG]: script.txt...Mon Sep 11 22:55:55 2023
+
+[LOG]: Mon Sep 11 22:55:55 2023
+
+[ERROR]: Invalid Program : This token is not defined in Grammar at line 14
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 22:56:01 2023
+
+[LOG]: script.txt...Mon Sep 11 22:56:01 2023
+
+[LOG]: Mon Sep 11 22:56:01 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 22:56:10 2023
+
+[LOG]: script.txt...Mon Sep 11 22:56:10 2023
+
+[LOG]: Mon Sep 11 22:56:10 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 22:57:40 2023
+
+[LOG]: script.txt...Mon Sep 11 22:57:40 2023
+
+[LOG]: Mon Sep 11 22:57:40 2023
+
+[ERROR]: Invalid Program : Expected { after function definition at line 2
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 22:57:57 2023
+
+[LOG]: script.txt...Mon Sep 11 22:57:57 2023
+
+[LOG]: Mon Sep 11 22:57:57 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 22:58:09 2023
+
+[LOG]: script.txt...Mon Sep 11 22:58:09 2023
+
+[LOG]: Mon Sep 11 22:58:09 2023
+
+[ERROR]: Invalid Program : Expected else branch ! at line 17
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 22:58:14 2023
+
+[LOG]: script.txt...Mon Sep 11 22:58:14 2023
+
+[LOG]: Mon Sep 11 22:58:14 2023
+
+[ERROR]: Invalid Program : Expected if branch ! at line 14
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 22:58:22 2023
+
+[LOG]: script.txt...Mon Sep 11 22:58:22 2023
+
+[LOG]: Mon Sep 11 22:58:22 2023
+
+--------------- DONE ---------------- 

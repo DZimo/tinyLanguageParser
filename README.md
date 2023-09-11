@@ -1,5 +1,6 @@
 # HOW TO RUN ?
 Simply put your desired script in "src/script.txt" then compile the code g++ -o main src/main.cpp after that execute it with ./main 
+run it on tinyLanguageParser folder and not inside src.
 you will get the results either in run prompt or log.txt if it is a valid you get the constructed AST in both JSON format and BMP format for image representation
 otherwise in case it is an invalid program then you get the error.
 
@@ -75,6 +76,9 @@ CMAKE is not well maintained and currently the project works only with normal g+
 
 # Version control
 GIT has been used to control the versions and get the work-log, the repo is currently private and cannot be accessed only by me.
+
+# Docker
+There is a Dockerfile that you can use to build the image otherwise docker pull dzimo16/tinylanguageparser:v1 you can pull this in your local
 
 # VERSIONS
 C++ 17
