@@ -11,7 +11,7 @@
 
 void randomValidTest ()
 {
-    std::string script = "main ( int b, int c ) { int a; int b; float d; bool s;} f () { int c;} c() { int a; } ";
+    std::string script = "main () { int a; int b; float d; bool s;} f () { int c;} c() { int a; } ";
     lexer lex(script);
     parser parse(lex);
     std::string providedParserJson;

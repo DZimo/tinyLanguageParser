@@ -11,6 +11,7 @@ private:
     bool insideFunctionScope = false;
     bool insideDeclarationScope = true;
     bool insideScopeIfFound= false;
+    bool insideMainFunction = false;
 
 protected:
     tokenizer current_token_inst;
@@ -464,6 +465,10 @@ public:
             case TokenType::IDENTIFIER: {
                 auto varOrFuncName = current_token_inst.value;
                 eat(TokenType::IDENTIFIER);
+                if(varOrFuncName == tokenTypeToString(TokenType::MAIN))
+                {
+                    insideMainFunction = true;
+                }
                 if (current_token_inst.type == TokenType::L_PAREN) {
                     // Here we check if it is a function call or declaration
                     eat(TokenType::L_PAREN);
@@ -477,6 +482,11 @@ public:
                                 current_token_inst.type == TokenType::CHAR ||
                                 current_token_inst.type == TokenType::FLOAT ||
                                 current_token_inst.type == TokenType::BOOL) {
+                                if(insideMainFunction)
+                                {
+                                    throw std::runtime_error("Invalid Program : Syntax Error main should not have parameters! at line " +
+                                                             std::to_string(lexer_inst.line_number));
+                                }
                                 auto currentType = type();
                                 std::string paramType = currentType;
                                 //eat(current_token_inst.type);
@@ -522,6 +532,7 @@ public:
                             auto functionNode = std::make_unique<MainFunctionNode>(varOrFuncName, std::move(blockNode->statements));
                             //symbolTable.insertGlobalSymbol(varOrFuncName, functionNode.get());
                             symbolTableInstance.insertSymbol(varOrFuncName,functionNode.get());
+                            insideMainFunction = false;
                             return functionNode;
                         }
                         else{
