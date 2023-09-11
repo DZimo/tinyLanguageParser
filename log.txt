@@ -5578,3 +5578,18 @@
 
 [ERROR]: Invalid Program : Syntax Error main should not have parameters! at line 1
 --------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 23:11:19 2023
+
+[LOG]: script.txt...Mon Sep 11 23:11:19 2023
+
+[LOG]: Mon Sep 11 23:11:19 2023
+
+[ERROR]: Invalid Program : Syntax Error main should not have parameters! at line 1
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 23:11:26 2023
+
+[LOG]: script.txt...Mon Sep 11 23:11:26 2023
+
+[LOG]: Mon Sep 11 23:11:26 2023
+
+--------------- DONE ---------------- 

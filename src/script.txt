@@ -1,4 +1,4 @@
-int main (int a) {
+int main () {
 bool x;
 float y, z;
  z = 0;

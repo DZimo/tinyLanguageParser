@@ -16,9 +16,10 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bee0bb80-df49-4a1a-9fe5-660e3e46d80d" name="Changes" comment="fixed main to catch parameters error">
+    <list default="true" id="bee0bb80-df49-4a1a-9fe5-660e3e46d80d" name="Changes" comment="update of readMe for main and compile">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/script.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/script.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +65,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="C/C++ File.invalidTests.cpp">
+  <component name="RunManager" selected="C/C++ File.main.cpp">
     <configuration name="invalidTests.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="tinyLanguageParser" TARGET_NAME="invalidTests.cpp" CONFIG_NAME="invalidTests.cpp">
       <option name="sourceFile" value="C:\Users\Admin\Desktop\tinyLanguageParser\src\invalidTests.cpp" />
       <method v="2">
@@ -117,7 +118,7 @@
       <workItem from="1694441634581" duration="9706000" />
       <workItem from="1694458429841" duration="1545000" />
       <workItem from="1694465521863" duration="620000" />
-      <workItem from="1694466263050" duration="382000" />
+      <workItem from="1694466263050" duration="419000" />
     </task>
     <task id="LOCAL-00001" summary="small fixes for image generator">
       <created>1693559976894</created>
@@ -238,7 +239,14 @@
       <option name="project" value="LOCAL" />
       <updated>1694466587256</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="update of readMe for main and compile">
+      <created>1694466664744</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1694466664744</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -291,7 +299,8 @@
     <MESSAGE value="last buffer overflow updates" />
     <MESSAGE value="fix of else branch" />
     <MESSAGE value="fixed main to catch parameters error" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed main to catch parameters error" />
+    <MESSAGE value="update of readMe for main and compile" />
+    <option name="LAST_COMMIT_MESSAGE" value="update of readMe for main and compile" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
