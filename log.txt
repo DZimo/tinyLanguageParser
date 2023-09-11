@@ -4865,3 +4865,216 @@
 [LOG]: Mon Sep 11 20:06:50 2023
 
 --------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:07:13 2023
+
+[LOG]: script.txt...Mon Sep 11 20:07:13 2023
+
+[LOG]: Mon Sep 11 20:07:13 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:07:56 2023
+
+[LOG]: script.txt...Mon Sep 11 20:07:56 2023
+
+[LOG]: Mon Sep 11 20:07:56 2023
+
+[ERROR]: Invalid Program : Use of undeclared variable c at line 3
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:08:06 2023
+
+[LOG]: script.txt...Mon Sep 11 20:08:06 2023
+
+[LOG]: Mon Sep 11 20:08:06 2023
+
+[ERROR]: Invalid Program : Use of undeclared variable a at line 7
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:08:13 2023
+
+[LOG]: script.txt...Mon Sep 11 20:08:13 2023
+
+[LOG]: Mon Sep 11 20:08:13 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:08:19 2023
+
+[LOG]: script.txt...Mon Sep 11 20:08:19 2023
+
+[LOG]: Mon Sep 11 20:08:19 2023
+
+[LOG]: Parsing...Mon Sep 11 20:18:02 2023
+
+[LOG]: script.txt...Mon Sep 11 20:18:02 2023
+
+[LOG]: Mon Sep 11 20:18:02 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:18:16 2023
+
+[LOG]: script.txt...Mon Sep 11 20:18:16 2023
+
+[LOG]: Mon Sep 11 20:18:16 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:18:26 2023
+
+[LOG]: script.txt...Mon Sep 11 20:18:26 2023
+
+[LOG]: Mon Sep 11 20:18:26 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:19:46 2023
+
+[LOG]: script.txt...Mon Sep 11 20:19:46 2023
+
+[LOG]: Mon Sep 11 20:19:46 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:19:49 2023
+
+[LOG]: script.txt...Mon Sep 11 20:19:49 2023
+
+[LOG]: Mon Sep 11 20:19:49 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:19:56 2023
+
+[LOG]: script.txt...Mon Sep 11 20:19:56 2023
+
+[LOG]: Mon Sep 11 20:19:56 2023
+
+[LOG]: Parsing...Mon Sep 11 20:20:35 2023
+
+[LOG]: script.txt...Mon Sep 11 20:20:35 2023
+
+[LOG]: Mon Sep 11 20:20:35 2023
+
+[LOG]: Parsing...Mon Sep 11 20:21:40 2023
+
+[LOG]: script.txt...Mon Sep 11 20:21:40 2023
+
+[LOG]: Mon Sep 11 20:21:40 2023
+
+[ERROR]: Invalid Program : Use of undeclared variable khra at line 7
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:21:47 2023
+
+[LOG]: script.txt...Mon Sep 11 20:21:47 2023
+
+[LOG]: Mon Sep 11 20:21:47 2023
+
+[LOG]: Parsing...Mon Sep 11 20:24:44 2023
+
+[LOG]: script.txt...Mon Sep 11 20:24:44 2023
+
+[LOG]: Mon Sep 11 20:24:44 2023
+
+[ERROR]: Invalid Program : Use of undeclared variable khra at line 7
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:25:52 2023
+
+[LOG]: script.txt...Mon Sep 11 20:25:52 2023
+
+[LOG]: Mon Sep 11 20:25:52 2023
+
+[LOG]: Parsing...Mon Sep 11 20:26:41 2023
+
+[LOG]: script.txt...Mon Sep 11 20:26:41 2023
+
+[LOG]: Mon Sep 11 20:26:41 2023
+
+[ERROR]: Invalid Program : Use of undeclared variable khra at line 7
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:26:57 2023
+
+[LOG]: script.txt...Mon Sep 11 20:26:57 2023
+
+[LOG]: Mon Sep 11 20:26:57 2023
+
+[LOG]: Parsing...Mon Sep 11 20:29:10 2023
+
+[LOG]: script.txt...Mon Sep 11 20:29:10 2023
+
+[LOG]: Mon Sep 11 20:29:10 2023
+
+[ERROR]: Invalid Program : Wrong number of arguments c at line 7
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:29:17 2023
+
+[LOG]: script.txt...Mon Sep 11 20:29:17 2023
+
+[LOG]: Mon Sep 11 20:29:17 2023
+
+[ERROR]: Invalid Program : Use of undeclared variable a at line 7
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:29:24 2023
+
+[LOG]: script.txt...Mon Sep 11 20:29:24 2023
+
+[LOG]: Mon Sep 11 20:29:24 2023
+
+[ERROR]: Invalid Program : Wrong number of arguments c at line 7
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:29:28 2023
+
+[LOG]: script.txt...Mon Sep 11 20:29:28 2023
+
+[LOG]: Mon Sep 11 20:29:28 2023
+
+[ERROR]: Invalid Program : Use of undeclared variable b at line 7
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:29:32 2023
+
+[LOG]: script.txt...Mon Sep 11 20:29:32 2023
+
+[LOG]: Mon Sep 11 20:29:32 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:30:46 2023
+
+[LOG]: script.txt...Mon Sep 11 20:30:46 2023
+
+[LOG]: Mon Sep 11 20:30:46 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:30:53 2023
+
+[LOG]: script.txt...Mon Sep 11 20:30:53 2023
+
+[LOG]: Mon Sep 11 20:30:53 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:30:58 2023
+
+[LOG]: script.txt...Mon Sep 11 20:30:58 2023
+
+[LOG]: Mon Sep 11 20:30:58 2023
+
+[LOG]: Parsing...Mon Sep 11 20:31:19 2023
+
+[LOG]: script.txt...Mon Sep 11 20:31:19 2023
+
+[LOG]: Mon Sep 11 20:31:19 2023
+
+[ERROR]: Invalid Program : Wrong number of arguments c at line 7
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:31:29 2023
+
+[LOG]: script.txt...Mon Sep 11 20:31:29 2023
+
+[LOG]: Mon Sep 11 20:31:29 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:31:55 2023
+
+[LOG]: script.txt...Mon Sep 11 20:31:55 2023
+
+[LOG]: Mon Sep 11 20:31:55 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Mon Sep 11 20:32:02 2023
+
+[LOG]: script.txt...Mon Sep 11 20:32:02 2023
+
+[LOG]: Mon Sep 11 20:32:02 2023
+
+--------------- DONE ---------------- 

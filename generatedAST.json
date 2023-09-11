@@ -130,6 +130,10 @@
 {
               "type": "Variable",
               "name": "a"
+            },
+{
+              "type": "Variable",
+              "name": "b"
             }
           ]
         }

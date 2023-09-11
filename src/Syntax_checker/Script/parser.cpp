@@ -589,6 +589,25 @@ public:
                             auto evaluatedValue = evaluate(rightExpr.get());
                             auto newValueNode = std::make_unique<NumberNode>(std::to_string(evaluatedValue));
 
+
+                            // Only call this if it is a function
+                            if(rightExpr->getType() == "FunctionCall")
+                            {
+                                FunctionCallNode* functionCallNode = dynamic_cast<FunctionCallNode*>(rightExpr.get());
+                                auto possibleFunctionName = functionCallNode->funcName;
+                                astNode* result = symbolTableInstance.lookupSymbol(possibleFunctionName);
+                                FunctionDeclarationNode* functionNode = dynamic_cast<FunctionDeclarationNode*>(result);
+
+                                if (functionNode) {
+                                    int numOfParameters = functionNode->parameters.size();
+                                    if(numOfParameters != (functionCallNode -> arguments.size()) )
+                                    {
+                                        throw std::runtime_error("Invalid Program : Wrong number of arguments " + varOrFuncName + " at line " +
+                                                                 std::to_string(lexer_inst.line_number));
+                                    }
+                                }
+                            }
+
                             auto rightExprCopy = deepCopyAstNode(rightExpr.get());
 
                             if(arraySize != -1) {

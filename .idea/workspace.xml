@@ -16,9 +16,8 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bee0bb80-df49-4a1a-9fe5-660e3e46d80d" name="Changes" comment="updated EBNF and readeMe, ready.">
+    <list default="true" id="bee0bb80-df49-4a1a-9fe5-660e3e46d80d" name="Changes" comment="ebnf can handle comments now and arrays">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EBNF_grammar_Tiny.txt" beforeDir="false" afterPath="$PROJECT_DIR$/EBNF_grammar_Tiny.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/generatedAST.json" beforeDir="false" afterPath="$PROJECT_DIR$/generatedAST.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp" afterDir="false" />
@@ -118,7 +117,7 @@
       <workItem from="1694259106765" duration="6192000" />
       <workItem from="1694281796313" duration="298000" />
       <workItem from="1694335852626" duration="3003000" />
-      <workItem from="1694441634581" duration="8046000" />
+      <workItem from="1694441634581" duration="9529000" />
     </task>
     <task id="LOCAL-00001" summary="small fixes for image generator">
       <created>1693559976894</created>
@@ -204,7 +203,14 @@
       <option name="project" value="LOCAL" />
       <updated>1694453248905</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="ebnf can handle comments now and arrays">
+      <created>1694455626717</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1694455626717</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -252,20 +258,16 @@
     <MESSAGE value="fixed overflows, works perfectly with all operations now." />
     <MESSAGE value="updated readMe" />
     <MESSAGE value="updated EBNF and readeMe, ready." />
-    <option name="LAST_COMMIT_MESSAGE" value="updated EBNF and readeMe, ready." />
+    <MESSAGE value="ebnf can handle comments now and arrays" />
+    <option name="LAST_COMMIT_MESSAGE" value="ebnf can handle comments now and arrays" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp</url>
-          <line>585</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp</url>
-          <line>587</line>
-          <option name="timeStamp" value="3" />
+          <line>593</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

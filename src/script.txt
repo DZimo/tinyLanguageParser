@@ -9,6 +9,6 @@ int main () {
 int a, b, c;
 a = 10;
 b = 20;
-c = sum(a);
+c = sum(a, b);
 return 0;
 }
