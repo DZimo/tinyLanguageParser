@@ -30,7 +30,7 @@
         },
       "right": {
           "type": "Number",
-          "value": "65535"
+          "value": "10.20"
         }
     },
 {
@@ -52,7 +52,7 @@
         },
       "right": {
           "type": "BinaryExpression",
-          "operator": "DIV_OP",
+          "operator": "MUL_OP",
           "left": 
 {
               "type": "Variable",

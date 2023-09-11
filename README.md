@@ -4,13 +4,25 @@ you will get the results either in run prompt or log.txt if it is a valid you ge
 otherwise in case it is an invalid program then you get the error.
 
 # HOW IT WORKS ?
-I wrote a Lexer and Parser from scratch depending on the provided EBNF grammar for this Tiny Programming Language
-for the Lexer class...
+I wrote a Lexer and Parser from scratch depending on the provided EBNF grammar for this Tiny Programming Language.
+The Lexer class first lex the given script in form of tokens, the whitespaces and comments are skipped then we parse those tokens one by one using Top Down Parsing technique to go from
+top to bottom while building the AST.
 For the AST construction I defined multiple Nodes which may be updated for more precise construction of AST, declaration of function, single,
-multiple variables, if, else, while, and others.. which can be found in astNode class
-JSON format convertor is based simply on those node and each node has it's own toJSON function that does the work
-From JSON to BMP image i have implemented a class imageConvertor that takes the JSON then converts it simply to BMP format which can make it very useful and informative
-BMP image still needs updates
+multiple variables, if, else, while, assignment, return, function call, and more.. which can be found in astNode class.
+JSON format convertor is based simply on those node and each node has its own toJSON function that does the work.
+From JSON to BMP image I have implemented a class imageConvertor that takes the JSON then converts it simply to BMP format which can make it very useful and informative
+BMP image still needs updates.
+
+# TYPES
+Float values works with . instead of , --> 10.2 is valid float while 10,2 is not a valid float
+Int values
+Char
+Boolean
+Arrays of any type 
+
+# IF Statement
+I assumed that if statement only works if else is present, the logic I built was that "if" have true and false branch, returning a null pointer for false branch is not 
+a good idea in C++ especially when building the AST nodes.
 
 # CHAR 
 I assumed that characters works with '' instead of this ‘’ , example : 
@@ -20,7 +32,7 @@ c = 'a'; ---> Valid
 # TESTS
 I wanted to handle tests differently without including any library or framework for testing only for the sack of portability and ease of use
 I made 2 classes one for valid and the other for invalid syntax as described in project, each class contains multiple functions that
-have different scripts with one main function that call those tests, in a simple way i test with this script if the parseAST throws an error
+have different scripts with one main function that call those tests, in a simple way I test with this script if the parseAST throws an error
 or no, if yes then print what it expected to do, example : if a give an invalid script in the function then when it catches then the test passed
 because it was expected to catch, I also print the exception.
 
@@ -49,6 +61,10 @@ to check if it overflows or no.
 
 Output:
 if all analysis pass then we output valid program with the AST.
+
+# CMAKE
+CMAKE is not well maintained and currently the project works only with normal gcc compile.
+
 
 # VERSIONS
 C++ 17

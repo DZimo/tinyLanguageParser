@@ -4710,3 +4710,41 @@
 
 [ERROR]: The program contains an integer overflow at line 5. The multiplication 65535 * 2 overflows the maximum integer size (16 bit integer).
 --------------- DONE ---------------- 
+[LOG]: Parsing...Sat Sep 09 19:51:13 2023
+
+[LOG]: script.txt...Sat Sep 09 19:51:13 2023
+
+[LOG]: Sat Sep 09 19:51:13 2023
+
+[ERROR]: The program contains an integer overflow at line 5. The multiplication 65535 * 2 overflows the maximum integer size (16 bit integer).
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sun Sep 10 11:26:35 2023
+
+[LOG]: script.txt...Sun Sep 10 11:26:35 2023
+
+[LOG]: Sun Sep 10 11:26:35 2023
+
+[ERROR]: Invalid Program : Expected another variable name after comma at line 3
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sun Sep 10 11:26:44 2023
+
+[LOG]: script.txt...Sun Sep 10 11:26:44 2023
+
+[LOG]: Sun Sep 10 11:26:44 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sun Sep 10 11:26:54 2023
+
+[LOG]: script.txt...Sun Sep 10 11:26:54 2023
+
+[LOG]: Sun Sep 10 11:26:54 2023
+
+[ERROR]: Invalid Program : Expected comma, assignment, or semicolon at line 3
+--------------- DONE ---------------- 
+[LOG]: Parsing...Sun Sep 10 11:27:03 2023
+
+[LOG]: script.txt...Sun Sep 10 11:27:03 2023
+
+[LOG]: Sun Sep 10 11:27:03 2023
+
+--------------- DONE ---------------- 

@@ -1,8 +1,10 @@
-<tiny_program> ::= <MainFunctionNode> | <MainFunctionNode> { <function> }
+<tinyProgramNode> ::= <MainFunctionNode> | <MainFunctionNode> { <function> }
 
 <MainFunctionNode> ::= <MainName> <MainType> <L_Paren> <R_Paren> <L_Brace> <DeclarationNode> <BlockNode> <R_Brace>
 
-<FunctionNode> ::= <TokenTypes> <IdentifierNames> <L_Paren> <ParametersList> <R_Paren> <L_Brace> <declarations> <BlockNode <R_Brace>
+<FunctionNode> ::= <TokenTypes> <IdentifierNames> <L_Paren> <ParametersList> <R_Paren> <L_Brace> <DeclarationNode> <BlockNode> <ReturnFunction> <R_Brace>
+
+<ReturnNode> ::= "return" <ReturnValue>  // <ReturnValue> type must be equal to <TokenTypes> of function
 
 <TokenTypes> ::= "int" | "float" | "char" | "bool"
 
@@ -16,39 +18,43 @@
 
 <Statement> ::= <AssignmentNode> | <IfNode> | <WhileNode>
 
-<AssignmentNode> ::= <IdentifierNames> <Assignment> <expression> <Semicolon>
+<AssignmentNode> ::= <IdentifierNames> <Assignment> <Expression> <Semicolon> | <IdentifierNames> "[" <IntValues> "] <Assignment> <Expression> <Semicolon>
 
-<IfNode> ::= "if" <L_Paren> <Condition> <R_Paren> <L_Brace> <statements> <R_Brace> ["else" "{" <BlockNode> "}"]
+<IfNode> ::= <ifToken> <L_Paren> <Condition> <R_Paren> <L_Brace> <BlockNode> <R_Brace> <elseToken> <L_Brace> <BlockNode> <R_Brace>
 
-<WhileNode> ::= "while" <L_Paren> <Condition> <R_Paren> <L_Brace> <BlockNode> <R_Brace>
+<WhileNode> ::= <whileToken> <L_Paren> <Condition> <R_Paren> <L_Brace> <BlockNode> <R_Brace>
 
-<Condition> ::= <expression> <logical_op> <expression>
+<Condition> ::= <Expression> <LogicalOperation> <Expression>
 
-<logical_op> ::= "&&" | "||" | "!" | "==" | "!=" | "<" | ">" | "<=" | ">="
+<LogicalOperation> ::= "&&" | "||" | "!" | "==" | "!=" | "<" | ">" | "<=" | ">="
 
-<expression> ::= <term> { <add_op> <term> }
+<Expression> ::= <Term> { <AddOperation> <Term> }
 
-<term> ::= <factor> { <mul_op> <factor> }
+<Term> ::= <Factor> { <MultiOperation> <Factor> }
 
-<factor> ::= <identifier> | <number> | <char_value> | "(" <expression> ")"
+<Factor> ::= <IdentifierNames> | <Numbers> | <CharValues> | "(" <Expression> ")"
 
-<add_op> ::= "+" | "-"
+<AddOperation> ::= "+" | "-"
 
-<mul_op> ::= "*" | "/" | "%"
+<MultiOperation> ::= "*" | "/" | "%"
 
 <IdentifierNames> ::= [a-zA-Z_][a-zA-Z0-9_]*
 
-<number> ::= <int_value> | <float_value>
+<Numbers> ::= <IntValues> | <FloatValues>
 
-<int_value> ::= [0-9]{1,5}  (* Up to 5 digits to roughly stay within 16 bits *)
+<ReturnValue> ::= <IntValues> | <FloatValues> | <CharValues>  | <BoolValues> | <IdentifierNames>
 
-<float_value> ::= [0-9]{1,10} "." [0-9]{1,10}  (* Up to 10 digits before and after the dot to roughly stay within 32 bits *)
+<IntValues> ::= [0-9]{1,5}  // Max is 2^16 as it is unsigned 16 bits
 
-<char_value> ::= "'" <char> "'"
+<FloatValues> ::= [0-9]{1,10} "." [0-9]{1,10} // Max is 2^32 as it is unsigned 32 bits
 
-<char> ::= [a-zA-Z0-9]  (* This represents an 8-bit character *)
+<BoolValues> ::= "true" | "false"
 
-<array> ::= <identifier> "[" <expression> "]
+<CharValues> ::= "'" <Character> "'"
+
+<Character> ::= [a-zA-Z0-9]  (* This represents an 8-bit character *)
+
+<Array> ::= <TokenTypes> <IdentifierNames> "[" <IntValues> "]
 
 <MainName> ::= "main"
 
@@ -65,3 +71,10 @@
 <Assignment> ::= "="
 
 <Semicolon> ::= ";"
+
+<ifToken> ::= "if"
+
+<elseToken> ::= "else"
+
+<whileToken> ::= "while"
+
