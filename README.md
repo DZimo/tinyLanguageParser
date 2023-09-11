@@ -3,6 +3,9 @@ Simply put your desired script in "src/script.txt" then compile the code g++ -o 
 you will get the results either in run prompt or log.txt if it is a valid you get the constructed AST in both JSON format and BMP format for image representation
 otherwise in case it is an invalid program then you get the error.
 
+In case you want to run Tests you must first read how i'm handling tests, then just compile the code and run it.
+Basically the tests are methods that have try catch inside and you must expect the resulting output ( string error ) to see if it passes or no.
+
 # HOW IT WORKS ?
 I wrote a Lexer and Parser from scratch depending on the provided EBNF grammar for this Tiny Programming Language.
 The Lexer class first lex the given script in form of tokens, the whitespaces and comments are skipped then we parse those tokens one by one using Top Down Parsing technique to go from
@@ -60,11 +63,13 @@ After getting the AST we try to go node by node and whenever we have an binary o
 to check if it overflows or no.
 
 Output:
-if all analysis pass then we output valid program with the AST.
+If all analysis pass then we output valid program with the AST.
 
 # CMAKE
-CMAKE is not well maintained and currently the project works only with normal gcc compile.
+CMAKE is not well maintained and currently the project works only with normal g++ compile.
 
+# Version control
+GIT has been used to control the versions and get the worklog, the repo is currently private and cannot be accessed only by me.
 
 # VERSIONS
 C++ 17

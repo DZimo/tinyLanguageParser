@@ -16,13 +16,7 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bee0bb80-df49-4a1a-9fe5-660e3e46d80d" name="Changes" comment="ebnf can handle comments now and arrays">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generatedAST.json" beforeDir="false" afterPath="$PROJECT_DIR$/generatedAST.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Syntax_checker/Script/parser.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/script.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/script.txt" afterDir="false" />
-    </list>
+    <list default="true" id="bee0bb80-df49-4a1a-9fe5-660e3e46d80d" name="Changes" comment="fixed function call arguments, and fix of ebnf" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -117,7 +111,7 @@
       <workItem from="1694259106765" duration="6192000" />
       <workItem from="1694281796313" duration="298000" />
       <workItem from="1694335852626" duration="3003000" />
-      <workItem from="1694441634581" duration="9529000" />
+      <workItem from="1694441634581" duration="9706000" />
     </task>
     <task id="LOCAL-00001" summary="small fixes for image generator">
       <created>1693559976894</created>
@@ -210,7 +204,14 @@
       <option name="project" value="LOCAL" />
       <updated>1694455626717</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="fixed function call arguments, and fix of ebnf">
+      <created>1694457140389</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1694457140389</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -259,7 +260,8 @@
     <MESSAGE value="updated readMe" />
     <MESSAGE value="updated EBNF and readeMe, ready." />
     <MESSAGE value="ebnf can handle comments now and arrays" />
-    <option name="LAST_COMMIT_MESSAGE" value="ebnf can handle comments now and arrays" />
+    <MESSAGE value="fixed function call arguments, and fix of ebnf" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed function call arguments, and fix of ebnf" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
