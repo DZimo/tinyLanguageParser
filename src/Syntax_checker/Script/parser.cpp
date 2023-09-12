@@ -471,6 +471,11 @@ public:
                 }
                 if (current_token_inst.type == TokenType::L_PAREN) {
                     // Here we check if it is a function call or declaration
+                    if(symbolTableInstance.lookupSymbol(varOrFuncName))
+                    {
+                        throw std::runtime_error("Invalid Program : Already declared " + varOrFuncName +  " at line " +
+                                                 std::to_string(lexer_inst.line_number));
+                    }
                     eat(TokenType::L_PAREN);
                     symbolTableInstance.pushScope();
                     //std::vector<std::pair<std::string, std::string>> parameters;
@@ -601,6 +606,12 @@ public:
                             auto evaluatedValue = evaluate(rightExpr.get());
                             auto newValueNode = std::make_unique<NumberNode>(std::to_string(evaluatedValue));
 
+                            if(evaluate(rightExpr.get()) > (1 << 16) )
+                            {
+                                throw std::overflow_error("The program contains an integer overflow at line " +
+                                                          std::to_string(lexer_inst.line_number) + ". the number " +
+                                                          "overflows the maximum.");
+                            }
 
                             // Only call this if it is a function
                             if(rightExpr->getType() == "FunctionCall")
@@ -647,6 +658,11 @@ public:
                             {
                                 throw std::runtime_error("Invalid Program : Declaration must be at the beginning at line " +
                                 std::to_string(lexer_inst.line_number));
+                            }
+                            if(symbolTableInstance.lookupSymbol(varOrFuncName))
+                            {
+                                throw std::runtime_error("Invalid Program : Already declared " + varOrFuncName +  " at line " +
+                                                         std::to_string(lexer_inst.line_number));
                             }
                             if(arraySize != -1) {
                                 variableNodes.push_back(std::make_unique<ArrayDeclarationNode>(lastDataType, varOrFuncName, arraySize));

@@ -1,14 +1,10 @@
-int main () {
-bool x;
-float y, z;
- z = 0;
- y = 0;
-x = true;
-if(x) {
-y = y + z;
+int main() {
+int a[10], i;
+ if(i == a )
+{
+
 }
-else{
-y = y - z;
+else {
 }
 return 0;
 }

@@ -5593,3 +5593,141 @@
 [LOG]: Mon Sep 11 23:11:26 2023
 
 --------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:05:43 2023
+
+[LOG]: script.txt...Tue Sep 12 15:05:43 2023
+
+[LOG]: Tue Sep 12 15:05:43 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:13:21 2023
+
+[LOG]: script.txt...Tue Sep 12 15:13:21 2023
+
+[LOG]: Tue Sep 12 15:13:21 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:13:26 2023
+
+[LOG]: script.txt...Tue Sep 12 15:13:26 2023
+
+[LOG]: Tue Sep 12 15:13:26 2023
+
+[ERROR]: Invalid Program : Already declared z at line 4
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:13:38 2023
+
+[LOG]: script.txt...Tue Sep 12 15:13:38 2023
+
+[LOG]: Tue Sep 12 15:13:38 2023
+
+[ERROR]: Invalid Program : Already declared z at line 4
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:15:15 2023
+
+[LOG]: script.txt...Tue Sep 12 15:15:15 2023
+
+[LOG]: Tue Sep 12 15:15:15 2023
+
+[ERROR]: Invalid Program : Already declared z at line 4
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:15:28 2023
+
+[LOG]: script.txt...Tue Sep 12 15:15:28 2023
+
+[LOG]: Tue Sep 12 15:15:28 2023
+
+[ERROR]: Invalid Program : Already declared main at line 16
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:15:40 2023
+
+[LOG]: script.txt...Tue Sep 12 15:15:40 2023
+
+[LOG]: Tue Sep 12 15:15:40 2023
+
+[ERROR]: Invalid Program : Already declared y at line 4
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:21:42 2023
+
+[LOG]: script.txt...Tue Sep 12 15:21:42 2023
+
+[LOG]: Tue Sep 12 15:21:42 2023
+
+[ERROR]: The program contains an integer overflow at line 4. the number overflows the maximum.
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:22:37 2023
+
+[LOG]: script.txt...Tue Sep 12 15:22:37 2023
+
+[LOG]: Tue Sep 12 15:22:37 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:22:50 2023
+
+[LOG]: script.txt...Tue Sep 12 15:22:50 2023
+
+[LOG]: Tue Sep 12 15:22:50 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:23:00 2023
+
+[LOG]: script.txt...Tue Sep 12 15:23:00 2023
+
+[LOG]: Tue Sep 12 15:23:00 2023
+
+[ERROR]: The program contains an integer overflow at line 4. the number overflows the maximum.
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:23:14 2023
+
+[LOG]: script.txt...Tue Sep 12 15:23:14 2023
+
+[LOG]: Tue Sep 12 15:23:14 2023
+
+[ERROR]: The program contains an integer overflow at line 10. the number overflows the maximum.
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:23:45 2023
+
+[LOG]: script.txt...Tue Sep 12 15:23:45 2023
+
+[LOG]: Tue Sep 12 15:23:45 2023
+
+[ERROR]: Invalid Program : Global variables not allowed
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:24:01 2023
+
+[LOG]: script.txt...Tue Sep 12 15:24:01 2023
+
+[LOG]: Tue Sep 12 15:24:01 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:24:21 2023
+
+[LOG]: script.txt...Tue Sep 12 15:24:21 2023
+
+[LOG]: Tue Sep 12 15:24:21 2023
+
+[ERROR]: Invalid Program : Expected closing bracket at line 5
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:24:41 2023
+
+[LOG]: script.txt...Tue Sep 12 15:24:41 2023
+
+[LOG]: Tue Sep 12 15:24:41 2023
+
+[ERROR]: The program contains an integer overflow at line 6. the number overflows the maximum.
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:25:03 2023
+
+[LOG]: script.txt...Tue Sep 12 15:25:03 2023
+
+[LOG]: Tue Sep 12 15:25:03 2023
+
+[ERROR]: Invalid Program : Expected else branch ! at line 7
+--------------- DONE ---------------- 
+[LOG]: Parsing...Tue Sep 12 15:25:13 2023
+
+[LOG]: script.txt...Tue Sep 12 15:25:13 2023
+
+[LOG]: Tue Sep 12 15:25:13 2023
+
+--------------- DONE ---------------- 
