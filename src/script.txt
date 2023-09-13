@@ -1,10 +1,14 @@
-int main() {
-int a[10], i;
- if(i == a )
-{
-
+int sum(int a, int b) {
+int c;
+a = 10;
+b = 20;
+c = a + b;
+return c;
 }
-else {
-}
+int main () {
+int a, b, c;
+a = 4;
+b = 20;
+c = sum(a, b);
 return 0;
 }

@@ -5731,3 +5731,188 @@
 [LOG]: Tue Sep 12 15:25:13 2023
 
 --------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 14:52:06 2023
+
+[LOG]: script.txt...Wed Sep 13 14:52:06 2023
+
+[LOG]: Wed Sep 13 14:52:06 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 14:52:18 2023
+
+[LOG]: script.txt...Wed Sep 13 14:52:18 2023
+
+[LOG]: Wed Sep 13 14:52:18 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 14:52:34 2023
+
+[LOG]: script.txt...Wed Sep 13 14:52:34 2023
+
+[LOG]: Wed Sep 13 14:52:34 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 15:19:14 2023
+
+[LOG]: script.txt...Wed Sep 13 15:19:14 2023
+
+[LOG]: Wed Sep 13 15:19:14 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 15:20:06 2023
+
+[LOG]: script.txt...Wed Sep 13 15:20:06 2023
+
+[LOG]: Wed Sep 13 15:20:06 2023
+
+[ERROR]: Invalid Program : Expected comma, assignment, or semicolon at line 3
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 15:20:17 2023
+
+[LOG]: script.txt...Wed Sep 13 15:20:17 2023
+
+[LOG]: Wed Sep 13 15:20:17 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 15:20:42 2023
+
+[LOG]: script.txt...Wed Sep 13 15:20:42 2023
+
+[LOG]: Wed Sep 13 15:20:42 2023
+
+[ERROR]: Invalid Program : Use of undeclared variable main at line 9
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 15:23:21 2023
+
+[LOG]: script.txt...Wed Sep 13 15:23:21 2023
+
+[LOG]: Wed Sep 13 15:23:21 2023
+
+[ERROR]: Invalid Program : Use of undeclared variable main at line 9
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 15:23:42 2023
+
+[LOG]: script.txt...Wed Sep 13 15:23:42 2023
+
+[LOG]: Wed Sep 13 15:23:42 2023
+
+[ERROR]: Invalid Program : Use of undeclared variable main at line 13
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 15:24:10 2023
+
+[LOG]: script.txt...Wed Sep 13 15:24:10 2023
+
+[LOG]: Wed Sep 13 15:24:10 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 15:24:29 2023
+
+[LOG]: script.txt...Wed Sep 13 15:24:29 2023
+
+[LOG]: Wed Sep 13 15:24:29 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 15:24:43 2023
+
+[LOG]: script.txt...Wed Sep 13 15:24:43 2023
+
+[LOG]: Wed Sep 13 15:24:43 2023
+
+[ERROR]: Invalid Program : Use of undeclared variable sum at line 18
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 15:25:08 2023
+
+[LOG]: script.txt...Wed Sep 13 15:25:08 2023
+
+[LOG]: Wed Sep 13 15:25:08 2023
+
+[ERROR]: Invalid Program : Use of undeclared variable c at line 13
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 15:27:20 2023
+
+[LOG]: script.txt...Wed Sep 13 15:27:20 2023
+
+[LOG]: Wed Sep 13 15:27:20 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 15:43:05 2023
+
+[LOG]: script.txt...Wed Sep 13 15:43:05 2023
+
+[LOG]: Wed Sep 13 15:43:05 2023
+
+[ERROR]: Invalid Program : Invalid token in factor! - at line 10
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 15:43:19 2023
+
+[LOG]: script.txt...Wed Sep 13 15:43:19 2023
+
+[LOG]: Wed Sep 13 15:43:19 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 15:46:18 2023
+
+[LOG]: script.txt...Wed Sep 13 15:46:18 2023
+
+[LOG]: Wed Sep 13 15:46:18 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 16:13:10 2023
+
+[LOG]: script.txt...Wed Sep 13 16:13:10 2023
+
+[LOG]: Wed Sep 13 16:13:10 2023
+
+[ERROR]: Null node encountered
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 16:14:14 2023
+
+[LOG]: script.txt...Wed Sep 13 16:14:14 2023
+
+[LOG]: Wed Sep 13 16:14:14 2023
+
+[ERROR]: Null node encountered
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 16:14:54 2023
+
+[LOG]: script.txt...Wed Sep 13 16:14:54 2023
+
+[LOG]: Wed Sep 13 16:14:54 2023
+
+[LOG]: Parsing...Wed Sep 13 16:16:17 2023
+
+[LOG]: script.txt...Wed Sep 13 16:16:17 2023
+
+[LOG]: Wed Sep 13 16:16:17 2023
+
+[ERROR]: Null node encountered
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 16:18:33 2023
+
+[LOG]: script.txt...Wed Sep 13 16:18:33 2023
+
+[LOG]: Wed Sep 13 16:18:33 2023
+
+[ERROR]: Invalid Program : variable must be assigned a value after its declaration at line 8
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 16:18:56 2023
+
+[LOG]: script.txt...Wed Sep 13 16:18:56 2023
+
+[LOG]: Wed Sep 13 16:18:56 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 16:19:38 2023
+
+[LOG]: script.txt...Wed Sep 13 16:19:38 2023
+
+[LOG]: Wed Sep 13 16:19:38 2023
+
+--------------- DONE ---------------- 
+[LOG]: Parsing...Wed Sep 13 16:22:51 2023
+
+[LOG]: script.txt...Wed Sep 13 16:22:51 2023
+
+[LOG]: Wed Sep 13 16:22:51 2023
+
+--------------- DONE ---------------- 

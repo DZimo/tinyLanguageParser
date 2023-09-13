@@ -133,7 +133,8 @@ public:
     }*/
     int evaluate(astNode* node) {
         if (!node) {
-            throw std::runtime_error("Null node encountered");
+            return -1;
+            //throw std::runtime_error("Null node encountered");
         }
 
         std::string nodeType = node->getType();
@@ -907,6 +908,20 @@ public:
         {
             insideFunctionScope= false;
             insideDeclarationScope= true;
+        }
+        // before i pop scope i check that all variables have been assigned
+        for(auto &scope : symbolTableInstance.scopes)
+        {
+            for(auto &symbol : scope)
+            {
+                auto node = symbol.second;
+                auto evaluatedValue = evaluate(node);
+                if(evaluatedValue == -1)
+                {
+                    throw std::runtime_error("Invalid Program : variable must be assigned a value after its declaration at line " +
+                                             std::to_string(lexer_inst.line_number));
+                }
+            }
         }
         symbolTableInstance.popScope();
         return std::make_unique<BlockNode>(std::move(statements));

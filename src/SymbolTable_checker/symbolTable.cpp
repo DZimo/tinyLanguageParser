@@ -14,7 +14,7 @@ public:
 };
 
 class symbolTable {
-private:
+public:
     std::unordered_map<std::string, symbol> table;
     std::vector<std::unordered_map<std::string, astNode*>> scopes;
     bool isLocked = false;

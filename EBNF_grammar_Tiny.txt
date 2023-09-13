@@ -28,7 +28,7 @@
 
 <Statement> ::= <AssignmentNode> | <IfNode> | <WhileNode> | <FunctionCallNode>
 
-<AssignmentNode> ::= <IdentifierNames> <Assignment> <Expression> <Semicolon> | <IdentifierNames> "[" <IntValues> "] <Assignment> <Expression> <Semicolon>
+<AssignmentNode> ::= <IdentifierNames> <Assignment> <Expression> <Semicolon> | <IdentifierNames> "[" <IntValues> "] <Assignment> <Expression> <Semicolon> | 
 
 <IfNode> ::= <ifToken> <L_Paren> <Condition> <R_Paren> <L_Brace> <BlockNode> <R_Brace> <elseToken> <L_Brace> <BlockNode> <R_Brace>
 
@@ -42,7 +42,7 @@
 
 <Term> ::= <Factor> { <MultiOperation> <Factor> }
 
-<Factor> ::= <IdentifierNames> | <Numbers> | <CharValues> | "(" <Expression> ")"
+<Factor> ::= <IdentifierNames> | <Numbers> | <CharValues> | "(" <Expression> ")" | <FunctionCallNode>
 
 <AddOperation> ::= "+" | "-"
 
